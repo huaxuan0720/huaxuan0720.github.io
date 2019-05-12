@@ -198,23 +198,20 @@
     <div class="card-content">
         <h3 class="title is-5 has-text-weight-normal">Comments</h3>
         
+<div id="valine-thread" class="content"></div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
 <script>
-    var disqus_config = function () {
-        this.page.url = 'http://yoursite.com/about/index.html';
-        this.page.identifier = 'about/index.html';
-    };
-    (function() {
-        var d = document, s = d.createElement('script');  
-        s.src = '//' + 'Xuan Hua-blog' + '.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-    })();
+    new Valine({
+        el: '#valine-thread' ,
+        notify: true,
+        verify: false,
+        app_id: 'iccwxYBr9y70NgcI4taslyB9-gzGzoHsz',
+        app_key: 'ksGgGN0AeLXQQ1HfOy0mCrM0',
+        placeholder: 'xxxxxxxx'
+    });
 </script>
 
-<div id="disqus_thread">
-    
-    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-</div>
     </div>
 </div>
 
