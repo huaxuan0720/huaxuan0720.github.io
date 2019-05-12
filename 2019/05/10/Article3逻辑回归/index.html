@@ -7,19 +7,19 @@
 
 
 
-    <meta name="description" content="前言   前面主要是讲反向传播和梯度下降的方法，那么其实涉及梯度的机器学习方法并不是只有深度学习一种，逻辑回归也是可以利用梯度的信息进行参数的更新，使得模型逐步满足我们的数据要求。注意，逻辑回归输出的是属于某一种类别的概率，利用阈值的控制来进行判别，因此逻辑回归本质上是一种分类方法。">
+    <meta name="description" content="前言   前面主要是讲反向传播和梯度下降的方法，那么其实涉及梯度的机器学习方法并不是只有深度学习一种，逻辑回归也是可以利用梯度的信息进行参数的更新，使得模型逐步满足我们的数据要求。注意，逻辑回归输出的是属于某一种类别的概率，利用阈值的控制来进行判别，因此逻辑回归本质上是一种分类方法。">
 <meta name="keywords" content="机器学习,逻辑回归">
 <meta property="og:type" content="article">
 <meta property="og:title" content="逻辑回归算法">
 <meta property="og:url" content="http://yoursite.com/2019/05/10/Article3逻辑回归/index.html">
 <meta property="og:site_name" content="Welcome to My Blogs">
-<meta property="og:description" content="前言   前面主要是讲反向传播和梯度下降的方法，那么其实涉及梯度的机器学习方法并不是只有深度学习一种，逻辑回归也是可以利用梯度的信息进行参数的更新，使得模型逐步满足我们的数据要求。注意，逻辑回归输出的是属于某一种类别的概率，利用阈值的控制来进行判别，因此逻辑回归本质上是一种分类方法。">
+<meta property="og:description" content="前言   前面主要是讲反向传播和梯度下降的方法，那么其实涉及梯度的机器学习方法并不是只有深度学习一种，逻辑回归也是可以利用梯度的信息进行参数的更新，使得模型逐步满足我们的数据要求。注意，逻辑回归输出的是属于某一种类别的概率，利用阈值的控制来进行判别，因此逻辑回归本质上是一种分类方法。">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://yoursite.com/gallery/MachineLearning.jpg">
-<meta property="og:updated_time" content="2019-05-10T09:06:23.200Z">
+<meta property="og:updated_time" content="2019-05-12T10:29:06.463Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="逻辑回归算法">
-<meta name="twitter:description" content="前言   前面主要是讲反向传播和梯度下降的方法，那么其实涉及梯度的机器学习方法并不是只有深度学习一种，逻辑回归也是可以利用梯度的信息进行参数的更新，使得模型逐步满足我们的数据要求。注意，逻辑回归输出的是属于某一种类别的概率，利用阈值的控制来进行判别，因此逻辑回归本质上是一种分类方法。">
+<meta name="twitter:description" content="前言   前面主要是讲反向传播和梯度下降的方法，那么其实涉及梯度的机器学习方法并不是只有深度学习一种，逻辑回归也是可以利用梯度的信息进行参数的更新，使得模型逐步满足我们的数据要求。注意，逻辑回归输出的是属于某一种类别的概率，利用阈值的控制来进行判别，因此逻辑回归本质上是一种分类方法。">
 <meta name="twitter:image" content="http://yoursite.com/gallery/MachineLearning.jpg">
 
 
@@ -166,6 +166,8 @@
             <div class="level-left">
                 <time class="level-item has-text-grey" datetime="2019-05-10T09:20:51.000Z"><i class="far fa-calendar-alt">&nbsp;</i>2019-05-10</time>
                 
+                <time class="level-item has-text-grey is-hidden-mobile" datetime="2019-05-12T10:29:06.463Z"><i class="far fa-calendar-check">&nbsp;</i>2019-05-12</time>
+                
                 
                 <div class="level-item">
                 <i class="far fa-folder-open has-text-grey"></i>&nbsp;
@@ -177,7 +179,7 @@
                     <i class="far fa-clock"></i>&nbsp;
                     
                     
-                    22 minutes read (About 3368 words)
+                    22 minutes read (About 3308 words)
                 </span>
                 
                 
@@ -190,9 +192,12 @@
         </div>
         
         <div class="content">
-            <p><strong>前言</strong>   前面主要是讲反向传播和梯度下降的方法，那么其实涉及梯度的机器学习方法并不是只有深度学习一种，逻辑回归也是可以利用梯度的信息进行参数的更新，使得模型逐步满足我们的数据要求。注意，逻辑回归输出的是属于某一种类别的概率，利用阈值的控制来进行判别，因此逻辑回归本质上是一种<strong>分类方法</strong>。 <a id="more"></a> ##### 一、逻辑斯蒂回归</p>
-<p>  逻辑斯蒂回归（logistic regression，下面简称逻辑回归），是一种十分经典的分类方法。我们首先介绍一下逻辑回归的定义。   假设我们有一个数据集 <span class="math inline">\(S\)</span>，一共包含<span class="math inline">\(m\)</span>个样本数据，即： <span class="math inline">\(，S = \{(x_1,y_1),(x_2,y_2),...,(x_m，y_m)\}\)</span>，其中，<span class="math inline">\(y_i \in \{0, 1\}\)</span>。为了表示的方便，我们不妨设当<span class="math inline">\(y_i = 1\)</span>时为正样本，当<span class="math inline">\(y_i = 0\)</span>时为负样本，当然，反过来也是可以的，这个并不重要，只不过一般习惯这样表达。</p>
-<p>  在SVM中，我们根据数据集的分布，求解出了一个二分的超平面 <span class="math inline">\(f(x) = \omega \cdot x+b\)</span>，现在我们要对一个新的样本点<span class="math inline">\(x_0\)</span>进行分类预测，需要将这个样本点带入上面的超平面公式。当<span class="math inline">\(f(x_0) = \omega \cdot x_0 + b &gt; 0\)</span>时，我们将这个样本点标记为1，当<span class="math inline">\(f(x_0) = \omega \cdot x_0 + b \leq 0\)</span>时，我们将这个样本点标记为-1。观察到SVM只能对新样本输出 <span class="math inline">\(\pm1\)</span>，无法较为准确的输出样本属于每一个类别的概率究竟是多少。SVM结果的正确性在于它保证了找到的是样本间隔最大的那个超平面，这样就可以保证以最高的精确度区分新的样本。然而SVM却无法对一个新样本的概率进行求解。而这就是逻辑回归主要做的事情，它输出的是一个概率值，当这个概率值大于一定的阈值时，样本标记为1，反之则标记为0。</p>
+            <p><strong>前言</strong><br>
+  前面主要是讲反向传播和梯度下降的方法，那么其实涉及梯度的机器学习方法并不是只有深度学习一种，逻辑回归也是可以利用梯度的信息进行参数的更新，使得模型逐步满足我们的数据要求。注意，逻辑回归输出的是属于某一种类别的概率，利用阈值的控制来进行判别，因此逻辑回归本质上是一种<strong>分类方法</strong>。 <a id="more"></a></p>
+<h5 id="一逻辑斯蒂回归">一、逻辑斯蒂回归</h5>
+<p>  逻辑斯蒂回归（logistic regression，下面简称逻辑回归），是一种十分经典的分类方法。我们首先介绍一下逻辑回归的定义。<br>
+  假设我们有一个数据集 <span class="math inline">\(S\)</span>，一共包含<span class="math inline">\(m\)</span>个样本数据，即： <span class="math inline">\(S = \{(x_1,y_1),(x_2,y_2),...,(x_m，y_m)\}\)</span>，其中，<span class="math inline">\(y_i \in \{0, 1\}\)</span>。为了表示的方便，我们不妨设当<span class="math inline">\(y_i = 1\)</span>时为正样本，当<span class="math inline">\(y_i = 0\)</span>时为负样本，当然，反过来也是可以的，这个并不重要，只不过一般习惯这样表达。</p>
+<p>  在SVM中，我们根据数据集的分布，求解出了一个二分的超平面 <span class="math inline">\(f(x) = \omega \cdot x+b​\)</span>，现在我们要对一个新的样本点<span class="math inline">\(x_0​\)</span>进行分类预测，需要将这个样本点带入上面的超平面公式。当<span class="math inline">\(f(x_0) = \omega \cdot x_0 + b &gt; 0​\)</span>时，我们将这个样本点标记为1，当<span class="math inline">\(f(x_0) = \omega \cdot x_0 + b \leq 0​\)</span>时，我们将这个样本点标记为-1。观察到SVM只能对新样本输出 <span class="math inline">\(\pm1​\)</span>，无法较为准确的输出样本属于每一个类别的概率究竟是多少。SVM结果的正确性在于它保证了找到的是样本间隔最大的那个超平面，这样就可以保证以最高的精确度区分新的样本。然而SVM却无法对一个新样本的概率进行求解。而这就是逻辑回归主要做的事情，它输出的是一个概率值，当这个概率值大于一定的阈值时，样本标记为1，反之则标记为0。</p>
 <h5 id="二sigmoid函数">二、sigmoid函数</h5>
 <p>  熟悉深度学习的人肯定对这个函数非常了解，它是早期深度学习网络经常使用的激活函数之一。它的定义公式如下： <span class="math display">\[
 sigmoid(x) = \frac{1}{1 + e^{-x}} \quad x \in R
@@ -270,7 +275,7 @@ logL(\omega) = \sum_i y_i \omega \cdot x_i - log(1 + e^{\omega \cdot x_i}) \tag{
 <p>  前两列为数据，最后一列为对应数据的标签。</p>
 <p>  代码如下：</p>
 <figure class="highlight python hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt</span><br><span class="line"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">read_file</span><span class="hljs-params">()</span>:</span></span><br><span class="line">    positive = []</span><br><span class="line">    negative = []</span><br><span class="line"></span><br><span class="line">    f = open(<span class="hljs-string">"testSet.txt"</span>, <span class="hljs-string">"r"</span>)</span><br><span class="line">    <span class="hljs-keyword">for</span> line <span class="hljs-keyword">in</span> f:</span><br><span class="line">        l = line.strip()</span><br><span class="line">        l = l.split(<span class="hljs-string">"\t"</span>)</span><br><span class="line">        l = [float(i) <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> l]</span><br><span class="line">        <span class="hljs-keyword">if</span> l[<span class="hljs-number">-1</span>] == <span class="hljs-number">1.0</span>:</span><br><span class="line">            positive.append([l[<span class="hljs-number">0</span>], l[<span class="hljs-number">1</span>], <span class="hljs-number">1</span>])</span><br><span class="line">        <span class="hljs-keyword">else</span>:</span><br><span class="line">            negative.append([l[<span class="hljs-number">0</span>], l[<span class="hljs-number">1</span>], <span class="hljs-number">1</span>])</span><br><span class="line">    positive = np.array(positive, dtype=np.float)</span><br><span class="line">    negative = np.array(negative, dtype=np.float)</span><br><span class="line">    <span class="hljs-keyword">return</span> positive, negative</span><br><span class="line"></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">cost</span><span class="hljs-params">(positive, negative, w)</span>:</span></span><br><span class="line">    c = <span class="hljs-number">0</span></span><br><span class="line">    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> positive:</span><br><span class="line">        c += <span class="hljs-number">1.0</span> * np.sum(np.multiply(w, i)) - np.log(<span class="hljs-number">1</span> + np.exp(np.sum(np.multiply(w, i))))</span><br><span class="line"></span><br><span class="line">    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> negative:</span><br><span class="line">        c += <span class="hljs-number">0.0</span> * np.sum(np.multiply(w, i)) - np.log(<span class="hljs-number">1</span> + np.exp(np.sum(np.multiply(w, i))))</span><br><span class="line"></span><br><span class="line">    <span class="hljs-keyword">return</span> c</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">loop</span><span class="hljs-params">()</span>:</span></span><br><span class="line">    positive, negative = read_file()</span><br><span class="line">    w = np.array([<span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>])</span><br><span class="line">    w_copy = w.copy()</span><br><span class="line">    alpha = <span class="hljs-number">0.001</span></span><br><span class="line">    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(<span class="hljs-number">2000</span>):</span><br><span class="line">        print(cost(positive, negative, w))</span><br><span class="line">        gradient = np.array([<span class="hljs-number">0.</span>, <span class="hljs-number">0.</span>, <span class="hljs-number">0.</span>])</span><br><span class="line"></span><br><span class="line">        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> positive:</span><br><span class="line">            gradient += <span class="hljs-number">1.0</span> * i - (np.exp(np.sum(np.multiply(w, i))) * i) / (<span class="hljs-number">1</span> + np.exp(np.sum(np.multiply(w, i))))</span><br><span class="line"></span><br><span class="line">        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> negative:</span><br><span class="line">            gradient += <span class="hljs-number">0.0</span> * i - (np.exp(np.sum(np.multiply(w, i))) * i) / (<span class="hljs-number">1</span> + np.exp(np.sum(np.multiply(w, i))))</span><br><span class="line"></span><br><span class="line">        w = w + alpha * gradient</span><br><span class="line">    <span class="hljs-keyword">return</span> positive, negative, w, w_copy</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">'__main__'</span>:</span><br><span class="line">    positive, negative, w, w_origin = loop()</span><br><span class="line">    plt.scatter(positive[:, <span class="hljs-number">0</span>], positive[:, <span class="hljs-number">1</span>], c=<span class="hljs-string">"red"</span>)</span><br><span class="line">    plt.scatter(negative[:, <span class="hljs-number">0</span>], negative[:, <span class="hljs-number">1</span>], c=<span class="hljs-string">'blue'</span>)</span><br><span class="line">    xs = np.linspace(<span class="hljs-number">-4</span>, <span class="hljs-number">3.5</span>, <span class="hljs-number">300</span>)</span><br><span class="line">    ys1 = (w[<span class="hljs-number">0</span>] * xs + w[<span class="hljs-number">2</span>]) / (- w[<span class="hljs-number">1</span>])</span><br><span class="line">    ys2 = (w_origin[<span class="hljs-number">0</span>] * xs + w_origin[<span class="hljs-number">2</span>]) / (- w_origin[<span class="hljs-number">1</span>])</span><br><span class="line"></span><br><span class="line">    plt.plot(xs, ys1, c=<span class="hljs-string">"green"</span>)</span><br><span class="line">    plt.plot(xs, ys2, c=<span class="hljs-string">"yellow"</span>)</span><br><span class="line">    plt.show()</span><br></pre></td></tr></table></figure>
-<p>  代码运行结果如下，其中黄色直线表示的是初始的分隔超平面，绿色的直线表示为分类超平面，可以看出，样本数据可以较好地被分隔开，第二幅图表示的是梯度上升的情况，可以看到，算法可以较好地收敛于全局最优解附近： <img src="https://img-blog.csdnimg.cn/20190411203214965.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0RhVmluY2lM,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"> <img src="https://img-blog.csdnimg.cn/20190411203230528.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0RhVmluY2lM,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<p>  代码运行结果如下，其中黄色直线表示的是初始的分隔超平面，绿色的直线表示为分类超平面，可以看出，样本数据可以较好地被分隔开，第二幅图表示的是梯度上升的情况，可以看到，算法可以较好地收敛于全局最优解附近： <img src="/2019/05/10/Article3逻辑回归/Figure_1.png"> <img src="/2019/05/10/Article3逻辑回归/Figure_2.png"></p>
 
         </div>
         
@@ -483,24 +488,28 @@ logL(\omega) = \sum_i y_i \omega \cdot x_i - log(1 + e^{\omega \cdot x_i}) \tag{
                 Catalogue
             </h3>
             <ul class="menu-list"><li>
-        <a class="is-flex" href="#二sigmoid函数">
+        <a class="is-flex" href="#一逻辑斯蒂回归">
         <span class="has-mr-6">1</span>
+        <span>一、逻辑斯蒂回归</span>
+        </a></li><li>
+        <a class="is-flex" href="#二sigmoid函数">
+        <span class="has-mr-6">2</span>
         <span>二、sigmoid函数</span>
         </a></li><li>
         <a class="is-flex" href="#三逻辑回归模型">
-        <span class="has-mr-6">2</span>
+        <span class="has-mr-6">3</span>
         <span>三、逻辑回归模型</span>
         </a></li><li>
         <a class="is-flex" href="#四损失函数">
-        <span class="has-mr-6">3</span>
+        <span class="has-mr-6">4</span>
         <span>四、损失函数</span>
         </a></li><li>
         <a class="is-flex" href="#五关于逻辑回归的似然函数">
-        <span class="has-mr-6">4</span>
+        <span class="has-mr-6">5</span>
         <span>五、关于逻辑回归的似然函数</span>
         </a></li><li>
         <a class="is-flex" href="#六代码">
-        <span class="has-mr-6">5</span>
+        <span class="has-mr-6">6</span>
         <span>六，代码</span>
         </a></li></ul>
         </div>

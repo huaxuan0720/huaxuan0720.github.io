@@ -16,7 +16,7 @@
 <meta property="og:description" content="前言   奇异值分解(Singular Value Decomposition，以下简称SVD)是在一种十分经典的无监督的机器学习算法，它可以用于处理降维算法中的特征分解，还可以用于推荐系统，以及自然语言处理等领域。是很多机器学习算法的基石。">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://yoursite.com/gallery/MachineLearning.jpg">
-<meta property="og:updated_time" content="2019-05-12T07:27:43.221Z">
+<meta property="og:updated_time" content="2019-05-12T10:30:50.798Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="奇异值分解SVD">
 <meta name="twitter:description" content="前言   奇异值分解(Singular Value Decomposition，以下简称SVD)是在一种十分经典的无监督的机器学习算法，它可以用于处理降维算法中的特征分解，还可以用于推荐系统，以及自然语言处理等领域。是很多机器学习算法的基石。">
@@ -166,7 +166,7 @@
             <div class="level-left">
                 <time class="level-item has-text-grey" datetime="2019-05-10T09:20:51.000Z"><i class="far fa-calendar-alt">&nbsp;</i>2019-05-10</time>
                 
-                <time class="level-item has-text-grey is-hidden-mobile" datetime="2019-05-12T07:27:43.221Z"><i class="far fa-calendar-check">&nbsp;</i>2019-05-12</time>
+                <time class="level-item has-text-grey is-hidden-mobile" datetime="2019-05-12T10:30:50.798Z"><i class="far fa-calendar-check">&nbsp;</i>2019-05-12</time>
                 
                 
                 <div class="level-item">
@@ -273,7 +273,7 @@ A^T A &amp;= (V \Sigma^T U^T)(U \Sigma V^T) \\
 &amp;= V V^T A^T U U^T A V V^T \\
 &amp;= A^T A
 \end{aligned}
-\]</span>   注意到上面证明过程的第三行，我们有$A^T A = V ^T V^T <span class="math inline">\(，而矩阵\)</span>V<span class="math inline">\(是矩阵\)</span>A^T A<span class="math inline">\(的特征向量组成的矩阵，因此，矩阵\)</span>^T <span class="math inline">\(就是矩阵\)</span>A^T A<span class="math inline">\(的特征值组成的对角矩阵，这又给了我们一个新的求解\)</span><span class="math inline">\(矩阵的方法。**当我们求出所有的\)</span>A^T A<span class="math inline">\(矩阵的特征值之后，我们在这些特征值的基础上进行开方操作，并将结果组成一个对角矩阵，这个对角矩阵就是我们需要的\)</span><span class="math inline">\(矩阵。** 所以我们发现，实际上\)</span><span class="math inline">\(是一个对角矩阵，只在对角线上存在着有效元素，其他部位的元素都为0。我们将矩阵\)</span>$的对角线上的元素称为<strong>奇异值</strong>。</p>
+\]</span>   注意到上面证明过程的第三行，我们有$A^T A = V ^T V^T <span class="math inline">\(，而矩阵\)</span>V<span class="math inline">\(是矩阵\)</span>A^T A<span class="math inline">\(的特征向量组成的矩阵，因此，矩阵\)</span>^T <span class="math inline">\(就是矩阵\)</span>A^T A<span class="math inline">\(的特征值组成的对角矩阵，这又给了我们一个新的求解\)</span>$矩阵的方法。 <strong>当我们求出所有的 <span class="math inline">\(A^T A\)</span> 矩阵的特征值之后，我们在这些特征值的基础上进行开方操作，并将结果组成一个对角矩阵，这个对角矩阵就是我们需要的 <span class="math inline">\(\Sigma\)</span> 矩阵。</strong> 所以我们发现，实际上<span class="math inline">\(\Sigma\)</span>是一个对角矩阵，只在对角线上存在着有效元素，其他部位的元素都为0。我们将矩阵<span class="math inline">\(\Sigma\)</span>的对角线上的元素称为<strong>奇异值</strong>。</p>
 <p>  同样的道理，如果我们计算<span class="math inline">\(A A^T\)</span>，我们也能得到相同的结果，而计算过程就是证明矩阵<span class="math inline">\(U\)</span>的正确性的过程。</p>
 <p>  接下来，我们考虑这样一件事，我们已经求解出了所有的矩阵信息，有<span class="math inline">\(A = U \Sigma V^T\)</span>，我们同时在等式的左右两边乘以<span class="math inline">\(V\)</span>，有： <span class="math display">\[
 AV = U \Sigma V^T V = U \Sigma
