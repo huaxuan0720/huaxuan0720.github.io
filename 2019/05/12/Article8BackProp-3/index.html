@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+<title>反向传播算法（三）之完整的反向传播算法 - Welcome to My Blogs</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+    <meta name="description" content="前言   前面介绍了单层全连接层并使用激活函数激活的情况，尝试去进行了多样本的梯度下降计算，这一篇文章打算简单介绍一下多层全连接层的梯度下降的情况，重点在于如何进行梯度的向后传播。还是请注意：这里的所有推导过程都只是针对当前设置的参数信息，并不具有一般性，但是所有的推导过程可以推导到一般的运算，因此以下给出的并不是反向传播算法的严格证明，但是可以很好的帮助理解反向传播算法。">
+<meta name="keywords" content="机器学习,反向传播算法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="反向传播算法（三）之完整的反向传播算法">
+<meta property="og:url" content="http://huaxuan0720.github.io/2019/05/12/Article8BackProp-3/index.html">
+<meta property="og:site_name" content="Welcome to My Blogs">
+<meta property="og:description" content="前言   前面介绍了单层全连接层并使用激活函数激活的情况，尝试去进行了多样本的梯度下降计算，这一篇文章打算简单介绍一下多层全连接层的梯度下降的情况，重点在于如何进行梯度的向后传播。还是请注意：这里的所有推导过程都只是针对当前设置的参数信息，并不具有一般性，但是所有的推导过程可以推导到一般的运算，因此以下给出的并不是反向传播算法的严格证明，但是可以很好的帮助理解反向传播算法。">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://huaxuan0720.github.io/gallery/MachineLearning.jpg">
+<meta property="og:updated_time" content="2019-05-12T14:13:18.113Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="反向传播算法（三）之完整的反向传播算法">
+<meta name="twitter:description" content="前言   前面介绍了单层全连接层并使用激活函数激活的情况，尝试去进行了多样本的梯度下降计算，这一篇文章打算简单介绍一下多层全连接层的梯度下降的情况，重点在于如何进行梯度的向后传播。还是请注意：这里的所有推导过程都只是针对当前设置的参数信息，并不具有一般性，但是所有的推导过程可以推导到一般的运算，因此以下给出的并不是反向传播算法的严格证明，但是可以很好的帮助理解反向传播算法。">
+<meta name="twitter:image" content="http://huaxuan0720.github.io/gallery/MachineLearning.jpg">
+
+
+
+
+
+
+
+<link rel="icon" href="/images/favicon.svg">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/github-gist.css">
+
+
+    
+    
+    
+    <style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
+    
+
+    
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css">
+    
+
+    
+    
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css">
+
+
+    
+    
+    
+    
+
+<link rel="stylesheet" href="/css/back-to-top.css">
+
+
+    
+    
+
+    
+    
+    
+    
+
+    
+    
+<link rel="stylesheet" href="/css/progressbar.css">
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+
+    
+    
+    
+
+    
+    
+    
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="is-3-column">
+    <nav class="navbar navbar-main">
+    <div class="container">
+        <div class="navbar-brand is-flex-center">
+            <a class="navbar-item navbar-logo" href="/">
+            
+                <img src="/images/favicon.svg" alt="反向传播算法（三）之完整的反向传播算法" height="28">
+            
+            </a>
+        </div>
+        <div class="navbar-menu">
+            
+            <div class="navbar-start">
+                
+                <a class="navbar-item" href="/">主页</a>
+                
+                <a class="navbar-item" href="/archives/">归档</a>
+                
+                <a class="navbar-item" href="/categories/">类别</a>
+                
+                <a class="navbar-item" href="/tags/">标签</a>
+                
+                <a class="navbar-item" href="/about/">关于</a>
+                
+            </div>
+            
+            <div class="navbar-end">
+                
+                    
+                    
+                    <a class="navbar-item" target="_blank" title="Xuan Hua&#39;s GitHub" href="https://www.github.com/huaxuan0720">
+                        
+                        <i class="fab fa-github"></i>
+                        
+                    </a>
+                    
+                
+                
+                <a class="navbar-item is-hidden-tablet catalogue" title="Catalogue" href="javascript:;">
+                    <i class="fas fa-list-ul"></i>
+                </a>
+                
+                
+                <a class="navbar-item search" title="Search" href="javascript:;">
+                    <i class="fas fa-search"></i>
+                </a>
+                
+            </div>
+        </div>
+    </div>
+</nav>
+    
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-8-tablet is-8-desktop is-9-widescreen has-order-2 column-main"><div class="card">
+    
+    <div class="card-image">
+        <span class="image is-7by1">
+            <img class="thumbnail" src="/gallery/MachineLearning.jpg" alt="反向传播算法（三）之完整的反向传播算法">
+        </span>
+    </div>
+    
+    <div class="card-content article ">
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                <i class="fas fa-angle-double-right"></i>反向传播算法（三）之完整的反向传播算法
+            
+        </h1>
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2019-05-12T13:48:26.000Z"><i class="far fa-calendar-alt">&nbsp;</i>2019-05-12</time>
+                
+                <time class="level-item has-text-grey is-hidden-mobile" datetime="2019-05-12T14:13:18.113Z"><i class="far fa-calendar-check">&nbsp;</i>2019-05-12</time>
+                
+                
+                <div class="level-item">
+                <i class="far fa-folder-open has-text-grey"></i>&nbsp;
+                <a class="has-link-grey -link" href="/categories/机器学习/">机器学习</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    <i class="far fa-clock"></i>&nbsp;
+                    
+                    
+                    27 minutes read (About 4119 words)
+                </span>
+                
+                
+                <span class="level-item has-text-grey" id="busuanzi_container_page_pv">
+                    <i class="far fa-eye"></i>
+                    <span id="busuanzi_value_page_pv">0</span> visits
+                </span>
+                
+            </div>
+        </div>
+        
+        <div class="content">
+            <h5 id="前言">前言</h5>
+<p>  前面介绍了单层全连接层并使用激活函数激活的情况，尝试去进行了多样本的梯度下降计算，这一篇文章打算简单介绍一下多层全连接层的梯度下降的情况，重点在于如何进行梯度的向后传播。还是请注意：这里的所有推导过程都只是针对当前设置的参数信息，并不具有一般性，但是所有的推导过程可以推导到一般的运算，因此以下给出的并不是反向传播算法的严格证明，但是可以很好的帮助理解反向传播算法。</p>
+<a id="more"></a>
+<h5 id="一模型定义">一、模型定义</h5>
+<p><img src="/2019/05/12/Article8BackProp-3/20190324214455251.jpg">   和前面的模型类似，我们使用的输入是一个长度为3的行向量，输出为长度为2的行向量，激活函数设置为 <span class="math inline">\(g\)</span>，我们这里使用的是sigmoid激活函数，即： <span class="math display">\[
+g(x) = \frac{1}{1 + e^{-x}} \tag{1}
+\]</span>   模型定义如图，首先定义一下字母记号（这里的字母表示是根据我自己的习惯来的，和其他的表示方法或许有点不同，不过没有关系。），<span class="math inline">\(L\)</span>表示网络的层数，在我们上图中，可以靠打拼一共有三层(包括输入层)，所以<span class="math inline">\(L = 3\)</span>。我们记网络的第<span class="math inline">\(i\)</span>层为<span class="math inline">\(a^i\)</span>，将输入层记作<span class="math inline">\(a^0 = x\)</span>，很明显，输出层我们可以记作<span class="math inline">\(a^{L-1} = \hat{y}\)</span>，这里的 <span class="math inline">\(\hat{y}\)</span> 表示整个网络的输出。一般地，我们使用上标标记参数是属于网络的哪一层，下标表示该参数在参数矩阵（向量）中的位置。</p>
+<p>  我们在这里使用<span class="math inline">\(z^i\)</span>表示还没有使用激活函数的网络第<span class="math inline">\(i\)</span>层，很明显这里的<span class="math inline">\(i\)</span>的范围是：<span class="math inline">\(1 \leq i \leq L-1\)</span>，因为输入层不需要使用激活函数激活。</p>
+<p>  于是,我们可以得到下面的式子： <span class="math display">\[
+\begin{aligned}
+z^0 &amp;= a^0 \omega^0 + b^0 \\
+a^1 &amp;= g(z^0)  \\
+z^1 &amp;= a^1 \omega^1 + b^1 \\
+\hat{y} &amp;= a^2 = g(z^1)
+\end{aligned}
+\]</span>   其中的 <span class="math inline">\(\omega\)</span>表示的是每一层全连接的权重矩阵，<span class="math inline">\(b\)</span>表示的是每一层的偏置量。不难看出，<span class="math inline">\(\omega^0\)</span>是一个3x3大小的矩阵，<span class="math inline">\(b^0\)</span>是一个长度为3的行向量，<span class="math inline">\(\omega^1\)</span>是一个3x2大小的矩阵，<span class="math inline">\(b^1\)</span>是一个长度为2的行向量。   和前面定义的模型类似，这里我们仍然使用差的平方之和作为最后的损失函数，即： <span class="math display">\[
+C = cost(\hat{y}, y) = \sum(\hat{y}_i - y_i)^2 = (\hat{y}_1 - y_1)^2 + (\hat{y}_2 - y_2)^2 = (a^2_1 - y_1)^2 + (a^2_2 - y_2)^2 \tag{2}
+\]</span></p>
+<h5 id="二基本原理">二、基本原理</h5>
+<p>  首先要了解的是，所谓的反向传播，到底向后传播的是什么。简单来说，算法向后传播的是误差，即我们希望的目标值和真实值之间的差距，这里的目标值是网络每一层的输出，这里的真实值是理想中的那个完美的模型产生的数值。但是很显然，我们并不了解那个完美模型的每一层的输出是什么，我们只知道最后的标签（即 <span class="math inline">\(y\)</span> ），所以我们需要根据最后一层的输出和 <span class="math inline">\(y\)</span> 之间的误差，去调整每一层的输出，在这个调整的过程中，我们就是在调整每一层的权值和偏置量。</p>
+<h6 id="理解偏导数">理解偏导数</h6>
+<p>  对于偏导数 <span class="math inline">\(\frac{\partial C}{\partial a^{i}} ,(1 \leq i \leq L - 1)\)</span>，我们可以将这个偏导数理解成对于 <span class="math inline">\(a^i\)</span>的一个小小的变化，<span class="math inline">\(C\)</span>能有多敏感，我们这里说到的敏感度和前面说的误差本质上是一回事，因为每一层的 <span class="math inline">\(a\)</span>都受到前面一层的输出的影响，所以当我们在向后传播误差到前面的全连接层的时候，我们必然会求出每一层的偏导数，即 <span class="math inline">\(\frac{\partial C}{\partial a^{i}} ,(1 \leq i \leq L - 1)\)</span>。此处 <span class="math inline">\(i\)</span>不会取到0，这是因为在我们设定的模型结构中，<span class="math inline">\(a^0\)</span> 表示的是输出层，而输入层本质上是不包含误差的，因此在我们这样的设置下，<span class="math inline">\(i\)</span>的范围是<span class="math inline">\(1，2，...,L- 1\)</span>。需要注意的是，有些网络会将输入层表示为 <span class="math inline">\(a^1\)</span>，此时，<span class="math inline">\(i\)</span>的最小取值就是2。不管如何设置，这些都是基于相同的原理。</p>
+<h6 id="求解偏导数">求解偏导数</h6>
+<p>  假设我们现在只关注最后的一层全连接层，会有： <span class="math display">\[
+g(\begin{bmatrix} a^1_1 &amp; a^1_2 &amp; a^1_3 \end{bmatrix} \begin{bmatrix} \omega^1_{11} &amp; \omega^1_{12} \\ \omega^1_{21} &amp; \omega^1_{22} \\ \omega^1_{31} &amp; \omega^1_{32} \\ \end{bmatrix} + \begin{bmatrix} b^1_1 &amp; b^1_2\end{bmatrix}) = \begin{bmatrix} a^2_1 &amp; a^2_2 \end{bmatrix} \tag{3}
+\]</span>   我们沿用之前定义好的字母表示方法，用 <span class="math inline">\(z^i\)</span>表示每一层未被激活时的矩阵，于是，我们可以有下面的式子： <span class="math display">\[
+z^1 = a^1 \omega^1 + b^1 \\
+a^2 = g(z^1) \\
+C = \sum (a^2_i - y_i) ^2
+\]</span>   将上面的第一个式子展开，我们有： <span class="math display">\[
+\begin{bmatrix} z^1_1 &amp; z^1_2\end{bmatrix} = \begin{bmatrix} a^1_1 &amp; a^1_2 &amp; a^1_3 \end{bmatrix} \begin{bmatrix} \omega^1_{11} &amp; \omega^1_{12} \\ \omega^1_{21} &amp; \omega^1_{22} \\ \omega^1_{31} &amp; \omega^1_{32} \\ \end{bmatrix} + \begin{bmatrix} b^1_1 &amp; b^1_2\end{bmatrix} \tag{4}
+\]</span>   继续将式子完全展开： <span class="math display">\[
+z^1_1 = a^1_1 \omega^1_{11} + a^1_2 \omega^1_{21} + a^1_3 \omega^1_{31} + b^1_1 \tag{5}
+\]</span> <span class="math display">\[
+z^1_2 = a^1_1 \omega^1_{12} + a^1_2 \omega^1_{22} + a^1_3 \omega^1_{32} + b^1_2 \tag{6}
+\]</span>   接着我们对前一层的输出求解偏导数，即，我们需要对 <span class="math inline">\(a^1_1\)</span>，<span class="math inline">\(a^1_2\)</span>，<span class="math inline">\(a^1_3\)</span>求解偏导数。所以我们会有： <span class="math display">\[
+\frac{\partial z^1_1}{\partial a^1_1} = \omega^1_{11},\frac{\partial z^1_1}{\partial a^1_2} = \omega^1_{21},\frac{\partial z^1_1}{\partial a^1_3} = \omega^1_{31} \tag{7}
+\]</span> <span class="math display">\[
+\frac{\partial z^1_2}{\partial a^1_1} = \omega^1_{12},\frac{\partial z^1_2}{\partial a^1_2} = \omega^1_{22},\frac{\partial z^1_2}{\partial a^1_3} = \omega^1_{32} \tag{8}
+\]</span>   确实，这一步有些难以理解，实际上我们只是将后面一层的误差（敏感程度）通过求导的方式传递到前面一层而已。</p>
+<h6 id="对-zi求偏导数">对 <span class="math inline">\(z^i\)</span>求偏导数</h6>
+<p>  我们考虑对 <span class="math inline">\(z^1 = \begin{bmatrix} z^1_1 &amp; z^1_2 \end{bmatrix}\)</span> 使用非线性激活函数激活，即我们有： <span class="math display">\[
+a^2 = g(z^1) \tag{9}
+\]</span>   展开之后就变成： <span class="math display">\[
+\begin{bmatrix} a^2_1 &amp; a^2_2 \end{bmatrix} = g(\begin{bmatrix} z^1_1 &amp; z^1_2 \end{bmatrix}) \tag{10}
+\]</span>   对应每一个元素，我们有： <span class="math display">\[
+a^2_1 = g(z^1_1), a^2_2 = g(z^1_2) \tag{11}
+\]</span>   所以我们求得每一个 <span class="math inline">\(\hat{y}_i\)</span> 对 <span class="math inline">\(a_i\)</span> 的偏导数如下： <span class="math display">\[
+\frac{\partial a^2_1}{\partial z^1_1} = g\prime(z^1_1), \frac{\partial a^2_2}{\partial z^1_2} = g\prime(z^1_2) \tag{12}
+\]</span></p>
+<h6 id="cost值的相关偏导数">cost值的相关偏导数</h6>
+<p>  因为 <span class="math inline">\(C = cost = (a^2_1 - y_1)^2 + (a^2_2 - y_2)^2\)</span>，所以我们可以求得： <span class="math display">\[
+\frac{\partial C}{\partial a^2_1} = 2 (a^2_1 - y_1),\frac{\partial C}{\partial a^2_2} = 2 (a^2_2 - y_2) \tag{13}
+\]</span></p>
+<h6 id="整理总结">整理总结</h6>
+<p>  根据我们之前求出来的结果，我们可以将误差传递至 <span class="math inline">\(a^1\)</span>层，于是，我们可以得到下面的几个式子： <span class="math display">\[
+\frac{\partial C}{\partial a^1_1} = \frac{\partial z^1_1}{\partial a^1_1} \cdot \frac{\partial a^2_1}{\partial z^1_1} \cdot \frac{\partial C}{\partial a^2_1} \tag{14.1}
+\]</span> <span class="math display">\[
+\frac{\partial C}{\partial a^1_2} = \frac{\partial z^1_1}{\partial a^1_2} \cdot \frac{\partial a^2_1}{\partial z^1_1} \cdot \frac{\partial C}{\partial a^2_1} \tag{14.2}
+\]</span> <span class="math display">\[
+\frac{\partial C}{\partial a^1_3} = \frac{\partial z^1_1}{\partial a^1_3} \cdot \frac{\partial a^2_1}{\partial z^1_1} \cdot \frac{\partial C}{\partial a^2_1} \tag{14.3}
+\]</span> <span class="math display">\[
+\frac{\partial C}{\partial a^1_1} = \frac{\partial z^1_2}{\partial a^1_1} \cdot \frac{\partial a^2_2}{\partial z^1_2} \cdot \frac{\partial C}{\partial a^2_2} \tag{14.4}
+\]</span> <span class="math display">\[
+\frac{\partial C}{\partial a^1_2} = \frac{\partial z^1_2}{\partial a^1_2} \cdot \frac{\partial a^2_2}{\partial z^1_2} \cdot \frac{\partial C}{\partial a^2_2} \tag{14.5}
+\]</span> <span class="math display">\[
+\frac{\partial C}{\partial a^1_3} = \frac{\partial z^1_2}{\partial a^1_3} \cdot \frac{\partial a^2_2}{\partial z^1_2} \cdot \frac{\partial C}{\partial a^2_2} \tag{14.6}
+\]</span>   我们发现，上面的公式中，(14.1)和(14.4)，(14.2)和(14.5)，(14.3)和(14.6)计算的时同一个偏导数，那么究竟哪个偏导数的计算时正确的呢？实际上，每一个都不是正确的，但是每一个有都不是错误的，或者说每一个都只做了一半。这是因为每一个值都可以通过多条路径去影响最后的cost值。例如，以 <span class="math inline">\(a^1_1\)</span>为例，它既可以和 <span class="math inline">\(\omega^1_{11}\)</span> 相乘来影响 <span class="math inline">\(a^2_1\)</span> ，也可以通过和 <span class="math inline">\(\omega^1_{12}\)</span> 相乘来影响 <span class="math inline">\(a^2_2\)</span> ，而这两条路最后都会影响cost值，因此，我们需要将所有的偏导数公式进行相加，得到我们最后真正的偏导数计算公式。</p>
+<p>  注意：实际上，如果对高等数学的链式法则求导有更深入的观察，可以一步就写出最后的偏导数公式，而我们上面这样做其实是不正确的，但是可以得出正确的结果。</p>
+<p><span class="math display">\[
+\frac{\partial C}{\partial a^1_1} = \frac{\partial z^1_1}{\partial a^1_1} \cdot \frac{\partial a^2_1}{\partial z^1_1} \cdot \frac{\partial C}{\partial a^2_1} + \frac{\partial z^1_2}{\partial a^1_1} \cdot \frac{\partial a^2_2}{\partial z^1_2} \cdot \frac{\partial C}{\partial a^2_2} \tag{15.1}
+\]</span> <span class="math display">\[
+\frac{\partial C}{\partial a^1_2} = \frac{\partial z^1_1}{\partial a^1_2} \cdot \frac{\partial a^2_1}{\partial z^1_1} \cdot \frac{\partial C}{\partial a^2_1} + \frac{\partial z^1_2}{\partial a^1_2} \cdot \frac{\partial a^2_2}{\partial z^1_2} \cdot \frac{\partial C}{\partial a^2_2} \tag{15.2}
+\]</span> <span class="math display">\[
+\frac{\partial C}{\partial a^1_3} = \frac{\partial z^1_1}{\partial a^1_3} \cdot \frac{\partial a^2_1}{\partial z^1_1} \cdot \frac{\partial C}{\partial a^2_1} +\frac{\partial z^1_2}{\partial a^1_3} \cdot \frac{\partial a^2_2}{\partial z^1_2} \cdot \frac{\partial C}{\partial a^2_2} \tag{15.3}
+\]</span>   同样，和前面一样，我们需要对上面的公式进行向量化的表示，这样代码编写会方便很多且不易出错。我们将(15.1)，(15.2)和(15.3)的结果整理成一个行向量（因为我们设定的模型的输入是一个行向量，所以，模型每一层的输出也都是一个行向量。行向量如下： <span class="math display">\[
+\begin{aligned}
+\begin{bmatrix} \frac{\partial C}{\partial a^1_1} &amp; \frac{\partial C}{\partial a^1_2} &amp; \frac{\partial C}{\partial a^1_3}\end{bmatrix} &amp;= \begin{bmatrix} \frac{\partial a^2_1}{\partial z^1_1} \cdot \frac{\partial C}{\partial a^2_1} &amp; \frac{\partial a^2_2}{\partial z^1_2} \cdot \frac{\partial C}{\partial a^2_2} \end{bmatrix} \begin{bmatrix} \frac{\partial z^1_1}{\partial a^1_1} &amp; \frac{\partial z^1_1}{\partial a^1_2} &amp; \frac{\partial z^1_1}{\partial a^1_3} \\ \frac{\partial z^1_2}{\partial a^1_1} &amp; \frac{\partial z^1_2}{\partial a^1_2} &amp; \frac{\partial z^1_2}{\partial a^1_3} \end{bmatrix} \\ &amp;= (\begin{bmatrix} \frac{\partial a^2_1}{\partial z^1_1} &amp; \frac{\partial a^2_2}{\partial z^1_2}\end{bmatrix} \cdot * \begin{bmatrix} \frac{\partial C}{\partial a^2_1} &amp; \frac{\partial C}{\partial a^2_2} \end{bmatrix}) \begin{bmatrix} \frac{\partial z^1_1}{\partial a^1_1} &amp; \frac{\partial z^1_1}{\partial a^1_2} &amp; \frac{\partial z^1_1}{\partial a^1_3} \\ \frac{\partial z^1_2}{\partial a^1_1} &amp; \frac{\partial z^1_2}{\partial a^1_2} &amp; \frac{\partial z^1_2}{\partial a^1_3} \end{bmatrix} \\ &amp;= (g\prime(z^1) \cdot * \begin{bmatrix} \frac{\partial C}{\partial a^2_1} &amp; \frac{\partial C}{\partial a^2_2} \end{bmatrix}) \begin{bmatrix} \omega^1_{11} &amp; \omega^1_{21} &amp; \omega^1_{31} \\ \omega^1_{12} &amp; \omega^1_{22} &amp; \omega^1_{32} \end{bmatrix} \\ &amp;= (g\prime(z^1) \cdot * \begin{bmatrix} \frac{\partial C}{\partial a^2_1} &amp; \frac{\partial C}{\partial a^2_2} \end{bmatrix}) (\omega^1)^T 
+\end{aligned} \tag{16}
+\]</span>   在上面的公式中，<span class="math inline">\((\omega^1)^T​\)</span> 表示的是 <span class="math inline">\(\omega^1​\)</span> 参数矩阵的转置，<span class="math inline">\(\cdot *​\)</span> 符号表示的是矩阵（向量）之间的点乘，即对应元素之间的相乘。   如果我们将 <span class="math inline">\(\begin{bmatrix} \frac{\partial C}{\partial a^2_1} &amp; \frac{\partial C}{\partial a^2_2} \end{bmatrix}​\)</span> 记作 <span class="math inline">\(\delta^2​\)</span> ，将 <span class="math inline">\(\begin{bmatrix} \frac{\partial C}{\partial a^1_1} &amp; \frac{\partial C}{\partial a^1_2} &amp; \frac{\partial C}{\partial a^1_3}\end{bmatrix}​\)</span> 记作 <span class="math inline">\(\delta^1​\)</span>，那么我们就会得到更加简化的公式： <span class="math display">\[
+\delta^1 = (g\prime(z^1) \cdot * \delta^2)(\omega^1)^T \tag{17}
+\]</span>   公式(17)就是我们需要找到的反向传播的核心公式。更一般的，如果我们有 <span class="math inline">\(L\)</span> 层网络（包括输入层，那么，误差向后传递的核心公式就是如下： <span class="math display">\[
+\delta^i = (g\prime(z^i) \cdot * \delta^{i + 1})(\omega^i)^T \quad (1 \leq i \leq L - 1) \tag{18}
+\]</span>   其中，最后一层的 <span class="math inline">\(\delta^{L-1}\)</span> 就是根据输出值和真实值的计算公式，对每一个输出值进行求导操作。</p>
+<h6 id="根据传递来的误差进行参数的更新">根据传递来的误差进行参数的更新</h6>
+<p>  现在，让我们重新审视一下我们之前在第二篇中求解出的参数更新公式。 <span class="math display">\[
+\frac{\partial C}{\partial \omega} = x^T (\begin{bmatrix} g\prime(a_1) &amp; g\prime(a_2) \end{bmatrix} \cdot * \begin{bmatrix} 2 \cdot (\hat{y}_1 - y_1) &amp; 2 \cdot (\hat{y}_2 - y_2)\end{bmatrix}) \tag{19}
+\]</span> <span class="math display">\[
+\frac{\partial C}{\partial b} = \begin{bmatrix} g\prime(a_1) &amp; g\prime(a_2) \end{bmatrix} \cdot * \begin{bmatrix} 2 \cdot (\hat{y}_1 - y_1) &amp; 2 \cdot (\hat{y}_2 - y_2)\end{bmatrix} \tag{20}
+\]</span>   按照我们在这一篇中使用的符号记法，重新写一下会有（因为这里有两层全连接层，之前只有一层，因此，我们这里的 <span class="math inline">\(\omega\)</span> 和 <span class="math inline">\(b\)</span> 都使用的是最后一层的权值和偏置量，因此 <span class="math inline">\(x\)</span> 就变成了倒数第二层的输出 <span class="math inline">\(a^1\)</span>。）： <span class="math display">\[
+\frac{\partial C}{\partial \omega^1} = (a^1)^T(g\prime(z^1) \cdot * \delta^2) \tag{21}
+\]</span> <span class="math display">\[
+\frac{\partial C}{\partial b^1} = g\prime(z^1) \cdot * \delta^2 \tag{22}
+\]</span>   于是根据上面的式子，我们就可以归纳出一般情况下的权重和偏置量的偏导数公式了。如果按照我们这篇文章中的字母记号的方法，那么，我们可以有：（<span class="math inline">\(0 \leq i \leq L- 2\)</span>，<span class="math inline">\(L\)</span>表示的是网络的层数，包括输入层。） <span class="math display">\[
+\frac{\partial C}{\partial \omega^i} = (a^i)^T(g\prime(z^i) \cdot * \delta^{i+1}) \tag{23}
+\]</span> <span class="math display">\[
+\frac{\partial C}{\partial b^i} = g\prime(z^i) \cdot * \delta^{i+1} \tag{24}
+\]</span></p>
+<p>  <strong>公式(18),(23),(24)就是反向传播算法的核心公式了，一般而言，我们首先会求出所有的 <span class="math inline">\(\delta\)</span> 参数，再根据 <span class="math inline">\(\delta\)</span>参数去求解所有的参数梯度，最后统一进行梯度的更新。</strong></p>
+<h5 id="三代码">三、代码</h5>
+<p>  和文中所使用的模型是一样的，由两个全连接层构成，使用sigmoid函数激活。 <figure class="highlight python hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np</span><br><span class="line"></span><br><span class="line">param = &#123;&#125;</span><br><span class="line">nodes = &#123;&#125;</span><br><span class="line"></span><br><span class="line">learning_rate = <span class="hljs-number">0.1</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">sigmoid</span><span class="hljs-params">(x)</span>:</span></span><br><span class="line">    <span class="hljs-keyword">return</span> <span class="hljs-number">1.0</span> / (<span class="hljs-number">1.</span> + np.exp(- x))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">sigmoid_gradient</span><span class="hljs-params">(x)</span>:</span></span><br><span class="line">    sig = sigmoid(x)</span><br><span class="line">    <span class="hljs-keyword">return</span> sig * (<span class="hljs-number">1.</span> - sig)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">cost</span><span class="hljs-params">(y_pred, y)</span>:</span></span><br><span class="line">    <span class="hljs-keyword">return</span> np.sum((y_pred - y) ** <span class="hljs-number">2</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">cost_gradient</span><span class="hljs-params">(y_pred, y)</span>:</span></span><br><span class="line">    <span class="hljs-keyword">return</span> <span class="hljs-number">2</span> * (y_pred - y)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">forward</span><span class="hljs-params">(x)</span>:</span></span><br><span class="line">    nodes[<span class="hljs-string">"a0"</span>] = x</span><br><span class="line">    nodes[<span class="hljs-string">'matmul0'</span>] = np.matmul(x, param[<span class="hljs-string">'w0'</span>])</span><br><span class="line">    nodes[<span class="hljs-string">'z0'</span>] = nodes[<span class="hljs-string">'matmul0'</span>] + param[<span class="hljs-string">'b0'</span>]</span><br><span class="line">    nodes[<span class="hljs-string">"a1"</span>] = sigmoid(nodes[<span class="hljs-string">'z0'</span>])</span><br><span class="line"></span><br><span class="line">    nodes[<span class="hljs-string">'matmul1'</span>] = np.matmul(nodes[<span class="hljs-string">'a1'</span>], param[<span class="hljs-string">'w1'</span>])</span><br><span class="line">    nodes[<span class="hljs-string">'z1'</span>] = nodes[<span class="hljs-string">'matmul1'</span>] + param[<span class="hljs-string">'b1'</span>]</span><br><span class="line">    nodes[<span class="hljs-string">'a2'</span>] = sigmoid(nodes[<span class="hljs-string">'z1'</span>])</span><br><span class="line">    <span class="hljs-keyword">return</span> nodes[<span class="hljs-string">'a2'</span>]</span><br><span class="line">    <span class="hljs-keyword">pass</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">backward</span><span class="hljs-params">(x, y_pred, y)</span>:</span></span><br><span class="line">    <span class="hljs-string">"""compute delta"""</span></span><br><span class="line">    delta2 = cost_gradient(y_pred, y)</span><br><span class="line">    delta1 = np.matmul(np.multiply(sigmoid_gradient(nodes[<span class="hljs-string">'z1'</span>]), delta2), np.transpose(param[<span class="hljs-string">'w1'</span>]))</span><br><span class="line"></span><br><span class="line">    <span class="hljs-string">"""update"""</span></span><br><span class="line">    gradient = &#123;&#125;</span><br><span class="line">    gradient[<span class="hljs-string">'w1'</span>] = np.matmul(np.transpose(nodes[<span class="hljs-string">'a1'</span>]),</span><br><span class="line">                               np.multiply(sigmoid_gradient(nodes[<span class="hljs-string">"z1"</span>]), delta2))</span><br><span class="line">    gradient[<span class="hljs-string">'b1'</span>] = np.mean(np.multiply(sigmoid_gradient(nodes[<span class="hljs-string">"z1"</span>]), delta2), axis=<span class="hljs-number">0</span>)</span><br><span class="line"></span><br><span class="line">    gradient[<span class="hljs-string">"w0"</span>] = np.matmul(np.transpose(nodes[<span class="hljs-string">'a0'</span>]),</span><br><span class="line">                               np.multiply(sigmoid_gradient(nodes[<span class="hljs-string">"z0"</span>]), delta1))</span><br><span class="line">    gradient[<span class="hljs-string">'b0'</span>] = np.mean(np.multiply(sigmoid_gradient(nodes[<span class="hljs-string">"z0"</span>]), delta1), axis=<span class="hljs-number">0</span>)</span><br><span class="line"></span><br><span class="line">    param[<span class="hljs-string">'w1'</span>] -= learning_rate * gradient[<span class="hljs-string">'w1'</span>]</span><br><span class="line">    param[<span class="hljs-string">'b1'</span>] -= learning_rate * gradient[<span class="hljs-string">'b1'</span>]</span><br><span class="line">    param[<span class="hljs-string">"w0"</span>] -= learning_rate * gradient[<span class="hljs-string">'w0'</span>]</span><br><span class="line">    param[<span class="hljs-string">'b0'</span>] -= learning_rate * gradient[<span class="hljs-string">'b0'</span>]</span><br><span class="line">    <span class="hljs-keyword">pass</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">setup</span><span class="hljs-params">()</span>:</span></span><br><span class="line">    x = np.array([[<span class="hljs-number">1.</span>, <span class="hljs-number">2.</span>, <span class="hljs-number">3.</span>],</span><br><span class="line">                  [<span class="hljs-number">3.</span>, <span class="hljs-number">2.</span>, <span class="hljs-number">1.</span>]])</span><br><span class="line">    y = np.array([[<span class="hljs-number">1.</span>, <span class="hljs-number">0.</span>],</span><br><span class="line">                  [<span class="hljs-number">0.</span>, <span class="hljs-number">1.</span>]])</span><br><span class="line"></span><br><span class="line">    param[<span class="hljs-string">'w0'</span>] = np.random.random([<span class="hljs-number">3</span>, <span class="hljs-number">3</span>])</span><br><span class="line">    param[<span class="hljs-string">'b0'</span>] = np.array([<span class="hljs-number">0.</span>, <span class="hljs-number">0.</span>, <span class="hljs-number">0.</span>])</span><br><span class="line"></span><br><span class="line">    param[<span class="hljs-string">'w1'</span>] = np.random.random([<span class="hljs-number">3</span>, <span class="hljs-number">2</span>])</span><br><span class="line">    param[<span class="hljs-string">'b1'</span>] = np.array([<span class="hljs-number">0.</span>, <span class="hljs-number">0.</span>])</span><br><span class="line"></span><br><span class="line">    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(<span class="hljs-number">1000</span>):</span><br><span class="line">        y_pred = forward(x)</span><br><span class="line">        backward(x, y_pred, y)</span><br><span class="line">        print(<span class="hljs-string">"梯度下降前："</span>, y_pred, <span class="hljs-string">"\n梯度下降后："</span>, forward(x), <span class="hljs-string">"\ncost："</span>, cost(forward(x), y))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">'__main__'</span>:</span><br><span class="line">    setup()</span><br></pre></td></tr></table></figure></p>
+<p>  结果如下： <figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br></pre></td><td class="code"><pre><span class="line">梯度下降前： [[0.79830536 0.83580604]</span><br><span class="line"> [0.80449064 0.83875726]]</span><br><span class="line">梯度下降后： [[0.78872254 0.82729775]</span><br><span class="line"> [0.79552187 0.83086468]]</span><br><span class="line">cost： 1.3905215341662558</span><br><span class="line">梯度下降前： [[0.78872254 0.82729775]</span><br><span class="line"> [0.79552187 0.83086468]]</span><br><span class="line">梯度下降后： [[0.77882103 0.81832367]</span><br><span class="line"> [0.78626614 0.82257321]]</span><br><span class="line">cost： 1.3682684724974281</span><br><span class="line">梯度下降前： [[0.77882103 0.81832367]</span><br><span class="line"> [0.78626614 0.82257321]]</span><br><span class="line">梯度下降后： [[0.76863531 0.80888786]</span><br><span class="line"> [0.77675443 0.81388922]]</span><br><span class="line">cost： 1.3458138579376486</span><br><span class="line">梯度下降前： [[0.76863531 0.80888786]</span><br><span class="line"> [0.77675443 0.81388922]]</span><br><span class="line">梯度下降后： [[0.75820643 0.79900214]</span><br><span class="line"> [0.76702339 0.8048258 ]]</span><br><span class="line">cost： 1.3232863979727467</span><br><span class="line">梯度下降前： [[0.75820643 0.79900214]</span><br><span class="line"> [0.76702339 0.8048258 ]]</span><br><span class="line">梯度下降后： [[0.74758142 0.78868705]</span><br><span class="line"> [0.75711474 0.79540344]]</span><br><span class="line">cost： 1.3008248813647023</span><br><span class="line">梯度下降前： [[0.74758142 0.78868705]</span><br><span class="line"> [0.75711474 0.79540344]]</span><br><span class="line">梯度下降后： [[0.73681235 0.77797253]</span><br><span class="line"> [0.74707448 0.7856506 ]]</span><br><span class="line">cost： 1.27857494201472</span><br><span class="line">梯度下降前： [[0.73681235 0.77797253]</span><br><span class="line"> [0.74707448 0.7856506 ]]</span><br><span class="line">梯度下降后： [[0.72595508 0.76689824]</span><br><span class="line"> [0.73695182 0.77560392]]</span><br><span class="line">cost： 1.2566851295390669</span><br><span class="line">梯度下降前： [[0.72595508 0.76689824]</span><br><span class="line"> [0.73695182 0.77560392]]</span><br><span class="line">梯度下降后： [[0.71506782 0.75551347]</span><br><span class="line"> [0.72679789 0.76530802]]</span><br><span class="line">cost： 1.2353024551577543</span><br><span class="line">梯度下降前： [[0.71506782 0.75551347]</span><br><span class="line"> [0.72679789 0.76530802]]</span><br><span class="line">梯度下降后： [[0.70420955 0.74387642]</span><br><span class="line"> [0.71666439 0.75481498]]</span><br><span class="line">cost： 1.214567655578547</span><br><span class="line">梯度下降前： [[0.70420955 0.74387642]</span><br><span class="line"> [0.71666439 0.75481498]]</span><br><span class="line">梯度下降后： [[0.69343832 0.73205294]</span><br><span class="line"> [0.70660222 0.74418325]]</span><br><span class="line">cost： 1.1946104774003092</span><br><span class="line">梯度下降前： [[0.69343832 0.73205294]</span><br><span class="line"> [0.70660222 0.74418325]]</span><br><span class="line">梯度下降后： [[0.68280973 0.72011482]</span><br><span class="line"> [0.69666013 0.73347616]]</span><br><span class="line">cost： 1.1755453177778676</span><br><span class="line">梯度下降前： [[0.68280973 0.72011482]</span><br><span class="line"> [0.69666013 0.73347616]]</span><br><span class="line">梯度下降后： [[0.67237554 0.70813752]</span><br><span class="line"> [0.68688359 0.72276011]]</span><br><span class="line">cost： 1.1574675529546317</span><br><span class="line">梯度下降前： [[0.67237554 0.70813752]</span><br><span class="line"> [0.68688359 0.72276011]]</span><br><span class="line">梯度下降后： [[0.66218247 0.69619771]</span><br><span class="line"> [0.67731377 0.71210253]]</span><br><span class="line">cost： 1.1404508391169166</span><br><span class="line">梯度下降前： [[0.66218247 0.69619771]</span><br><span class="line"> [0.67731377 0.71210253]]</span><br><span class="line">梯度下降后： [[0.65227136 0.6843707 ]</span><br><span class="line"> [0.66798687 0.70156968]]</span><br><span class="line">cost： 1.124545582249731</span><br><span class="line">梯度下降前： [[0.65227136 0.6843707 ]</span><br><span class="line"> [0.66798687 0.70156968]]</span><br><span class="line">梯度下降后： [[0.64267666 0.67272797]</span><br><span class="line"> [0.65893364 0.69122464]]</span><br><span class="line">cost： 1.1097786568052626</span><br><span class="line">梯度下降前： [[0.64267666 0.67272797]</span><br><span class="line"> [0.65893364 0.69122464]]</span><br><span class="line">梯度下降后： [[0.63342615 0.66133502]</span><br><span class="line"> [0.6501792  0.68112551]]</span><br><span class="line">cost： 1.0961543258622262</span><br><span class="line">梯度下降前： [[0.63342615 0.66133502]</span><br><span class="line"> [0.6501792  0.68112551]]</span><br><span class="line">梯度下降后： [[0.62454101 0.65024966]</span><br><span class="line"> [0.64174305 0.6713239 ]]</span><br><span class="line">cost： 1.0836561996688798</span><br><span class="line">梯度下降前： [[0.62454101 0.65024966]</span><br><span class="line"> [0.64174305 0.6713239 ]]</span><br><span class="line">梯度下降后： [[0.61603613 0.63952088]</span><br><span class="line"> [0.63363933 0.66186397]]</span><br><span class="line">cost： 1.0722499837437804</span><br><span class="line">梯度下降前： [[0.61603613 0.63952088]</span><br><span class="line"> [0.63363933 0.66186397]]</span><br><span class="line">梯度下降后： [[0.60792055 0.62918816]</span><br><span class="line"> [0.62587715 0.6527818 ]]</span><br><span class="line">cost： 1.0618867231940436</span><br><span class="line">梯度下降前： [[0.60792055 0.62918816]</span><br><span class="line"> [0.62587715 0.6527818 ]]</span><br><span class="line">梯度下降后： [[0.60019807 0.61928143]</span><br><span class="line"> [0.61846111 0.64410532]]</span><br><span class="line">cost： 1.0525062481304481</span><br><span class="line">梯度下降前： [[0.60019807 0.61928143]</span><br><span class="line"> [0.61846111 0.64410532]]</span><br><span class="line">梯度下降后： [[0.59286793 0.60982139]</span><br><span class="line"> [0.6113918  0.63585445]]</span><br><span class="line">cost： 1.0440405589832986</span><br><span class="line">梯度下降前： [[0.59286793 0.60982139]</span><br><span class="line"> [0.6113918  0.63585445]]</span><br><span class="line">梯度下降后： [[0.5859255  0.60082016]</span><br><span class="line"> [0.60466638 0.62804172]]</span><br><span class="line">cost： 1.036416947829888</span><br><span class="line">梯度下降前： [[0.5859255  0.60082016]</span><br><span class="line"> [0.60466638 0.62804172]]</span><br><span class="line">梯度下降后： [[0.57936295 0.59228224]</span><br><span class="line"> [0.59827914 0.62067296]]</span><br><span class="line">cost： 1.029560718871301</span><br><span class="line">梯度下降前： [[0.57936295 0.59228224]</span><br><span class="line"> [0.59827914 0.62067296]]</span><br><span class="line">梯度下降后： [[0.57316992 0.58420554]</span><br><span class="line"> [0.59222202 0.61374817]]</span><br><span class="line">cost： 1.0233974361978069</span><br><span class="line">梯度下降前： [[0.57316992 0.58420554]</span><br><span class="line"> [0.59222202 0.61374817]]</span><br><span class="line">梯度下降后： [[0.5673341  0.57658245]</span><br><span class="line"> [0.58648511 0.60726243]]</span><br><span class="line">cost： 1.0178546819469387</span><br><span class="line">梯度下降前： [[0.5673341  0.57658245]</span><br><span class="line"> [0.58648511 0.60726243]]</span><br><span class="line">梯度下降后： [[0.56184178 0.56940091]</span><br><span class="line"> [0.58105707 0.6012068 ]]</span><br><span class="line">cost： 1.0128633489602261</span><br><span class="line">......</span><br><span class="line">梯度下降前： [[0.94927668 0.05029516]</span><br><span class="line"> [0.05573697 0.94479925]]</span><br><span class="line">梯度下降后： [[0.94931374 0.05025926]</span><br><span class="line"> [0.05570013 0.94483464]]</span><br><span class="line">cost： 0.011240812046284514</span><br><span class="line">梯度下降前： [[0.94931374 0.05025926]</span><br><span class="line"> [0.05570013 0.94483464]]</span><br><span class="line">梯度下降后： [[0.94935073 0.05022344]</span><br><span class="line"> [0.05566335 0.94486995]]</span><br><span class="line">cost： 0.011225473896214073</span><br><span class="line">梯度下降前： [[0.94935073 0.05022344]</span><br><span class="line"> [0.05566335 0.94486995]]</span><br><span class="line">梯度下降后： [[0.94938765 0.05018769]</span><br><span class="line"> [0.05562665 0.9449052 ]]</span><br><span class="line">cost： 0.011210176001756078</span><br><span class="line">梯度下降前： [[0.94938765 0.05018769]</span><br><span class="line"> [0.05562665 0.9449052 ]]</span><br><span class="line">梯度下降后： [[0.94942449 0.05015202]</span><br><span class="line"> [0.05559002 0.94494039]]</span><br><span class="line">cost： 0.011194918207872375</span><br><span class="line">梯度下降前： [[0.94942449 0.05015202]</span><br><span class="line"> [0.05559002 0.94494039]]</span><br><span class="line">梯度下降后： [[0.94946125 0.05011641]</span><br><span class="line"> [0.05555345 0.94497551]]</span><br><span class="line">cost： 0.011179700360308792</span><br><span class="line">梯度下降前： [[0.94946125 0.05011641]</span><br><span class="line"> [0.05555345 0.94497551]]</span><br><span class="line">梯度下降后： [[0.94949794 0.05008087]</span><br><span class="line"> [0.05551696 0.94501057]]</span><br><span class="line">cost： 0.011164522305590443</span><br><span class="line">梯度下降前： [[0.94949794 0.05008087]</span><br><span class="line"> [0.05551696 0.94501057]]</span><br><span class="line">梯度下降后： [[0.94953456 0.05004541]</span><br><span class="line"> [0.05548053 0.94504556]]</span><br><span class="line">cost： 0.011149383891016414</span><br><span class="line">梯度下降前： [[0.94953456 0.05004541]</span><br><span class="line"> [0.05548053 0.94504556]]</span><br><span class="line">梯度下降后： [[0.9495711  0.05001001]</span><br><span class="line"> [0.05544418 0.94508049]]</span><br><span class="line">cost： 0.011134284964655492</span><br><span class="line">梯度下降前： [[0.9495711  0.05001001]</span><br><span class="line"> [0.05544418 0.94508049]]</span><br><span class="line">梯度下降后： [[0.94960757 0.04997468]</span><br><span class="line"> [0.05540789 0.94511535]]</span><br><span class="line">cost： 0.011119225375340889</span><br></pre></td></tr></table></figure></p>
+<p>  可以看到，我们的算法是可以很好的进行反向传播，并且可以很好地减小cost值。<br>
+<img src="/2019/05/12/Article8BackProp-3/20190324214830557.jpg"></p>
+
+        </div>
+        
+            <ul class="post-copyright">
+            <li><strong>本文标题：</strong><a href="http://huaxuan0720.github.io/2019/05/12/Article8BackProp-3/">反向传播算法（三）之完整的反向传播算法</a></li>
+            <li><strong>本文作者：</strong><a href="http://huaxuan0720.github.io">华轩</a></li>
+            <li><strong>本文链接：</strong><a href="http://huaxuan0720.github.io/2019/05/12/Article8BackProp-3/">http://huaxuan0720.github.io/2019/05/12/Article8BackProp-3/</a></li>
+            <li><strong>发布时间：</strong>2019-05-12</li>
+            <li><strong>版权声明：</strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
+            </li>
+            </ul>
+        
+        
+        <hr style="height:1px;margin:1rem 0">
+        <div class="level is-size-7 is-uppercase">
+            <div class="level-start">
+                <div class="level-item">
+                    <i class="fas fa-tags has-text-grey"></i>&nbsp;
+                    <a class="has-link-grey -link" href="/tags/反向传播算法/">反向传播算法</a>,&nbsp;<a class="has-link-grey -link" href="/tags/机器学习/">机器学习</a>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+    </div>
+</div>
+
+
+
+<div class="card">
+    <div class="card-content">
+        <h3 class="menu-label has-text-centered">Like this article? Support the author with</h3>
+        <div class="buttons is-centered">
+            
+                
+<a class="button is-info donate">
+    <span class="icon is-small">
+        <i class="fab fa-alipay"></i>
+    </span>
+    <span>Alipay</span>
+    <div class="qrcode"><img src="/images/alipay.jpg" alt="Alipay"></div>
+</a>
+
+                
+                
+<a class="button is-success donate">
+    <span class="icon is-small">
+        <i class="fab fa-weixin"></i>
+    </span>
+    <span>Wechat</span>
+    <div class="qrcode"><img src="/images/wechat.jpg" alt="Wechat"></div>
+</a>
+
+                
+        </div>
+    </div>
+</div>
+
+
+
+<div class="card card-transparent">
+    <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        
+        <div class="level-end">
+            <a class="level level-item has-link-grey  article-nav-next" href="/2019/05/12/Article7BackProp-2/">
+                <span class="level-item">反向传播算法（二）之稍复杂的反向传播</span>
+                <i class="level-item fas fa-chevron-right"></i>
+            </a>
+        </div>
+        
+    </div>
+</div>
+
+
+
+<div class="card">
+    <div class="card-content">
+        <h3 class="title is-5 has-text-weight-normal">Comments</h3>
+        
+<div id="valine-thread" class="content"></div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+<script>
+    new Valine({
+        el: '#valine-thread' ,
+        notify: true,
+        verify: false,
+        app_id: 'iccwxYBr9y70NgcI4taslyB9-gzGzoHsz',
+        app_key: 'ksGgGN0AeLXQQ1HfOy0mCrM0',
+        placeholder: 'xxxxxxxx'
+    });
+</script>
+
+    </div>
+</div>
+
+</div>
+                
+
+
+
+
+<div class="column is-4-tablet is-4-desktop is-3-widescreen  has-order-1 column-left ">
+    
+        
+<div class="card widget">
+    <div class="card-content">
+        <nav class="level" style="margin-bottom:1rem">
+            <div class="level-item has-text-centered">
+                <div>
+                    
+                        <img class="image is-96x96 has-mb-6" src="/images/icon.jpg" alt="华轩">
+                    
+                    
+                    <p class="is-size-4 is-block">
+                        华轩
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-block">
+                        A Student
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-flex is-flex-center has-text-grey">
+                        <i class="fas fa-map-marker-alt has-mr-7"></i>
+                        <span>Hangzhou Zhejiang, China</span>
+                    </p>
+                    
+                </div>
+            </div>
+        </nav>
+        <nav class="level menu-list is-mobile" style="margin-bottom:1rem">
+            <div class="level-item has-text-centered is-marginless">
+                <a href="/archives/">
+                    <p class="heading">
+                        Posts
+                    </p>
+                    <p class="title has-text-weight-normal">
+                        8
+                    </p>
+                </a>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <a href="/categories/">
+                    <p class="heading">
+                        Category
+                    </p>
+                    <p class="title has-text-weight-normal">
+                        1
+                    </p>
+                </a>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <a href="/tags/">
+                    <p class="heading">
+                        Tags
+                    </p>
+                    <p class="title has-text-weight-normal">
+                        9
+                    </p>
+                </a>
+            </div>
+        </nav>
+        <div class="level">
+            <a class="level-item button is-link is-rounded" href="https://github.com/huaxuan0720" target="_blank">
+                <i class="fab fa-github"></i>&nbsp;&nbsp;Follow</a>
+        </div>
+        
+        
+        <div class="level is-mobile">
+            
+            <a class="level-item button is-white is-marginless" target="_blank" title="Github" href="https://github.com/huaxuan0720">
+                
+                <i class="fab fa-github"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" title="Facebook" href="/">
+                
+                <i class="fab fa-facebook"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" title="Twitter" href="/">
+                
+                <i class="fab fa-twitter"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" title="RSS" href="/">
+                
+                <i class="fas fa-rss"></i>
+                
+            </a>
+            
+        </div>
+        
+    </div>
+</div>
+
+    
+        
+<div class="card widget column-left is-sticky" id="toc">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                Catalogue
+            </h3>
+            <ul class="menu-list"><li>
+        <a class="is-flex" href="#前言">
+        <span class="has-mr-6">1</span>
+        <span>前言</span>
+        </a></li><li>
+        <a class="is-flex" href="#一模型定义">
+        <span class="has-mr-6">2</span>
+        <span>一、模型定义</span>
+        </a></li><li>
+        <a class="is-flex" href="#二基本原理">
+        <span class="has-mr-6">3</span>
+        <span>二、基本原理</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#理解偏导数">
+        <span class="has-mr-6">3.1</span>
+        <span>理解偏导数</span>
+        </a></li><li>
+        <a class="is-flex" href="#求解偏导数">
+        <span class="has-mr-6">3.2</span>
+        <span>求解偏导数</span>
+        </a></li><li>
+        <a class="is-flex" href="#对-zi求偏导数">
+        <span class="has-mr-6">3.3</span>
+        <span>对 \(z^i\)求偏导数</span>
+        </a></li><li>
+        <a class="is-flex" href="#cost值的相关偏导数">
+        <span class="has-mr-6">3.4</span>
+        <span>cost值的相关偏导数</span>
+        </a></li><li>
+        <a class="is-flex" href="#整理总结">
+        <span class="has-mr-6">3.5</span>
+        <span>整理总结</span>
+        </a></li><li>
+        <a class="is-flex" href="#根据传递来的误差进行参数的更新">
+        <span class="has-mr-6">3.6</span>
+        <span>根据传递来的误差进行参数的更新</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#三代码">
+        <span class="has-mr-6">4</span>
+        <span>三、代码</span>
+        </a></li></ul>
+        </div>
+    </div>
+</div>
+
+
+    
+    
+        <div class="column-right-shadow is-hidden-widescreen ">
+        
+        </div>
+    
+</div>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
+    <div class="container">
+        <div class="level">
+            <div class="level-start has-text-centered-mobile">
+                <a class="footer-logo is-block has-mb-6" href="/">
+                
+                    <img src="/images/favicon.svg" alt="反向传播算法（三）之完整的反向传播算法" height="28">
+                
+                </a>
+                <p class="is-size-7">
+                &copy; 2019 华轩&nbsp;
+                Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> & <a href="http://github.com/ppoffice/hexo-theme-icarus" target="_blank">Icarus</a>
+                
+                <br>
+                <span id="busuanzi_container_site_uv">
+                Visited by <span id="busuanzi_value_site_uv">0</span> users
+                </span>
+                
+                </p>
+            </div>
+            <div class="level-end">
+            
+                <div class="field has-addons is-flex-center-mobile has-mt-5-mobile is-flex-wrap is-flex-middle">
+                
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" title="CC BY-NC-SA 4.0" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                        
+                        <i class="fab fa-creative-commons"></i>&nbsp;<i class="fab fa-creative-commons-by"></i>&nbsp;<i class="fab fa-creative-commons-nc"></i>&nbsp;<i class="fab fa-creative-commons-sa"></i>&nbsp;
+                        
+                    </a>
+                </p>
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" title="Xuan Hua&#39;s GitHub" href="https://www.github.com/huaxuan0720">
+                        
+                        <i class="fab fa-github"></i>&nbsp;
+                        
+                    </a>
+                </p>
+                
+                </div>
+            
+            </div>
+        </div>
+    </div>
+</footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
+<script>moment.locale("en");</script>
+
+
+    
+    
+    
+    <script src="/js/animation.js"></script>
+    
+
+    
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
+    <script src="/js/gallery.js" defer></script>
+    
+
+    
+    
+
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
+            my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        });
+    });
+</script>
+
+
+    
+    
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    MathJax.Hub.Config({
+        'HTML-CSS': {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+});
+</script>
+
+    
+    
+
+<a id="back-to-top" title="Back to Top" href="javascript:;">
+    <i class="fas fa-chevron-up"></i>
+</a>
+<script src="/js/back-to-top.js" defer></script>
+
+
+    
+    
+
+    
+    
+    
+    
+
+    
+    
+    
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
+    <script src="/js/clipboard.js" defer></script>
+    
+
+    
+    
+    
+
+    
+
+
+<script src="/js/main.js" defer></script>
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="Type something...">
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: 'Posts',
+                PAGES: 'Pages',
+                CATEGORIES: 'Categories',
+                TAGS: 'Tags',
+                UNTITLED: '(Untitled)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script src="/js/insight.js" defer></script>
+<link rel="stylesheet" href="/css/search.css">
+<link rel="stylesheet" href="/css/insight.css">
+    
+</body>
+</html>
