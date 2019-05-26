@@ -2,24 +2,21 @@
 <html>
 <head><meta name="generator" content="Hexo 3.8.0">
     <meta charset="utf-8">
-<title>Article17ConvBackProp-part4 - Welcome to My Blogs</title>
+<title>代码实现二维平面上的卷积及其反向传播 - Welcome to My Blogs</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
 
 
-    <meta name="description" content="华轩的博客">
-<meta name="keywords" content="深度学习,卷积,反向传播">
+    <meta name="keywords" content="深度学习,卷积,反向传播">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Article17ConvBackProp-part4">
+<meta property="og:title" content="代码实现二维平面上的卷积及其反向传播">
 <meta property="og:url" content="http://huaxuan0720.github.io/2019/05/24/Article17ConvBackProp-part4/index.html">
 <meta property="og:site_name" content="Welcome to My Blogs">
-<meta property="og:description" content="华轩的博客">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://huaxuan0720.github.io/gallery/DeepLearning.jpg">
-<meta property="og:updated_time" content="2019-05-25T08:23:51.848Z">
+<meta property="og:updated_time" content="2019-05-26T13:53:49.293Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Article17ConvBackProp-part4">
-<meta name="twitter:description" content="华轩的博客">
+<meta name="twitter:title" content="代码实现二维平面上的卷积及其反向传播">
 <meta name="twitter:image" content="http://huaxuan0720.github.io/gallery/DeepLearning.jpg">
 
 
@@ -98,7 +95,7 @@
         <div class="navbar-brand is-flex-center">
             <a class="navbar-item navbar-logo" href="/">
             
-                <img src="/images/favicon.svg" alt="Article17ConvBackProp-part4" height="28">
+                <img src="/images/favicon.svg" alt="代码实现二维平面上的卷积及其反向传播" height="28">
             
             </a>
         </div>
@@ -130,12 +127,12 @@
                     
                 
                 
-                <a class="navbar-item is-hidden-tablet catalogue" title="Catalogue" href="javascript:;">
+                <a class="navbar-item is-hidden-tablet catalogue" title="Katalog" href="javascript:;">
                     <i class="fas fa-list-ul"></i>
                 </a>
                 
                 
-                <a class="navbar-item search" title="Search" href="javascript:;">
+                <a class="navbar-item search" title="Pencarian" href="javascript:;">
                     <i class="fas fa-search"></i>
                 </a>
                 
@@ -151,14 +148,14 @@
     
     <div class="card-image">
         <span class="image is-7by1">
-            <img class="thumbnail" src="/gallery/DeepLearning.jpg" alt="Article17ConvBackProp-part4">
+            <img class="thumbnail" src="/gallery/DeepLearning.jpg" alt="代码实现二维平面上的卷积及其反向传播">
         </span>
     </div>
     
     <div class="card-content article ">
         <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
             
-                <i class="fas fa-angle-double-right"></i>Article17ConvBackProp-part4
+                <i class="fas fa-angle-double-right"></i>代码实现二维平面上的卷积及其反向传播
             
         </h1>
         
@@ -166,7 +163,7 @@
             <div class="level-left">
                 <time class="level-item has-text-grey" datetime="2019-05-24T04:32:59.000Z"><i class="far fa-calendar-alt">&nbsp;</i>2019-05-24</time>
                 
-                <time class="level-item has-text-grey is-hidden-mobile" datetime="2019-05-25T08:23:51.848Z"><i class="far fa-calendar-check">&nbsp;</i>2019-05-25</time>
+                <time class="level-item has-text-grey is-hidden-mobile" datetime="2019-05-26T13:53:49.293Z"><i class="far fa-calendar-check">&nbsp;</i>2019-05-26</time>
                 
                 
                 <div class="level-item">
@@ -179,7 +176,7 @@
                     <i class="far fa-clock"></i>&nbsp;
                     
                     
-                    a few seconds read (About 0 words)
+                    a few seconds membaca (Sekitar 0 kata)
                 </span>
                 
                 
@@ -193,10 +190,11 @@
         
         <div class="content">
             
+
         </div>
         
             <ul class="post-copyright">
-            <li><strong>本文标题：</strong><a href="http://huaxuan0720.github.io/2019/05/24/Article17ConvBackProp-part4/">Article17ConvBackProp-part4</a></li>
+            <li><strong>本文标题：</strong><a href="http://huaxuan0720.github.io/2019/05/24/Article17ConvBackProp-part4/">代码实现二维平面上的卷积及其反向传播</a></li>
             <li><strong>本文作者：</strong><a href="http://huaxuan0720.github.io">华轩</a></li>
             <li><strong>本文链接：</strong><a href="http://huaxuan0720.github.io/2019/05/24/Article17ConvBackProp-part4/">http://huaxuan0720.github.io/2019/05/24/Article17ConvBackProp-part4/</a></li>
             <li><strong>发布时间：</strong>2019-05-24</li>
@@ -224,7 +222,7 @@
 
 <div class="card">
     <div class="card-content">
-        <h3 class="menu-label has-text-centered">Like this article? Support the author with</h3>
+        <h3 class="menu-label has-text-centered">Suka dengan artikel ini? Bantu penulis dengan donasi melalui</h3>
         <div class="buttons is-centered">
             
                 
@@ -271,7 +269,7 @@
 
 <div class="card">
     <div class="card-content">
-        <h3 class="title is-5 has-text-weight-normal">Comments</h3>
+        <h3 class="title is-5 has-text-weight-normal">Komentar</h3>
         
 <div id="valine-thread" class="content"></div>
 <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
@@ -330,7 +328,7 @@
             <div class="level-item has-text-centered is-marginless">
                 <a href="/archives/">
                     <p class="heading">
-                        Posts
+                        Artikel
                     </p>
                     <p class="title has-text-weight-normal">
                         18
@@ -340,7 +338,7 @@
             <div class="level-item has-text-centered is-marginless">
                 <a href="/categories/">
                     <p class="heading">
-                        Categories
+                        Kategori
                     </p>
                     <p class="title has-text-weight-normal">
                         3
@@ -350,7 +348,7 @@
             <div class="level-item has-text-centered is-marginless">
                 <a href="/tags/">
                     <p class="heading">
-                        Tags
+                        Tag
                     </p>
                     <p class="title has-text-weight-normal">
                         15
@@ -360,7 +358,7 @@
         </nav>
         <div class="level">
             <a class="level-item button is-link is-rounded" href="https://github.com/huaxuan0720" target="_blank">
-                <i class="fab fa-github"></i>&nbsp;&nbsp;Follow</a>
+                <i class="fab fa-github"></i>&nbsp;&nbsp;IKUTI</a>
         </div>
         
         
@@ -401,7 +399,7 @@
     <div class="card-content">
         <div class="menu">
             <h3 class="menu-label">
-                Catalogue
+                Katalog
             </h3>
             
         </div>
@@ -427,7 +425,7 @@
             <div class="level-start has-text-centered-mobile">
                 <a class="footer-logo is-block has-mb-6" href="/">
                 
-                    <img src="/images/favicon.svg" alt="Article17ConvBackProp-part4" height="28">
+                    <img src="/images/favicon.svg" alt="代码实现二维平面上的卷积及其反向传播" height="28">
                 
                 </a>
                 <p class="is-size-7">
@@ -537,7 +535,7 @@ document.addEventListener('DOMContentLoaded', function () {
     
     
 
-<a id="back-to-top" title="Back to Top" href="javascript:;">
+<a id="back-to-top" title="Kembali ke atas" href="javascript:;">
     <i class="fas fa-chevron-up"></i>
 </a>
 <script src="/js/back-to-top.js" defer></script>
@@ -573,7 +571,7 @@ document.addEventListener('DOMContentLoaded', function () {
     <div class="searchbox ins-search">
     <div class="searchbox-container ins-search-container">
         <div class="searchbox-input-wrapper">
-            <input type="text" class="searchbox-input ins-search-input" placeholder="Type something...">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="Tulis Sesuatu..">
             <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
         </div>
         <div class="searchbox-result-wrapper ins-section-wrapper">
@@ -585,11 +583,11 @@ document.addEventListener('DOMContentLoaded', function () {
     (function (window) {
         var INSIGHT_CONFIG = {
             TRANSLATION: {
-                POSTS: 'Posts',
-                PAGES: 'Pages',
-                CATEGORIES: 'Categories',
-                TAGS: 'Tags',
-                UNTITLED: '(Untitled)',
+                POSTS: 'Artikel',
+                PAGES: 'Halaman',
+                CATEGORIES: 'Kategori',
+                TAGS: 'Tag',
+                UNTITLED: 'Tanpa Judul',
             },
             CONTENT_URL: '/content.json',
         };

@@ -129,7 +129,7 @@
                 
                 
                 
-                <a class="navbar-item search" title="Search" href="javascript:;">
+                <a class="navbar-item search" title="Pencarian" href="javascript:;">
                     <i class="fas fa-search"></i>
                 </a>
                 
@@ -169,7 +169,7 @@
                     <i class="far fa-clock"></i>&nbsp;
                     
                     
-                    a few seconds read (About 1 words)
+                    a few seconds membaca (Sekitar 1 kata)
                 </span>
                 
                 
@@ -199,14 +199,14 @@
     
     <div class="card-image">
         <a href="/2019/05/24/Article17ConvBackProp-part4/" class="image is-7by1">
-            <img class="thumbnail" src="/gallery/DeepLearning.jpg" alt="Article17ConvBackProp-part4">
+            <img class="thumbnail" src="/gallery/DeepLearning.jpg" alt="代码实现二维平面上的卷积及其反向传播">
         </a>
     </div>
     
     <div class="card-content article ">
         <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
             
-                <a class="has-link-black-ter" href="/2019/05/24/Article17ConvBackProp-part4/"><i class="fas fa-angle-double-right"></i>Article17ConvBackProp-part4</a>
+                <a class="has-link-black-ter" href="/2019/05/24/Article17ConvBackProp-part4/"><i class="fas fa-angle-double-right"></i>代码实现二维平面上的卷积及其反向传播</a>
             
         </h1>
         
@@ -214,7 +214,7 @@
             <div class="level-left">
                 <time class="level-item has-text-grey" datetime="2019-05-24T04:32:59.000Z"><i class="far fa-calendar-alt">&nbsp;</i>2019-05-24</time>
                 
-                <time class="level-item has-text-grey is-hidden-mobile" datetime="2019-05-25T08:23:51.848Z"><i class="far fa-calendar-check">&nbsp;</i>2019-05-25</time>
+                <time class="level-item has-text-grey is-hidden-mobile" datetime="2019-05-26T13:53:49.293Z"><i class="far fa-calendar-check">&nbsp;</i>2019-05-26</time>
                 
                 
                 <div class="level-item">
@@ -227,7 +227,7 @@
                     <i class="far fa-clock"></i>&nbsp;
                     
                     
-                    a few seconds read (About 0 words)
+                    a few seconds membaca (Sekitar 0 kata)
                 </span>
                 
                 
@@ -236,6 +236,7 @@
         
         <div class="content">
             
+
         </div>
         
         
@@ -271,7 +272,7 @@
             <div class="level-left">
                 <time class="level-item has-text-grey" datetime="2019-05-24T04:32:45.000Z"><i class="far fa-calendar-alt">&nbsp;</i>2019-05-24</time>
                 
-                <time class="level-item has-text-grey is-hidden-mobile" datetime="2019-05-26T13:44:42.969Z"><i class="far fa-calendar-check">&nbsp;</i>2019-05-26</time>
+                <time class="level-item has-text-grey is-hidden-mobile" datetime="2019-05-26T13:53:01.404Z"><i class="far fa-calendar-check">&nbsp;</i>2019-05-26</time>
                 
                 
                 <div class="level-item">
@@ -284,7 +285,7 @@
                     <i class="far fa-clock"></i>&nbsp;
                     
                     
-                    18 minutes read (About 2682 words)
+                    19 minutes membaca (Sekitar 2794 kata)
                 </span>
                 
                 
@@ -292,7 +293,8 @@
         </div>
         
         <div class="content">
-            <h5 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h5><p>&emsp;&emsp;在前面的文章中，介绍了二维平面上的卷积及其反向传播的算法，但是，步长为1和2毕竟都是两个比较小的数字，如果换成更大的数字，反向传播的方式是不是还适合呢？所以，我们考虑下面这个十分极端的例子，来验证反向传播算法的有效性。  </p>
+            <h5 id="前言">前言</h5>
+<p>  在前面的文章中，介绍了二维平面上的卷积及其反向传播的算法，但是，步长为1和2毕竟都是两个比较小的数字，如果换成更大的数字，反向传播的方式是不是还适合呢？所以，我们考虑下面这个十分极端的例子，来验证反向传播算法的有效性。</p>
         </div>
         
         
@@ -309,7 +311,7 @@
             </div>
             <div class="level-start">
                 <div class="level-item">
-                <a class="button is-size-7 is-light" href="/2019/05/24/Article16ConvBackProp-part3/#more"><i class="fas fa-book-reader has-text-grey"></i>&nbsp;&nbsp;Read More</a>
+                <a class="button is-size-7 is-light" href="/2019/05/24/Article16ConvBackProp-part3/#more"><i class="fas fa-book-reader has-text-grey"></i>&nbsp;&nbsp;Selengkapnya</a>
                 </div>
             </div>
         </div>
@@ -358,7 +360,7 @@
                     <i class="far fa-clock"></i>&nbsp;
                     
                     
-                    24 minutes read (About 3583 words)
+                    24 minutes membaca (Sekitar 3583 kata)
                 </span>
                 
                 
@@ -366,8 +368,9 @@
         </div>
         
         <div class="content">
-            <h5 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h5><p>&emsp;&emsp;在之前讨论了步长stride为1的卷积方式的反向传播，但是很多时候，使用的卷积步长会大于1，这个情况下的卷积方式的反向传播和步长为1的情况稍稍有些区别，不过区别并没有想象中那么大，因此下面就对步长stride大于1的情况进行简单的阐述。请注意：这里的所有推导过程都只是针对当前设置的参数信息，并不具有一般性，但是所有的推导过程可以推导到一般的运算，因此以下给出的并不是反向传播算法的严格证明，不涉及十分复杂的公式推导，争取可以以一种简单的方式来理解卷积的反向传播。希望可以很好的帮助理解反向传播算法。   </p>
-<p>&emsp;&emsp;需要注意的是，在本文中，所有的正向传播过程中，卷积的步长stride均固定为2。  </p>
+            <h5 id="前言">前言</h5>
+<p>  在之前讨论了步长stride为1的卷积方式的反向传播，但是很多时候，使用的卷积步长会大于1，这个情况下的卷积方式的反向传播和步长为1的情况稍稍有些区别，不过区别并没有想象中那么大，因此下面就对步长stride大于1的情况进行简单的阐述。请注意：这里的所有推导过程都只是针对当前设置的参数信息，并不具有一般性，但是所有的推导过程可以推导到一般的运算，因此以下给出的并不是反向传播算法的严格证明，不涉及十分复杂的公式推导，争取可以以一种简单的方式来理解卷积的反向传播。希望可以很好的帮助理解反向传播算法。</p>
+<p>  需要注意的是，在本文中，所有的正向传播过程中，卷积的步长stride均固定为2。</p>
         </div>
         
         
@@ -384,7 +387,7 @@
             </div>
             <div class="level-start">
                 <div class="level-item">
-                <a class="button is-size-7 is-light" href="/2019/05/24/Article15ConvBackProp-part2/#more"><i class="fas fa-book-reader has-text-grey"></i>&nbsp;&nbsp;Read More</a>
+                <a class="button is-size-7 is-light" href="/2019/05/24/Article15ConvBackProp-part2/#more"><i class="fas fa-book-reader has-text-grey"></i>&nbsp;&nbsp;Selengkapnya</a>
                 </div>
             </div>
         </div>
@@ -420,7 +423,7 @@
             <div class="level-left">
                 <time class="level-item has-text-grey" datetime="2019-05-24T04:32:01.000Z"><i class="far fa-calendar-alt">&nbsp;</i>2019-05-24</time>
                 
-                <time class="level-item has-text-grey is-hidden-mobile" datetime="2019-05-26T03:24:15.912Z"><i class="far fa-calendar-check">&nbsp;</i>2019-05-26</time>
+                <time class="level-item has-text-grey is-hidden-mobile" datetime="2019-05-26T14:01:37.182Z"><i class="far fa-calendar-check">&nbsp;</i>2019-05-26</time>
                 
                 
                 <div class="level-item">
@@ -433,7 +436,7 @@
                     <i class="far fa-clock"></i>&nbsp;
                     
                     
-                    30 minutes read (About 4436 words)
+                    30 minutes membaca (Sekitar 4435 kata)
                 </span>
                 
                 
@@ -441,8 +444,10 @@
         </div>
         
         <div class="content">
-            <h5 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h5><p>&emsp;&emsp;近年来，深度学习的快速发展带来了一系列喜人的成果，不管是在图像领域还是在NLP领域，深度学习都显示了其极其强大的能力。而深度学习之所以可以进行大规模的参数运算，反向传播算法功不可没，可以说，没有反向传播算法，深度学习就不可能得以快速发展，因此在此之前，有必要了解一下反向传播算法的具体原理和公式推导。请注意：这里的所有推导过程都只是针对当前设置的参数信息，并不具有一般性，但是所有的推导过程可以推导到一般的运算，因此以下给出的并不是反向传播算法的严格证明，不涉及十分复杂的公式推导，争取可以以一种简单的方式来理解卷积的反向传播。希望可以很好的帮助理解反向传播算法。<br>&emsp;&emsp;在之前曾经见到的说明过全连接层的反向传播，因此，这一次主要是专注于卷积层的反向传播。  </p>
-<p>&emsp;&emsp;需要注意的是，在本文中，所有的正向传播过程中，卷积的步长stride均固定为1。</p>
+            <h5 id="前言">前言</h5>
+<p>  近年来，深度学习的快速发展带来了一系列喜人的成果，不管是在图像领域还是在NLP领域，深度学习都显示了其极其强大的能力。而深度学习之所以可以进行大规模的参数运算，反向传播算法功不可没，可以说，没有反向传播算法，深度学习就不可能得以快速发展，因此在此之前，有必要了解一下反向传播算法的具体原理和公式推导。请注意：这里的所有推导过程都只是针对当前设置的参数信息，并不具有一般性，但是所有的推导过程可以推导到一般的运算，因此以下给出的并不是反向传播算法的严格证明，不涉及十分复杂的公式推导，争取可以以一种简单的方式来理解卷积的反向传播。希望可以很好的帮助理解反向传播算法。</p>
+<p>  在之前曾经见到的说明过全连接层的反向传播，因此，这一次主要是专注于卷积层的反向传播。</p>
+<p>  需要注意的是，在本文中，所有的正向传播过程中，卷积的步长stride均固定为1。</p>
         </div>
         
         
@@ -459,7 +464,7 @@
             </div>
             <div class="level-start">
                 <div class="level-item">
-                <a class="button is-size-7 is-light" href="/2019/05/24/Article14ConvBackProp-part1/#more"><i class="fas fa-book-reader has-text-grey"></i>&nbsp;&nbsp;Read More</a>
+                <a class="button is-size-7 is-light" href="/2019/05/24/Article14ConvBackProp-part1/#more"><i class="fas fa-book-reader has-text-grey"></i>&nbsp;&nbsp;Selengkapnya</a>
                 </div>
             </div>
         </div>
@@ -508,7 +513,7 @@
                     <i class="far fa-clock"></i>&nbsp;
                     
                     
-                    a few seconds read (About 62 words)
+                    a few seconds membaca (Sekitar 62 kata)
                 </span>
                 
                 
@@ -516,8 +521,9 @@
         </div>
         
         <div class="content">
-            <h5 id="一、YOLO简介"><a href="#一、YOLO简介" class="headerlink" title="一、YOLO简介"></a>一、YOLO简介</h5><p>&emsp;&emsp;YOLO（You Only Look Once）是一个高效的目标检测算法，属于One-Stage大家族，</p>
-<p>&emsp;&emsp;本文参考的源码地址为：<a href="https://github.com/wizyoung/YOLOv3_TensorFlow" target="_blank" rel="noopener">https://github.com/wizyoung/YOLOv3_TensorFlow</a></p>
+            <h5 id="一yolo简介">一、YOLO简介</h5>
+<p>  YOLO（You Only Look Once）是一个高效的目标检测算法，属于One-Stage大家族，</p>
+<p>  本文参考的源码地址为：<a href="https://github.com/wizyoung/YOLOv3_TensorFlow" class="uri" target="_blank" rel="noopener">https://github.com/wizyoung/YOLOv3_TensorFlow</a></p>
         </div>
         
         
@@ -534,7 +540,7 @@
             </div>
             <div class="level-start">
                 <div class="level-item">
-                <a class="button is-size-7 is-light" href="/2019/05/22/Article13YOLOv3-part05/#more"><i class="fas fa-book-reader has-text-grey"></i>&nbsp;&nbsp;Read More</a>
+                <a class="button is-size-7 is-light" href="/2019/05/22/Article13YOLOv3-part05/#more"><i class="fas fa-book-reader has-text-grey"></i>&nbsp;&nbsp;Selengkapnya</a>
                 </div>
             </div>
         </div>
@@ -583,7 +589,7 @@
                     <i class="far fa-clock"></i>&nbsp;
                     
                     
-                    a few seconds read (About 62 words)
+                    a few seconds membaca (Sekitar 62 kata)
                 </span>
                 
                 
@@ -591,8 +597,9 @@
         </div>
         
         <div class="content">
-            <h5 id="一、YOLO简介"><a href="#一、YOLO简介" class="headerlink" title="一、YOLO简介"></a>一、YOLO简介</h5><p>&emsp;&emsp;YOLO（You Only Look Once）是一个高效的目标检测算法，属于One-Stage大家族，</p>
-<p>&emsp;&emsp;本文参考的源码地址为：<a href="https://github.com/wizyoung/YOLOv3_TensorFlow" target="_blank" rel="noopener">https://github.com/wizyoung/YOLOv3_TensorFlow</a></p>
+            <h5 id="一yolo简介">一、YOLO简介</h5>
+<p>  YOLO（You Only Look Once）是一个高效的目标检测算法，属于One-Stage大家族，</p>
+<p>  本文参考的源码地址为：<a href="https://github.com/wizyoung/YOLOv3_TensorFlow" class="uri" target="_blank" rel="noopener">https://github.com/wizyoung/YOLOv3_TensorFlow</a></p>
         </div>
         
         
@@ -609,7 +616,7 @@
             </div>
             <div class="level-start">
                 <div class="level-item">
-                <a class="button is-size-7 is-light" href="/2019/05/22/Article12YOLOv3-part04/#more"><i class="fas fa-book-reader has-text-grey"></i>&nbsp;&nbsp;Read More</a>
+                <a class="button is-size-7 is-light" href="/2019/05/22/Article12YOLOv3-part04/#more"><i class="fas fa-book-reader has-text-grey"></i>&nbsp;&nbsp;Selengkapnya</a>
                 </div>
             </div>
         </div>
@@ -658,7 +665,7 @@
                     <i class="far fa-clock"></i>&nbsp;
                     
                     
-                    a few seconds read (About 62 words)
+                    a few seconds membaca (Sekitar 62 kata)
                 </span>
                 
                 
@@ -666,8 +673,9 @@
         </div>
         
         <div class="content">
-            <h5 id="一、YOLO简介"><a href="#一、YOLO简介" class="headerlink" title="一、YOLO简介"></a>一、YOLO简介</h5><p>&emsp;&emsp;YOLO（You Only Look Once）是一个高效的目标检测算法，属于One-Stage大家族，</p>
-<p>&emsp;&emsp;本文参考的源码地址为：<a href="https://github.com/wizyoung/YOLOv3_TensorFlow" target="_blank" rel="noopener">https://github.com/wizyoung/YOLOv3_TensorFlow</a></p>
+            <h5 id="一yolo简介">一、YOLO简介</h5>
+<p>  YOLO（You Only Look Once）是一个高效的目标检测算法，属于One-Stage大家族，</p>
+<p>  本文参考的源码地址为：<a href="https://github.com/wizyoung/YOLOv3_TensorFlow" class="uri" target="_blank" rel="noopener">https://github.com/wizyoung/YOLOv3_TensorFlow</a></p>
         </div>
         
         
@@ -684,7 +692,7 @@
             </div>
             <div class="level-start">
                 <div class="level-item">
-                <a class="button is-size-7 is-light" href="/2019/05/22/Article11YOLOv3-part03/#more"><i class="fas fa-book-reader has-text-grey"></i>&nbsp;&nbsp;Read More</a>
+                <a class="button is-size-7 is-light" href="/2019/05/22/Article11YOLOv3-part03/#more"><i class="fas fa-book-reader has-text-grey"></i>&nbsp;&nbsp;Selengkapnya</a>
                 </div>
             </div>
         </div>
@@ -733,7 +741,7 @@
                     <i class="far fa-clock"></i>&nbsp;
                     
                     
-                    a few seconds read (About 49 words)
+                    a few seconds membaca (Sekitar 49 kata)
                 </span>
                 
                 
@@ -741,8 +749,9 @@
         </div>
         
         <div class="content">
-            <h5 id="一、YOLO简介"><a href="#一、YOLO简介" class="headerlink" title="一、YOLO简介"></a>一、YOLO简介</h5><p>&emsp;&emsp;YOLO（You Only Look Once）是一个高效的目标检测算法，属于One-Stage大家族，</p>
-<p>&emsp;&emsp;本文参考的源码地址为：<a href="https://github.com/wizyoung/YOLOv3_TensorFlow" target="_blank" rel="noopener">https://github.com/wizyoung/YOLOv3_TensorFlow</a></p>
+            <h5 id="一yolo简介">一、YOLO简介</h5>
+<p>  YOLO（You Only Look Once）是一个高效的目标检测算法，属于One-Stage大家族，</p>
+<p>  本文参考的源码地址为：<a href="https://github.com/wizyoung/YOLOv3_TensorFlow" class="uri" target="_blank" rel="noopener">https://github.com/wizyoung/YOLOv3_TensorFlow</a></p>
         </div>
         
         
@@ -759,7 +768,7 @@
             </div>
             <div class="level-start">
                 <div class="level-item">
-                <a class="button is-size-7 is-light" href="/2019/05/22/Article10YOLOv3-part02/#more"><i class="fas fa-book-reader has-text-grey"></i>&nbsp;&nbsp;Read More</a>
+                <a class="button is-size-7 is-light" href="/2019/05/22/Article10YOLOv3-part02/#more"><i class="fas fa-book-reader has-text-grey"></i>&nbsp;&nbsp;Selengkapnya</a>
                 </div>
             </div>
         </div>
@@ -808,7 +817,7 @@
                     <i class="far fa-clock"></i>&nbsp;
                     
                     
-                    6 minutes read (About 967 words)
+                    6 minutes membaca (Sekitar 967 kata)
                 </span>
                 
                 
@@ -816,8 +825,9 @@
         </div>
         
         <div class="content">
-            <h5 id="一、YOLO简介"><a href="#一、YOLO简介" class="headerlink" title="一、YOLO简介"></a>一、YOLO简介</h5><p>&emsp;&emsp;YOLO（You Only Look Once）是一个高效的目标检测算法，属于One-Stage大家族，</p>
-<p>&emsp;&emsp;本文参考的源码地址为：<a href="https://github.com/wizyoung/YOLOv3_TensorFlow" target="_blank" rel="noopener">https://github.com/wizyoung/YOLOv3_TensorFlow</a></p>
+            <h5 id="一yolo简介">一、YOLO简介</h5>
+<p>  YOLO（You Only Look Once）是一个高效的目标检测算法，属于One-Stage大家族，</p>
+<p>  本文参考的源码地址为：<a href="https://github.com/wizyoung/YOLOv3_TensorFlow" class="uri" target="_blank" rel="noopener">https://github.com/wizyoung/YOLOv3_TensorFlow</a></p>
         </div>
         
         
@@ -834,7 +844,7 @@
             </div>
             <div class="level-start">
                 <div class="level-item">
-                <a class="button is-size-7 is-light" href="/2019/05/22/Article9YOLOv3-part01/#more"><i class="fas fa-book-reader has-text-grey"></i>&nbsp;&nbsp;Read More</a>
+                <a class="button is-size-7 is-light" href="/2019/05/22/Article9YOLOv3-part01/#more"><i class="fas fa-book-reader has-text-grey"></i>&nbsp;&nbsp;Selengkapnya</a>
                 </div>
             </div>
         </div>
@@ -856,10 +866,10 @@
 <div class="card card-transparent">
     <nav class="pagination is-centered" role="navigation" aria-label="pagination">
         <div class="pagination-previous is-invisible is-hidden-mobile">
-            <a class="is-flex-grow has-text-black-ter" href="/page/0/">Previous</a>
+            <a class="is-flex-grow has-text-black-ter" href="/page/0/">Sebelumnya</a>
         </div>
         <div class="pagination-next">
-            <a class="is-flex-grow has-text-black-ter" href="/page/2/">Next</a>
+            <a class="is-flex-grow has-text-black-ter" href="/page/2/">Berikutnya</a>
         </div>
         <ul class="pagination-list is-hidden-mobile">
             
@@ -910,7 +920,7 @@
             <div class="level-item has-text-centered is-marginless">
                 <a href="/archives/">
                     <p class="heading">
-                        Posts
+                        Artikel
                     </p>
                     <p class="title has-text-weight-normal">
                         18
@@ -920,7 +930,7 @@
             <div class="level-item has-text-centered is-marginless">
                 <a href="/categories/">
                     <p class="heading">
-                        Categories
+                        Kategori
                     </p>
                     <p class="title has-text-weight-normal">
                         3
@@ -930,7 +940,7 @@
             <div class="level-item has-text-centered is-marginless">
                 <a href="/tags/">
                     <p class="heading">
-                        Tags
+                        Tag
                     </p>
                     <p class="title has-text-weight-normal">
                         15
@@ -940,7 +950,7 @@
         </nav>
         <div class="level">
             <a class="level-item button is-link is-rounded" href="https://github.com/huaxuan0720" target="_blank">
-                <i class="fab fa-github"></i>&nbsp;&nbsp;Follow</a>
+                <i class="fab fa-github"></i>&nbsp;&nbsp;IKUTI</a>
         </div>
         
         
@@ -985,7 +995,7 @@
     <div class="card-content">
         <div class="menu">
         <h3 class="menu-label">
-            Links
+            Tautan
         </h3>
         <ul class="menu-list">
         
@@ -1033,7 +1043,7 @@
 <div class="card widget is-hidden-mobile">
     <div class="card-content">
         <h3 class="menu-label">
-            Tag Cloud
+            Awan tag
         </h3>
         <a href="/tags/AdaBoost/" style="font-size: 10px;">AdaBoost</a> <a href="/tags/EM算法/" style="font-size: 10px;">EM算法</a> <a href="/tags/PCA/" style="font-size: 10px;">PCA</a> <a href="/tags/SVD/" style="font-size: 10px;">SVD</a> <a href="/tags/Welcome/" style="font-size: 10px;">Welcome</a> <a href="/tags/YOLOv3/" style="font-size: 16px;">YOLOv3</a> <a href="/tags/主成分分析/" style="font-size: 10px;">主成分分析</a> <a href="/tags/卷积/" style="font-size: 14px;">卷积</a> <a href="/tags/反向传播/" style="font-size: 14px;">反向传播</a> <a href="/tags/反向传播算法/" style="font-size: 12px;">反向传播算法</a> <a href="/tags/奇异值分解/" style="font-size: 10px;">奇异值分解</a> <a href="/tags/机器学习/" style="font-size: 18px;">机器学习</a> <a href="/tags/深度学习/" style="font-size: 20px;">深度学习</a> <a href="/tags/目标检测/" style="font-size: 16px;">目标检测</a> <a href="/tags/逻辑回归/" style="font-size: 10px;">逻辑回归</a>
     </div>
@@ -1045,7 +1055,7 @@
     <div class="card-content">
         <div class="menu">
         <h3 class="menu-label">
-            Archives
+            Arsip
         </h3>
         <ul class="menu-list">
         
@@ -1073,21 +1083,21 @@
 <div class="card widget">
     <div class="card-content">
         <h3 class="menu-label">
-            Recent
+            Terbaru
         </h3>
         
         <article class="media">
             
             <a href="/2019/05/24/Article17ConvBackProp-part4/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/gallery/DeepLearning.jpg" alt="Article17ConvBackProp-part4">
+                    <img class="thumbnail" src="/gallery/DeepLearning.jpg" alt="代码实现二维平面上的卷积及其反向传播">
                 </p>
             </a>
             
             <div class="media-content">
                 <div class="content">
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-05-24T04:32:59.000Z">2019-05-24</time></div>
-                    <a href="/2019/05/24/Article17ConvBackProp-part4/" class="has-link-black-ter is-size-6">Article17ConvBackProp-part4</a>
+                    <a href="/2019/05/24/Article17ConvBackProp-part4/" class="has-link-black-ter is-size-6">代码实现二维平面上的卷积及其反向传播</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/深度学习/">深度学习</a>
                     </p>
@@ -1180,7 +1190,7 @@
     <div class="card-content">
         <div class="menu">
             <h3 class="menu-label">
-                Categories
+                Kategori
             </h3>
             <ul class="menu-list">
             <li>
@@ -1228,21 +1238,21 @@
 <div class="card widget">
     <div class="card-content">
         <h3 class="menu-label">
-            Recent
+            Terbaru
         </h3>
         
         <article class="media">
             
             <a href="/2019/05/24/Article17ConvBackProp-part4/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/gallery/DeepLearning.jpg" alt="Article17ConvBackProp-part4">
+                    <img class="thumbnail" src="/gallery/DeepLearning.jpg" alt="代码实现二维平面上的卷积及其反向传播">
                 </p>
             </a>
             
             <div class="media-content">
                 <div class="content">
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-05-24T04:32:59.000Z">2019-05-24</time></div>
-                    <a href="/2019/05/24/Article17ConvBackProp-part4/" class="has-link-black-ter is-size-6">Article17ConvBackProp-part4</a>
+                    <a href="/2019/05/24/Article17ConvBackProp-part4/" class="has-link-black-ter is-size-6">代码实现二维平面上的卷积及其反向传播</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/深度学习/">深度学习</a>
                     </p>
@@ -1335,7 +1345,7 @@
     <div class="card-content">
         <div class="menu">
             <h3 class="menu-label">
-                Categories
+                Kategori
             </h3>
             <ul class="menu-list">
             <li>
@@ -1490,7 +1500,7 @@ document.addEventListener('DOMContentLoaded', function () {
     
     
 
-<a id="back-to-top" title="Back to Top" href="javascript:;">
+<a id="back-to-top" title="Kembali ke atas" href="javascript:;">
     <i class="fas fa-chevron-up"></i>
 </a>
 <script src="/js/back-to-top.js" defer></script>
@@ -1526,7 +1536,7 @@ document.addEventListener('DOMContentLoaded', function () {
     <div class="searchbox ins-search">
     <div class="searchbox-container ins-search-container">
         <div class="searchbox-input-wrapper">
-            <input type="text" class="searchbox-input ins-search-input" placeholder="Type something...">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="Tulis Sesuatu..">
             <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
         </div>
         <div class="searchbox-result-wrapper ins-section-wrapper">
@@ -1538,11 +1548,11 @@ document.addEventListener('DOMContentLoaded', function () {
     (function (window) {
         var INSIGHT_CONFIG = {
             TRANSLATION: {
-                POSTS: 'Posts',
-                PAGES: 'Pages',
-                CATEGORIES: 'Categories',
-                TAGS: 'Tags',
-                UNTITLED: '(Untitled)',
+                POSTS: 'Artikel',
+                PAGES: 'Halaman',
+                CATEGORIES: 'Kategori',
+                TAGS: 'Tag',
+                UNTITLED: 'Tanpa Judul',
             },
             CONTENT_URL: '/content.json',
         };
