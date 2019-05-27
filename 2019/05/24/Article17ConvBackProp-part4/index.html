@@ -16,7 +16,7 @@
 <meta property="og:description" content="前言   在前面的叙述中，我们都是在二维平面上做卷积操作，并在此基础上进行了反向传播算法的推导和计算，但是，如果仅仅限于理论怕是很难验证我们算法的是否是真的可以让结果收敛，因此，这一篇文章中，我们就通过代码来验证一下算法在实际过程中的收敛情况。   必须要说明的是，之前讲解的算法都是十分朴素的，具有很大的改进空间，代码的实现也是基于这种朴素的计算过程，因此，并未对算法进行优化。">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://huaxuan0720.github.io/gallery/DeepLearning.jpg">
-<meta property="og:updated_time" content="2019-05-27T06:50:57.109Z">
+<meta property="og:updated_time" content="2019-05-27T06:57:38.923Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="代码实现二维平面上的卷积及其反向传播">
 <meta name="twitter:description" content="前言   在前面的叙述中，我们都是在二维平面上做卷积操作，并在此基础上进行了反向传播算法的推导和计算，但是，如果仅仅限于理论怕是很难验证我们算法的是否是真的可以让结果收敛，因此，这一篇文章中，我们就通过代码来验证一下算法在实际过程中的收敛情况。   必须要说明的是，之前讲解的算法都是十分朴素的，具有很大的改进空间，代码的实现也是基于这种朴素的计算过程，因此，并未对算法进行优化。">
@@ -130,7 +130,7 @@
                     
                 
                 
-                <a class="navbar-item is-hidden-tablet catalogue" title="Catálogo" href="javascript:;">
+                <a class="navbar-item is-hidden-tablet catalogue" title="Catalogue" href="javascript:;">
                     <i class="fas fa-list-ul"></i>
                 </a>
                 
@@ -166,7 +166,7 @@
             <div class="level-left">
                 <time class="level-item has-text-grey" datetime="2019-05-24T04:32:59.000Z"><i class="far fa-calendar-alt">&nbsp;</i>2019-05-24</time>
                 
-                <time class="level-item has-text-grey is-hidden-mobile" datetime="2019-05-27T06:50:57.109Z"><i class="far fa-calendar-check">&nbsp;</i>2019-05-27</time>
+                <time class="level-item has-text-grey is-hidden-mobile" datetime="2019-05-27T06:57:38.923Z"><i class="far fa-calendar-check">&nbsp;</i>2019-05-27</time>
                 
                 
                 <div class="level-item">
@@ -271,6 +271,13 @@
 <div class="card card-transparent">
     <div class="level post-navigation is-flex-wrap is-mobile">
         
+        <div class="level-start">
+            <a class="level level-item has-link-grey  article-nav-prev" href="/2019/05/27/Article18ConvBackProp-part5/">
+                <i class="level-item fas fa-chevron-left"></i>
+                <span class="level-item">Article18ConvBackProp-part5</span>
+            </a>
+        </div>
+        
         
         <div class="level-end">
             <a class="level level-item has-link-grey  article-nav-next" href="/2019/05/24/Article16ConvBackProp-part3/">
@@ -286,7 +293,7 @@
 
 <div class="card">
     <div class="card-content">
-        <h3 class="title is-5 has-text-weight-normal">Comentarios</h3>
+        <h3 class="title is-5 has-text-weight-normal">Comments</h3>
         
 <div id="valine-thread" class="content"></div>
 <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
@@ -345,17 +352,17 @@
             <div class="level-item has-text-centered is-marginless">
                 <a href="/archives/">
                     <p class="heading">
-                        Entradas
+                        Posts
                     </p>
                     <p class="title has-text-weight-normal">
-                        18
+                        19
                     </p>
                 </a>
             </div>
             <div class="level-item has-text-centered is-marginless">
                 <a href="/categories/">
                     <p class="heading">
-                        Categorias
+                        Categories
                     </p>
                     <p class="title has-text-weight-normal">
                         3
@@ -365,7 +372,7 @@
             <div class="level-item has-text-centered is-marginless">
                 <a href="/tags/">
                     <p class="heading">
-                        Etiquetas
+                        Tags
                     </p>
                     <p class="title has-text-weight-normal">
                         15
@@ -375,7 +382,7 @@
         </nav>
         <div class="level">
             <a class="level-item button is-link is-rounded" href="https://github.com/huaxuan0720" target="_blank">
-                <i class="fab fa-github"></i>&nbsp;&nbsp;SEGUIR</a>
+                <i class="fab fa-github"></i>&nbsp;&nbsp;Follow</a>
         </div>
         
         
@@ -416,7 +423,7 @@
     <div class="card-content">
         <div class="menu">
             <h3 class="menu-label">
-                Catálogo
+                Catalogue
             </h3>
             <ul class="menu-list"><li>
         <a class="is-flex" href="#前言">
@@ -612,10 +619,10 @@ document.addEventListener('DOMContentLoaded', function () {
     (function (window) {
         var INSIGHT_CONFIG = {
             TRANSLATION: {
-                POSTS: 'Entradas',
+                POSTS: 'Posts',
                 PAGES: 'Pages',
-                CATEGORIES: 'Categorias',
-                TAGS: 'Etiquetas',
+                CATEGORIES: 'Categories',
+                TAGS: 'Tags',
                 UNTITLED: '(Untitled)',
             },
             CONTENT_URL: '/content.json',
