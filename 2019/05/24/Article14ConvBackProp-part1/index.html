@@ -16,7 +16,7 @@
 <meta property="og:description" content="前言   近年来，深度学习的快速发展带来了一系列喜人的成果，不管是在图像领域还是在NLP领域，深度学习都显示了其极其强大的能力。而深度学习之所以可以进行大规模的参数运算，反向传播算法功不可没，可以说，没有反向传播算法，深度学习就不可能得以快速发展，因此在此之前，有必要了解一下反向传播算法的具体原理和公式推导。请注意：这里的所有推导过程都只是针对当前设置的参数信息，并不具有一般性，但是所有的推导过">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://huaxuan0720.github.io/gallery/DeepLearning.jpg">
-<meta property="og:updated_time" content="2019-05-26T14:01:37.182Z">
+<meta property="og:updated_time" content="2019-05-27T04:37:14.080Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="步长stride为1的二维卷积方法的反向传播算法">
 <meta name="twitter:description" content="前言   近年来，深度学习的快速发展带来了一系列喜人的成果，不管是在图像领域还是在NLP领域，深度学习都显示了其极其强大的能力。而深度学习之所以可以进行大规模的参数运算，反向传播算法功不可没，可以说，没有反向传播算法，深度学习就不可能得以快速发展，因此在此之前，有必要了解一下反向传播算法的具体原理和公式推导。请注意：这里的所有推导过程都只是针对当前设置的参数信息，并不具有一般性，但是所有的推导过">
@@ -166,7 +166,7 @@
             <div class="level-left">
                 <time class="level-item has-text-grey" datetime="2019-05-24T04:32:01.000Z"><i class="far fa-calendar-alt">&nbsp;</i>2019-05-24</time>
                 
-                <time class="level-item has-text-grey is-hidden-mobile" datetime="2019-05-26T14:01:37.182Z"><i class="far fa-calendar-check">&nbsp;</i>2019-05-26</time>
+                <time class="level-item has-text-grey is-hidden-mobile" datetime="2019-05-27T04:37:14.080Z"><i class="far fa-calendar-check">&nbsp;</i>2019-05-27</time>
                 
                 
                 <div class="level-item">
@@ -1005,7 +1005,7 @@ x_{5, 1} &amp; x_{5, 2} &amp; x_{5, 3} &amp;x_{5, 4} &amp;x_{5, 5} \\
 <p>  正向传播：</p>
 <figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conv(x, kernel, bias, &quot;VALID&quot;)</span><br></pre></td></tr></table></figure>
 <p>  反向传播：</p>
-<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">conv_backford(error, x, kernel, bias):</span><br><span class="line">	# 计算传递给下一层的误差</span><br><span class="line">	1.在error周围填补上合适数目的0</span><br><span class="line">	2.将kernel旋转180°</span><br><span class="line">	3.将填补上0的误差和旋转之后的kernel进行步长为1的卷积，从而得到传递给下一层的误差new_error。</span><br><span class="line">	</span><br><span class="line">	# 更新参数</span><br><span class="line">	1.将输入矩阵x和上一层传递来的误差矩阵error进行步长为1的卷积，得到kernel的更新梯度</span><br><span class="line">	2.将上一层传递来的误差矩阵error所有元素求和，得到bias的更新梯度</span><br><span class="line">	3.kernel := kernel - 学习率 * kernel的更新梯度</span><br><span class="line">	4.bias := bias - 学习率 * bias的更新梯度</span><br><span class="line">	</span><br><span class="line">	# 返回误差，用以传递到下一层</span><br><span class="line">	return new_error</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">conv_backward(error, x, kernel, bias):</span><br><span class="line">	# 计算传递给下一层的误差</span><br><span class="line">	1.在error周围填补上合适数目的0</span><br><span class="line">	2.将kernel旋转180°</span><br><span class="line">	3.将填补上0的误差和旋转之后的kernel进行步长为1的卷积，从而得到传递给下一层的误差new_error。</span><br><span class="line">	</span><br><span class="line">	# 更新参数</span><br><span class="line">	1.将输入矩阵x和上一层传递来的误差矩阵error进行步长为1的卷积，得到kernel的更新梯度</span><br><span class="line">	2.将上一层传递来的误差矩阵error所有元素求和，得到bias的更新梯度</span><br><span class="line">	3.kernel := kernel - 学习率 * kernel的更新梯度</span><br><span class="line">	4.bias := bias - 学习率 * bias的更新梯度</span><br><span class="line">	</span><br><span class="line">	# 返回误差，用以传递到下一层</span><br><span class="line">	return new_error</span><br></pre></td></tr></table></figure>
 
         </div>
         
