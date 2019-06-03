@@ -155,15 +155,15 @@
     <div class="card">
     
     <div class="card-image">
-        <a href="/2019/05/27/Article18ConvBackProp-part5/" class="image is-7by1">
-            <img class="thumbnail" src="/gallery/DeepLearning.jpg" alt="Article18ConvBackProp-part5">
+        <a href="/2019/05/27/Note18 ConvBackProp-part5/" class="image is-7by1">
+            <img class="thumbnail" src="/gallery/DeepLearning.jpg" alt="多通道卷积以及激活函数">
         </a>
     </div>
     
     <div class="card-content article ">
         <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
             
-                <a class="has-link-black-ter" href="/2019/05/27/Article18ConvBackProp-part5/"><i class="fas fa-angle-double-right"></i>Article18ConvBackProp-part5</a>
+                <a class="has-link-black-ter" href="/2019/05/27/Note18 ConvBackProp-part5/"><i class="fas fa-angle-double-right"></i>多通道卷积以及激活函数</a>
             
         </h1>
         
@@ -171,7 +171,7 @@
             <div class="level-left">
                 <time class="level-item has-text-grey" datetime="2019-05-27T07:09:30.000Z"><i class="far fa-calendar-alt">&nbsp;</i>2019-05-27</time>
                 
-                <time class="level-item has-text-grey is-hidden-mobile" datetime="2019-05-27T07:15:25.520Z"><i class="far fa-calendar-check">&nbsp;</i>2019-05-27</time>
+                <time class="level-item has-text-grey is-hidden-mobile" datetime="2019-06-03T07:15:16.251Z"><i class="far fa-calendar-check">&nbsp;</i>2019-06-03</time>
                 
                 
                 <div class="level-item">
@@ -184,7 +184,7 @@
                     <i class="far fa-clock"></i>&nbsp;
                     
                     
-                    a few seconds read (About 0 words)
+                    22 minutes read (About 3266 words)
                 </span>
                 
                 
@@ -192,11 +192,28 @@
         </div>
         
         <div class="content">
-            
-
+            <h5 id="前言">前言</h5>
+<p>  前面讲了很多二维平面上的卷积，甚至用代码实现了一个简单的两层二维卷积网络，但是在实际的情况下，我们使用的更多的是三维矩阵，即矩阵的<span class="math inline">\(shape\)</span>往往是<span class="math inline">\([height, width, channels]\)</span>。在这种情况下，我们的卷积核就会多出一个参数来和通道<span class="math inline">\(channels\)</span>参数进行匹配，即，这个时候，我们的卷积核的<span class="math inline">\(shape\)</span>会变成<span class="math inline">\([kernel\_height, kernel\_width, channels]\)</span>。所以接下来就是要弄清楚在这种多通道的情况下，卷积是如何进行反向传播的。</p>
         </div>
         
         
+        
+        <hr style="height:1px;margin:1rem 0">
+        <div class="level is-mobile is-flex">
+            <div class="level-start">
+                
+                <div class="level-item is-size-7 is-uppercase">
+                    <i class="fas fa-tags has-text-grey"></i>&nbsp;
+                    <a class="has-link-grey -link" href="/tags/卷积/">卷积</a>,&nbsp;<a class="has-link-grey -link" href="/tags/反向传播/">反向传播</a>,&nbsp;<a class="has-link-grey -link" href="/tags/深度学习/">深度学习</a>
+                </div>
+                
+            </div>
+            <div class="level-start">
+                <div class="level-item">
+                <a class="button is-size-7 is-light" href="/2019/05/27/Note18 ConvBackProp-part5/#more"><i class="fas fa-book-reader has-text-grey"></i>&nbsp;&nbsp;Read More</a>
+                </div>
+            </div>
+        </div>
         
         
     </div>
@@ -213,7 +230,7 @@
     <div class="card">
     
     <div class="card-image">
-        <a href="/2019/05/24/Article17ConvBackProp-part4/" class="image is-7by1">
+        <a href="/2019/05/24/Note17 ConvBackProp-part4/" class="image is-7by1">
             <img class="thumbnail" src="/gallery/DeepLearning.jpg" alt="代码实现二维平面上的卷积及其反向传播">
         </a>
     </div>
@@ -221,7 +238,7 @@
     <div class="card-content article ">
         <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
             
-                <a class="has-link-black-ter" href="/2019/05/24/Article17ConvBackProp-part4/"><i class="fas fa-angle-double-right"></i>代码实现二维平面上的卷积及其反向传播</a>
+                <a class="has-link-black-ter" href="/2019/05/24/Note17 ConvBackProp-part4/"><i class="fas fa-angle-double-right"></i>代码实现二维平面上的卷积及其反向传播</a>
             
         </h1>
         
@@ -229,7 +246,7 @@
             <div class="level-left">
                 <time class="level-item has-text-grey" datetime="2019-05-24T04:32:59.000Z"><i class="far fa-calendar-alt">&nbsp;</i>2019-05-24</time>
                 
-                <time class="level-item has-text-grey is-hidden-mobile" datetime="2019-05-27T06:57:38.923Z"><i class="far fa-calendar-check">&nbsp;</i>2019-05-27</time>
+                <time class="level-item has-text-grey is-hidden-mobile" datetime="2019-06-03T07:14:55.965Z"><i class="far fa-calendar-check">&nbsp;</i>2019-06-03</time>
                 
                 
                 <div class="level-item">
@@ -269,7 +286,7 @@
             </div>
             <div class="level-start">
                 <div class="level-item">
-                <a class="button is-size-7 is-light" href="/2019/05/24/Article17ConvBackProp-part4/#more"><i class="fas fa-book-reader has-text-grey"></i>&nbsp;&nbsp;Read More</a>
+                <a class="button is-size-7 is-light" href="/2019/05/24/Note17 ConvBackProp-part4/#more"><i class="fas fa-book-reader has-text-grey"></i>&nbsp;&nbsp;Read More</a>
                 </div>
             </div>
         </div>
@@ -289,7 +306,7 @@
     <div class="card">
     
     <div class="card-image">
-        <a href="/2019/05/24/Article16ConvBackProp-part3/" class="image is-7by1">
+        <a href="/2019/05/24/Note16 ConvBackProp-part3/" class="image is-7by1">
             <img class="thumbnail" src="/gallery/DeepLearning.jpg" alt="步长stride为s的二维卷积方法的反向传播算法：一个十分极端的例子">
         </a>
     </div>
@@ -297,7 +314,7 @@
     <div class="card-content article ">
         <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
             
-                <a class="has-link-black-ter" href="/2019/05/24/Article16ConvBackProp-part3/"><i class="fas fa-angle-double-right"></i>步长stride为s的二维卷积方法的反向传播算法：一个十分极端的例子</a>
+                <a class="has-link-black-ter" href="/2019/05/24/Note16 ConvBackProp-part3/"><i class="fas fa-angle-double-right"></i>步长stride为s的二维卷积方法的反向传播算法：一个十分极端的例子</a>
             
         </h1>
         
@@ -344,7 +361,7 @@
             </div>
             <div class="level-start">
                 <div class="level-item">
-                <a class="button is-size-7 is-light" href="/2019/05/24/Article16ConvBackProp-part3/#more"><i class="fas fa-book-reader has-text-grey"></i>&nbsp;&nbsp;Read More</a>
+                <a class="button is-size-7 is-light" href="/2019/05/24/Note16 ConvBackProp-part3/#more"><i class="fas fa-book-reader has-text-grey"></i>&nbsp;&nbsp;Read More</a>
                 </div>
             </div>
         </div>
@@ -364,7 +381,7 @@
     <div class="card">
     
     <div class="card-image">
-        <a href="/2019/05/24/Article15ConvBackProp-part2/" class="image is-7by1">
+        <a href="/2019/05/24/Note15 ConvBackProp-part2/" class="image is-7by1">
             <img class="thumbnail" src="/gallery/DeepLearning.jpg" alt="步长stride为s的二维卷积方法的反向传播算法">
         </a>
     </div>
@@ -372,7 +389,7 @@
     <div class="card-content article ">
         <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
             
-                <a class="has-link-black-ter" href="/2019/05/24/Article15ConvBackProp-part2/"><i class="fas fa-angle-double-right"></i>步长stride为s的二维卷积方法的反向传播算法</a>
+                <a class="has-link-black-ter" href="/2019/05/24/Note15 ConvBackProp-part2/"><i class="fas fa-angle-double-right"></i>步长stride为s的二维卷积方法的反向传播算法</a>
             
         </h1>
         
@@ -380,7 +397,7 @@
             <div class="level-left">
                 <time class="level-item has-text-grey" datetime="2019-05-24T04:32:31.000Z"><i class="far fa-calendar-alt">&nbsp;</i>2019-05-24</time>
                 
-                <time class="level-item has-text-grey is-hidden-mobile" datetime="2019-05-27T05:15:44.656Z"><i class="far fa-calendar-check">&nbsp;</i>2019-05-27</time>
+                <time class="level-item has-text-grey is-hidden-mobile" datetime="2019-05-29T08:59:43.251Z"><i class="far fa-calendar-check">&nbsp;</i>2019-05-29</time>
                 
                 
                 <div class="level-item">
@@ -420,7 +437,7 @@
             </div>
             <div class="level-start">
                 <div class="level-item">
-                <a class="button is-size-7 is-light" href="/2019/05/24/Article15ConvBackProp-part2/#more"><i class="fas fa-book-reader has-text-grey"></i>&nbsp;&nbsp;Read More</a>
+                <a class="button is-size-7 is-light" href="/2019/05/24/Note15 ConvBackProp-part2/#more"><i class="fas fa-book-reader has-text-grey"></i>&nbsp;&nbsp;Read More</a>
                 </div>
             </div>
         </div>
@@ -440,7 +457,7 @@
     <div class="card">
     
     <div class="card-image">
-        <a href="/2019/05/24/Article14ConvBackProp-part1/" class="image is-7by1">
+        <a href="/2019/05/24/Note14 ConvBackProp-part1/" class="image is-7by1">
             <img class="thumbnail" src="/gallery/DeepLearning.jpg" alt="步长stride为1的二维卷积方法的反向传播算法">
         </a>
     </div>
@@ -448,7 +465,7 @@
     <div class="card-content article ">
         <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
             
-                <a class="has-link-black-ter" href="/2019/05/24/Article14ConvBackProp-part1/"><i class="fas fa-angle-double-right"></i>步长stride为1的二维卷积方法的反向传播算法</a>
+                <a class="has-link-black-ter" href="/2019/05/24/Note14 ConvBackProp-part1/"><i class="fas fa-angle-double-right"></i>步长stride为1的二维卷积方法的反向传播算法</a>
             
         </h1>
         
@@ -497,7 +514,7 @@
             </div>
             <div class="level-start">
                 <div class="level-item">
-                <a class="button is-size-7 is-light" href="/2019/05/24/Article14ConvBackProp-part1/#more"><i class="fas fa-book-reader has-text-grey"></i>&nbsp;&nbsp;Read More</a>
+                <a class="button is-size-7 is-light" href="/2019/05/24/Note14 ConvBackProp-part1/#more"><i class="fas fa-book-reader has-text-grey"></i>&nbsp;&nbsp;Read More</a>
                 </div>
             </div>
         </div>
@@ -517,7 +534,7 @@
     <div class="card">
     
     <div class="card-image">
-        <a href="/2019/05/22/Article13YOLOv3-part05/" class="image is-7by1">
+        <a href="/2019/05/22/Note13 YOLOv3-part05/" class="image is-7by1">
             <img class="thumbnail" src="/gallery/DeepLearning.jpg" alt="YOLOv3：test_single_image.py">
         </a>
     </div>
@@ -525,7 +542,7 @@
     <div class="card-content article ">
         <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
             
-                <a class="has-link-black-ter" href="/2019/05/22/Article13YOLOv3-part05/"><i class="fas fa-angle-double-right"></i>YOLOv3：test_single_image.py</a>
+                <a class="has-link-black-ter" href="/2019/05/22/Note13 YOLOv3-part05/"><i class="fas fa-angle-double-right"></i>YOLOv3：test_single_image.py</a>
             
         </h1>
         
@@ -573,7 +590,7 @@
             </div>
             <div class="level-start">
                 <div class="level-item">
-                <a class="button is-size-7 is-light" href="/2019/05/22/Article13YOLOv3-part05/#more"><i class="fas fa-book-reader has-text-grey"></i>&nbsp;&nbsp;Read More</a>
+                <a class="button is-size-7 is-light" href="/2019/05/22/Note13 YOLOv3-part05/#more"><i class="fas fa-book-reader has-text-grey"></i>&nbsp;&nbsp;Read More</a>
                 </div>
             </div>
         </div>
@@ -593,7 +610,7 @@
     <div class="card">
     
     <div class="card-image">
-        <a href="/2019/05/22/Article12YOLOv3-part04/" class="image is-7by1">
+        <a href="/2019/05/22/Note12 YOLOv3-part04/" class="image is-7by1">
             <img class="thumbnail" src="/gallery/DeepLearning.jpg" alt="YOLOv3：test_single_image.py">
         </a>
     </div>
@@ -601,7 +618,7 @@
     <div class="card-content article ">
         <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
             
-                <a class="has-link-black-ter" href="/2019/05/22/Article12YOLOv3-part04/"><i class="fas fa-angle-double-right"></i>YOLOv3：test_single_image.py</a>
+                <a class="has-link-black-ter" href="/2019/05/22/Note12 YOLOv3-part04/"><i class="fas fa-angle-double-right"></i>YOLOv3：test_single_image.py</a>
             
         </h1>
         
@@ -649,7 +666,7 @@
             </div>
             <div class="level-start">
                 <div class="level-item">
-                <a class="button is-size-7 is-light" href="/2019/05/22/Article12YOLOv3-part04/#more"><i class="fas fa-book-reader has-text-grey"></i>&nbsp;&nbsp;Read More</a>
+                <a class="button is-size-7 is-light" href="/2019/05/22/Note12 YOLOv3-part04/#more"><i class="fas fa-book-reader has-text-grey"></i>&nbsp;&nbsp;Read More</a>
                 </div>
             </div>
         </div>
@@ -669,7 +686,7 @@
     <div class="card">
     
     <div class="card-image">
-        <a href="/2019/05/22/Article11YOLOv3-part03/" class="image is-7by1">
+        <a href="/2019/05/22/Note11 YOLOv3-part03/" class="image is-7by1">
             <img class="thumbnail" src="/gallery/DeepLearning.jpg" alt="YOLOv3：test_single_image.py">
         </a>
     </div>
@@ -677,7 +694,7 @@
     <div class="card-content article ">
         <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
             
-                <a class="has-link-black-ter" href="/2019/05/22/Article11YOLOv3-part03/"><i class="fas fa-angle-double-right"></i>YOLOv3：test_single_image.py</a>
+                <a class="has-link-black-ter" href="/2019/05/22/Note11 YOLOv3-part03/"><i class="fas fa-angle-double-right"></i>YOLOv3：test_single_image.py</a>
             
         </h1>
         
@@ -725,7 +742,7 @@
             </div>
             <div class="level-start">
                 <div class="level-item">
-                <a class="button is-size-7 is-light" href="/2019/05/22/Article11YOLOv3-part03/#more"><i class="fas fa-book-reader has-text-grey"></i>&nbsp;&nbsp;Read More</a>
+                <a class="button is-size-7 is-light" href="/2019/05/22/Note11 YOLOv3-part03/#more"><i class="fas fa-book-reader has-text-grey"></i>&nbsp;&nbsp;Read More</a>
                 </div>
             </div>
         </div>
@@ -745,7 +762,7 @@
     <div class="card">
     
     <div class="card-image">
-        <a href="/2019/05/22/Article10YOLOv3-part02/" class="image is-7by1">
+        <a href="/2019/05/22/Note10 YOLOv3-part02/" class="image is-7by1">
             <img class="thumbnail" src="/gallery/DeepLearning.jpg" alt="YOLOv3：test_single_image.py">
         </a>
     </div>
@@ -753,7 +770,7 @@
     <div class="card-content article ">
         <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
             
-                <a class="has-link-black-ter" href="/2019/05/22/Article10YOLOv3-part02/"><i class="fas fa-angle-double-right"></i>YOLOv3：test_single_image.py</a>
+                <a class="has-link-black-ter" href="/2019/05/22/Note10 YOLOv3-part02/"><i class="fas fa-angle-double-right"></i>YOLOv3：test_single_image.py</a>
             
         </h1>
         
@@ -801,7 +818,7 @@
             </div>
             <div class="level-start">
                 <div class="level-item">
-                <a class="button is-size-7 is-light" href="/2019/05/22/Article10YOLOv3-part02/#more"><i class="fas fa-book-reader has-text-grey"></i>&nbsp;&nbsp;Read More</a>
+                <a class="button is-size-7 is-light" href="/2019/05/22/Note10 YOLOv3-part02/#more"><i class="fas fa-book-reader has-text-grey"></i>&nbsp;&nbsp;Read More</a>
                 </div>
             </div>
         </div>
@@ -821,15 +838,15 @@
     <div class="card">
     
     <div class="card-image">
-        <a href="/2019/05/22/Article9YOLOv3-part01/" class="image is-7by1">
-            <img class="thumbnail" src="/gallery/DeepLearning.jpg" alt="YOLOv3：test_single_image.py">
+        <a href="/2019/05/22/Note9 YOLOv3-part01/" class="image is-7by1">
+            <img class="thumbnail" src="/gallery/DeepLearning.jpg" alt="YOLOv3源码阅读：test_single_image.py">
         </a>
     </div>
     
     <div class="card-content article ">
         <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
             
-                <a class="has-link-black-ter" href="/2019/05/22/Article9YOLOv3-part01/"><i class="fas fa-angle-double-right"></i>YOLOv3：test_single_image.py</a>
+                <a class="has-link-black-ter" href="/2019/05/22/Note9 YOLOv3-part01/"><i class="fas fa-angle-double-right"></i>YOLOv3源码阅读：test_single_image.py</a>
             
         </h1>
         
@@ -837,7 +854,7 @@
             <div class="level-left">
                 <time class="level-item has-text-grey" datetime="2019-05-22T08:27:38.000Z"><i class="far fa-calendar-alt">&nbsp;</i>2019-05-22</time>
                 
-                <time class="level-item has-text-grey is-hidden-mobile" datetime="2019-05-22T09:01:27.211Z"><i class="far fa-calendar-check">&nbsp;</i>2019-05-22</time>
+                <time class="level-item has-text-grey is-hidden-mobile" datetime="2019-05-27T08:39:26.236Z"><i class="far fa-calendar-check">&nbsp;</i>2019-05-27</time>
                 
                 
                 <div class="level-item">
@@ -850,7 +867,7 @@
                     <i class="far fa-clock"></i>&nbsp;
                     
                     
-                    6 minutes read (About 967 words)
+                    8 minutes read (About 1188 words)
                 </span>
                 
                 
@@ -859,8 +876,9 @@
         
         <div class="content">
             <h5 id="一yolo简介">一、YOLO简介</h5>
-<p>  YOLO（You Only Look Once）是一个高效的目标检测算法，属于One-Stage大家族，</p>
-<p>  本文参考的源码地址为：<a href="https://github.com/wizyoung/YOLOv3_TensorFlow" class="uri" target="_blank" rel="noopener">https://github.com/wizyoung/YOLOv3_TensorFlow</a></p>
+<p>  YOLO（You Only Look Once）是一个高效的目标检测算法，属于One-Stage大家族，针对于Two-Stage目标检测算法普遍存在的运算速度慢的缺点，YOLO创造性的提出了One-Stage。也就是将物体分类和物体定位在一个步骤中完成。YOLO直接在输出层回归bounding box的位置和bounding box所属类别，从而实现one-stage。</p>
+<p>  经过两次迭代，YOLO目前的最新版本为<a href="https://pjreddie.com/media/files/papers/YOLOv3.pdf" target="_blank" rel="noopener">YOLOv3</a>，在前两版的基础上，YOLOv3进行了一些比较细节的改动，效果有所提升。</p>
+<p>  本问正是希望可以将源码加以注释，方便自己学习，同时也愿意分享出来和大家一起学习。由于本人还是一学生，如果有错还请大家不吝指出。</p>
         </div>
         
         
@@ -877,7 +895,7 @@
             </div>
             <div class="level-start">
                 <div class="level-item">
-                <a class="button is-size-7 is-light" href="/2019/05/22/Article9YOLOv3-part01/#more"><i class="fas fa-book-reader has-text-grey"></i>&nbsp;&nbsp;Read More</a>
+                <a class="button is-size-7 is-light" href="/2019/05/22/Note9 YOLOv3-part01/#more"><i class="fas fa-book-reader has-text-grey"></i>&nbsp;&nbsp;Read More</a>
                 </div>
             </div>
         </div>
@@ -1102,16 +1120,16 @@
         
         <article class="media">
             
-            <a href="/2019/05/27/Article18ConvBackProp-part5/" class="media-left">
+            <a href="/2019/05/27/Note18 ConvBackProp-part5/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/gallery/DeepLearning.jpg" alt="Article18ConvBackProp-part5">
+                    <img class="thumbnail" src="/gallery/DeepLearning.jpg" alt="多通道卷积以及激活函数">
                 </p>
             </a>
             
             <div class="media-content">
                 <div class="content">
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-05-27T07:09:30.000Z">2019-05-27</time></div>
-                    <a href="/2019/05/27/Article18ConvBackProp-part5/" class="has-link-black-ter is-size-6">Article18ConvBackProp-part5</a>
+                    <a href="/2019/05/27/Note18 ConvBackProp-part5/" class="has-link-black-ter is-size-6">多通道卷积以及激活函数</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/深度学习/">深度学习</a>
                     </p>
@@ -1121,7 +1139,7 @@
         
         <article class="media">
             
-            <a href="/2019/05/24/Article17ConvBackProp-part4/" class="media-left">
+            <a href="/2019/05/24/Note17 ConvBackProp-part4/" class="media-left">
                 <p class="image is-64x64">
                     <img class="thumbnail" src="/gallery/DeepLearning.jpg" alt="代码实现二维平面上的卷积及其反向传播">
                 </p>
@@ -1130,7 +1148,7 @@
             <div class="media-content">
                 <div class="content">
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-05-24T04:32:59.000Z">2019-05-24</time></div>
-                    <a href="/2019/05/24/Article17ConvBackProp-part4/" class="has-link-black-ter is-size-6">代码实现二维平面上的卷积及其反向传播</a>
+                    <a href="/2019/05/24/Note17 ConvBackProp-part4/" class="has-link-black-ter is-size-6">代码实现二维平面上的卷积及其反向传播</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/深度学习/">深度学习</a>
                     </p>
@@ -1140,7 +1158,7 @@
         
         <article class="media">
             
-            <a href="/2019/05/24/Article16ConvBackProp-part3/" class="media-left">
+            <a href="/2019/05/24/Note16 ConvBackProp-part3/" class="media-left">
                 <p class="image is-64x64">
                     <img class="thumbnail" src="/gallery/DeepLearning.jpg" alt="步长stride为s的二维卷积方法的反向传播算法：一个十分极端的例子">
                 </p>
@@ -1149,7 +1167,7 @@
             <div class="media-content">
                 <div class="content">
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-05-24T04:32:45.000Z">2019-05-24</time></div>
-                    <a href="/2019/05/24/Article16ConvBackProp-part3/" class="has-link-black-ter is-size-6">步长stride为s的二维卷积方法的反向传播算法：一个十分极端的例子</a>
+                    <a href="/2019/05/24/Note16 ConvBackProp-part3/" class="has-link-black-ter is-size-6">步长stride为s的二维卷积方法的反向传播算法：一个十分极端的例子</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/深度学习/">深度学习</a>
                     </p>
@@ -1159,7 +1177,7 @@
         
         <article class="media">
             
-            <a href="/2019/05/24/Article15ConvBackProp-part2/" class="media-left">
+            <a href="/2019/05/24/Note15 ConvBackProp-part2/" class="media-left">
                 <p class="image is-64x64">
                     <img class="thumbnail" src="/gallery/DeepLearning.jpg" alt="步长stride为s的二维卷积方法的反向传播算法">
                 </p>
@@ -1168,7 +1186,7 @@
             <div class="media-content">
                 <div class="content">
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-05-24T04:32:31.000Z">2019-05-24</time></div>
-                    <a href="/2019/05/24/Article15ConvBackProp-part2/" class="has-link-black-ter is-size-6">步长stride为s的二维卷积方法的反向传播算法</a>
+                    <a href="/2019/05/24/Note15 ConvBackProp-part2/" class="has-link-black-ter is-size-6">步长stride为s的二维卷积方法的反向传播算法</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/深度学习/">深度学习</a>
                     </p>
@@ -1178,7 +1196,7 @@
         
         <article class="media">
             
-            <a href="/2019/05/24/Article14ConvBackProp-part1/" class="media-left">
+            <a href="/2019/05/24/Note14 ConvBackProp-part1/" class="media-left">
                 <p class="image is-64x64">
                     <img class="thumbnail" src="/gallery/DeepLearning.jpg" alt="步长stride为1的二维卷积方法的反向传播算法">
                 </p>
@@ -1187,7 +1205,7 @@
             <div class="media-content">
                 <div class="content">
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-05-24T04:32:01.000Z">2019-05-24</time></div>
-                    <a href="/2019/05/24/Article14ConvBackProp-part1/" class="has-link-black-ter is-size-6">步长stride为1的二维卷积方法的反向传播算法</a>
+                    <a href="/2019/05/24/Note14 ConvBackProp-part1/" class="has-link-black-ter is-size-6">步长stride为1的二维卷积方法的反向传播算法</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/深度学习/">深度学习</a>
                     </p>
@@ -1257,16 +1275,16 @@
         
         <article class="media">
             
-            <a href="/2019/05/27/Article18ConvBackProp-part5/" class="media-left">
+            <a href="/2019/05/27/Note18 ConvBackProp-part5/" class="media-left">
                 <p class="image is-64x64">
-                    <img class="thumbnail" src="/gallery/DeepLearning.jpg" alt="Article18ConvBackProp-part5">
+                    <img class="thumbnail" src="/gallery/DeepLearning.jpg" alt="多通道卷积以及激活函数">
                 </p>
             </a>
             
             <div class="media-content">
                 <div class="content">
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-05-27T07:09:30.000Z">2019-05-27</time></div>
-                    <a href="/2019/05/27/Article18ConvBackProp-part5/" class="has-link-black-ter is-size-6">Article18ConvBackProp-part5</a>
+                    <a href="/2019/05/27/Note18 ConvBackProp-part5/" class="has-link-black-ter is-size-6">多通道卷积以及激活函数</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/深度学习/">深度学习</a>
                     </p>
@@ -1276,7 +1294,7 @@
         
         <article class="media">
             
-            <a href="/2019/05/24/Article17ConvBackProp-part4/" class="media-left">
+            <a href="/2019/05/24/Note17 ConvBackProp-part4/" class="media-left">
                 <p class="image is-64x64">
                     <img class="thumbnail" src="/gallery/DeepLearning.jpg" alt="代码实现二维平面上的卷积及其反向传播">
                 </p>
@@ -1285,7 +1303,7 @@
             <div class="media-content">
                 <div class="content">
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-05-24T04:32:59.000Z">2019-05-24</time></div>
-                    <a href="/2019/05/24/Article17ConvBackProp-part4/" class="has-link-black-ter is-size-6">代码实现二维平面上的卷积及其反向传播</a>
+                    <a href="/2019/05/24/Note17 ConvBackProp-part4/" class="has-link-black-ter is-size-6">代码实现二维平面上的卷积及其反向传播</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/深度学习/">深度学习</a>
                     </p>
@@ -1295,7 +1313,7 @@
         
         <article class="media">
             
-            <a href="/2019/05/24/Article16ConvBackProp-part3/" class="media-left">
+            <a href="/2019/05/24/Note16 ConvBackProp-part3/" class="media-left">
                 <p class="image is-64x64">
                     <img class="thumbnail" src="/gallery/DeepLearning.jpg" alt="步长stride为s的二维卷积方法的反向传播算法：一个十分极端的例子">
                 </p>
@@ -1304,7 +1322,7 @@
             <div class="media-content">
                 <div class="content">
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-05-24T04:32:45.000Z">2019-05-24</time></div>
-                    <a href="/2019/05/24/Article16ConvBackProp-part3/" class="has-link-black-ter is-size-6">步长stride为s的二维卷积方法的反向传播算法：一个十分极端的例子</a>
+                    <a href="/2019/05/24/Note16 ConvBackProp-part3/" class="has-link-black-ter is-size-6">步长stride为s的二维卷积方法的反向传播算法：一个十分极端的例子</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/深度学习/">深度学习</a>
                     </p>
@@ -1314,7 +1332,7 @@
         
         <article class="media">
             
-            <a href="/2019/05/24/Article15ConvBackProp-part2/" class="media-left">
+            <a href="/2019/05/24/Note15 ConvBackProp-part2/" class="media-left">
                 <p class="image is-64x64">
                     <img class="thumbnail" src="/gallery/DeepLearning.jpg" alt="步长stride为s的二维卷积方法的反向传播算法">
                 </p>
@@ -1323,7 +1341,7 @@
             <div class="media-content">
                 <div class="content">
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-05-24T04:32:31.000Z">2019-05-24</time></div>
-                    <a href="/2019/05/24/Article15ConvBackProp-part2/" class="has-link-black-ter is-size-6">步长stride为s的二维卷积方法的反向传播算法</a>
+                    <a href="/2019/05/24/Note15 ConvBackProp-part2/" class="has-link-black-ter is-size-6">步长stride为s的二维卷积方法的反向传播算法</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/深度学习/">深度学习</a>
                     </p>
@@ -1333,7 +1351,7 @@
         
         <article class="media">
             
-            <a href="/2019/05/24/Article14ConvBackProp-part1/" class="media-left">
+            <a href="/2019/05/24/Note14 ConvBackProp-part1/" class="media-left">
                 <p class="image is-64x64">
                     <img class="thumbnail" src="/gallery/DeepLearning.jpg" alt="步长stride为1的二维卷积方法的反向传播算法">
                 </p>
@@ -1342,7 +1360,7 @@
             <div class="media-content">
                 <div class="content">
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-05-24T04:32:01.000Z">2019-05-24</time></div>
-                    <a href="/2019/05/24/Article14ConvBackProp-part1/" class="has-link-black-ter is-size-6">步长stride为1的二维卷积方法的反向传播算法</a>
+                    <a href="/2019/05/24/Note14 ConvBackProp-part1/" class="has-link-black-ter is-size-6">步长stride为1的二维卷积方法的反向传播算法</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/深度学习/">深度学习</a>
                     </p>
