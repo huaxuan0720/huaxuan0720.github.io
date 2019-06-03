@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+<title>YOLOv3源码阅读：test_single_image.py - Welcome to My Blogs</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+    <meta name="description" content="一、YOLO简介   YOLO（You Only Look Once）是一个高效的目标检测算法，属于One-Stage大家族，针对于Two-Stage目标检测算法普遍存在的运算速度慢的缺点，YOLO创造性的提出了One-Stage。也就是将物体分类和物体定位在一个步骤中完成。YOLO直接在输出层回归bounding box的位置和bounding box所属类别，从而实现one-stage。">
+<meta name="keywords" content="深度学习,目标检测,YOLOv3">
+<meta property="og:type" content="article">
+<meta property="og:title" content="YOLOv3源码阅读：test_single_image.py">
+<meta property="og:url" content="http://huaxuan0720.github.io/2019/05/22/Note9-YOLOv3-part01/index.html">
+<meta property="og:site_name" content="Welcome to My Blogs">
+<meta property="og:description" content="一、YOLO简介   YOLO（You Only Look Once）是一个高效的目标检测算法，属于One-Stage大家族，针对于Two-Stage目标检测算法普遍存在的运算速度慢的缺点，YOLO创造性的提出了One-Stage。也就是将物体分类和物体定位在一个步骤中完成。YOLO直接在输出层回归bounding box的位置和bounding box所属类别，从而实现one-stage。">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://huaxuan0720.github.io/gallery/DeepLearning.jpg">
+<meta property="og:updated_time" content="2019-05-27T08:39:26.236Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="YOLOv3源码阅读：test_single_image.py">
+<meta name="twitter:description" content="一、YOLO简介   YOLO（You Only Look Once）是一个高效的目标检测算法，属于One-Stage大家族，针对于Two-Stage目标检测算法普遍存在的运算速度慢的缺点，YOLO创造性的提出了One-Stage。也就是将物体分类和物体定位在一个步骤中完成。YOLO直接在输出层回归bounding box的位置和bounding box所属类别，从而实现one-stage。">
+<meta name="twitter:image" content="http://huaxuan0720.github.io/gallery/DeepLearning.jpg">
+
+
+
+
+
+
+
+<link rel="icon" href="/images/favicon.svg">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/github-gist.css">
+
+
+    
+    
+    
+    <style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
+    
+
+    
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css">
+    
+
+    
+    
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css">
+
+
+    
+    
+    
+    
+
+<link rel="stylesheet" href="/css/back-to-top.css">
+
+
+    
+    
+
+    
+    
+    
+    
+
+    
+    
+<link rel="stylesheet" href="/css/progressbar.css">
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+
+    
+    
+    
+
+    
+    
+    
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="is-3-column">
+    <nav class="navbar navbar-main">
+    <div class="container">
+        <div class="navbar-brand is-flex-center">
+            <a class="navbar-item navbar-logo" href="/">
+            
+                <img src="/images/favicon.svg" alt="YOLOv3源码阅读：test_single_image.py" height="28">
+            
+            </a>
+        </div>
+        <div class="navbar-menu">
+            
+            <div class="navbar-start">
+                
+                <a class="navbar-item" href="/">主页</a>
+                
+                <a class="navbar-item" href="/archives/">归档</a>
+                
+                <a class="navbar-item" href="/categories/">类别</a>
+                
+                <a class="navbar-item" href="/tags/">标签</a>
+                
+                <a class="navbar-item" href="/about/">关于</a>
+                
+            </div>
+            
+            <div class="navbar-end">
+                
+                    
+                    
+                    <a class="navbar-item" target="_blank" title="Xuan Hua&#39;s GitHub" href="https://www.github.com/huaxuan0720">
+                        
+                        <i class="fab fa-github"></i>
+                        
+                    </a>
+                    
+                
+                
+                <a class="navbar-item is-hidden-tablet catalogue" title="Catalogue" href="javascript:;">
+                    <i class="fas fa-list-ul"></i>
+                </a>
+                
+                
+                <a class="navbar-item search" title="Search" href="javascript:;">
+                    <i class="fas fa-search"></i>
+                </a>
+                
+            </div>
+        </div>
+    </div>
+</nav>
+    
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-8-tablet is-8-desktop is-9-widescreen has-order-2 column-main"><div class="card">
+    
+    <div class="card-image">
+        <span class="image is-7by1">
+            <img class="thumbnail" src="/gallery/DeepLearning.jpg" alt="YOLOv3源码阅读：test_single_image.py">
+        </span>
+    </div>
+    
+    <div class="card-content article ">
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                <i class="fas fa-angle-double-right"></i>YOLOv3源码阅读：test_single_image.py
+            
+        </h1>
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2019-05-22T08:27:38.000Z"><i class="far fa-calendar-alt">&nbsp;</i>2019-05-22</time>
+                
+                <time class="level-item has-text-grey is-hidden-mobile" datetime="2019-05-27T08:39:26.236Z"><i class="far fa-calendar-check">&nbsp;</i>2019-05-27</time>
+                
+                
+                <div class="level-item">
+                <i class="far fa-folder-open has-text-grey"></i>&nbsp;
+                <a class="has-link-grey -link" href="/categories/目标检测/">目标检测</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    <i class="far fa-clock"></i>&nbsp;
+                    
+                    
+                    8 minutes read (About 1188 words)
+                </span>
+                
+                
+                <span class="level-item has-text-grey" id="busuanzi_container_page_pv">
+                    <i class="far fa-eye"></i>
+                    <span id="busuanzi_value_page_pv">0</span> visits
+                </span>
+                
+            </div>
+        </div>
+        
+        <div class="content">
+            <h5 id="一yolo简介">一、YOLO简介</h5>
+<p>  YOLO（You Only Look Once）是一个高效的目标检测算法，属于One-Stage大家族，针对于Two-Stage目标检测算法普遍存在的运算速度慢的缺点，YOLO创造性的提出了One-Stage。也就是将物体分类和物体定位在一个步骤中完成。YOLO直接在输出层回归bounding box的位置和bounding box所属类别，从而实现one-stage。</p>
+<p>  经过两次迭代，YOLO目前的最新版本为<a href="https://pjreddie.com/media/files/papers/YOLOv3.pdf" target="_blank" rel="noopener">YOLOv3</a>，在前两版的基础上，YOLOv3进行了一些比较细节的改动，效果有所提升。</p>
+<p>  本问正是希望可以将源码加以注释，方便自己学习，同时也愿意分享出来和大家一起学习。由于本人还是一学生，如果有错还请大家不吝指出。</p>
+<a id="more"></a>
+<p>  本文参考的源码地址为：<a href="https://github.com/wizyoung/YOLOv3_TensorFlow" class="uri" target="_blank" rel="noopener">https://github.com/wizyoung/YOLOv3_TensorFlow</a></p>
+<h5 id="二代码和注释">二、代码和注释</h5>
+<p>  文件目录：YOUR_PATH\YOLOv3_TensorFlow-master\test_single_image.py</p>
+<p>  需要注意的是，我们默认输入图片尺寸为<span class="math inline">\([416, 416]\)</span>。</p>
+<figure class="highlight python hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># coding: utf-8</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">from</span> __future__ <span class="hljs-keyword">import</span> division, print_function</span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">import</span> tensorflow <span class="hljs-keyword">as</span> tf</span><br><span class="line"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np</span><br><span class="line"><span class="hljs-keyword">import</span> argparse</span><br><span class="line"><span class="hljs-keyword">import</span> cv2</span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">from</span> utils.misc_utils <span class="hljs-keyword">import</span> parse_anchors, read_class_names</span><br><span class="line"><span class="hljs-keyword">from</span> utils.nms_utils <span class="hljs-keyword">import</span> gpu_nms</span><br><span class="line"><span class="hljs-keyword">from</span> utils.plot_utils <span class="hljs-keyword">import</span> get_color_table, plot_one_box</span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">from</span> model <span class="hljs-keyword">import</span> yolov3</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># 设置命令行参数，具体可参见每一个命令行参数的含义</span></span><br><span class="line">parser = argparse.ArgumentParser(description=<span class="hljs-string">"YOLO-V3 test single image test procedure."</span>)</span><br><span class="line">parser.add_argument(<span class="hljs-string">"input_image"</span>, type=str,</span><br><span class="line">                    help=<span class="hljs-string">"The path of the input image."</span>)</span><br><span class="line">parser.add_argument(<span class="hljs-string">"--anchor_path"</span>, type=str, default=<span class="hljs-string">"./data/yolo_anchors.txt"</span>,</span><br><span class="line">                    help=<span class="hljs-string">"The path of the anchor txt file."</span>)</span><br><span class="line">parser.add_argument(<span class="hljs-string">"--new_size"</span>, nargs=<span class="hljs-string">'*'</span>, type=int, default=[<span class="hljs-number">416</span>, <span class="hljs-number">416</span>],</span><br><span class="line">                    help=<span class="hljs-string">"Resize the input image with `new_size`, size format: [width, height]"</span>)</span><br><span class="line">parser.add_argument(<span class="hljs-string">"--class_name_path"</span>, type=str, default=<span class="hljs-string">"./data/coco.names"</span>,</span><br><span class="line">                    help=<span class="hljs-string">"The path of the class names."</span>)</span><br><span class="line">parser.add_argument(<span class="hljs-string">"--restore_path"</span>, type=str, default=<span class="hljs-string">"./data/darknet_weights/yolov3.ckpt"</span>,</span><br><span class="line">                    help=<span class="hljs-string">"The path of the weights to restore."</span>)</span><br><span class="line">args = parser.parse_args()</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># 处理anchors，这些anchors是通过数据聚类获得，一共9个，shape为：[9, 2]。</span></span><br><span class="line"><span class="hljs-comment"># 需要注意的是，最后一个维度的顺序是[width, height]</span></span><br><span class="line">args.anchors = parse_anchors(args.anchor_path)</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># 处理classes， 这里是将所有的class的名称提取了出来，组成了一个列表</span></span><br><span class="line">args.classes = read_class_names(args.class_name_path)</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># 类别的数目</span></span><br><span class="line">args.num_class = len(args.classes)</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># 根据类别的数目为每一个类别分配不同的颜色，以便展示</span></span><br><span class="line">color_table = get_color_table(args.num_class)</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># 读取图片</span></span><br><span class="line">img_ori = cv2.imread(args.input_image)</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># 获取图片的尺寸</span></span><br><span class="line">height_ori, width_ori = img_ori.shape[:<span class="hljs-number">2</span>]</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># resize，根据之前设定的尺寸值进行resize，默认是[416, 416]，还是[width, height]的顺序</span></span><br><span class="line">img = cv2.resize(img_ori, tuple(args.new_size))</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># 对图片像素进行一定的数据处理</span></span><br><span class="line">img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)</span><br><span class="line">img = np.asarray(img, np.float32)</span><br><span class="line">img = img[np.newaxis, :] / <span class="hljs-number">255.</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># TF会话</span></span><br><span class="line"><span class="hljs-keyword">with</span> tf.Session() <span class="hljs-keyword">as</span> sess:</span><br><span class="line">    <span class="hljs-comment"># 输入的placeholder，用于输入图片</span></span><br><span class="line">    input_data = tf.placeholder(tf.float32, [<span class="hljs-number">1</span>, args.new_size[<span class="hljs-number">1</span>], args.new_size[<span class="hljs-number">0</span>], <span class="hljs-number">3</span>], name=<span class="hljs-string">'input_data'</span>)</span><br><span class="line">    <span class="hljs-comment"># 定义一个YOLOv3的类，在后面可以用来做模型建立以及loss计算等操作，参数分别是类别的数目和anchors</span></span><br><span class="line">    yolo_model = yolov3(args.num_class, args.anchors)</span><br><span class="line">    <span class="hljs-keyword">with</span> tf.variable_scope(<span class="hljs-string">'yolov3'</span>):</span><br><span class="line">        <span class="hljs-comment"># 对图片进行正向传播，返回多张特征图</span></span><br><span class="line">        pred_feature_maps = yolo_model.forward(input_data, <span class="hljs-literal">False</span>)</span><br><span class="line">    <span class="hljs-comment"># 对这些特征图进行处理，获得计算出的bounding box以及属于前景的概率已经每一个类别的概率分布</span></span><br><span class="line">    pred_boxes, pred_confs, pred_probs = yolo_model.predict(pred_feature_maps)</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment"># 将两个概率值分别相乘就可以获得最终的概率值</span></span><br><span class="line">    pred_scores = pred_confs * pred_probs</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment"># 对这些bounding boxes和概率值进行非最大抑制（NMS）就可以获得最后的bounding boxes和与其对应的概率值以及标签</span></span><br><span class="line">    boxes, scores, labels = gpu_nms(pred_boxes, pred_scores, args.num_class, max_boxes=<span class="hljs-number">30</span>, score_thresh=<span class="hljs-number">0.4</span>, nms_thresh=<span class="hljs-number">0.5</span>)</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment"># Saver类，用以保存和恢复模型</span></span><br><span class="line">    saver = tf.train.Saver()</span><br><span class="line">    <span class="hljs-comment"># 恢复模型参数</span></span><br><span class="line">    saver.restore(sess, args.restore_path)</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment"># 运行graph，获得对应tensors的具体数值，这里是[boxes, scores, labels]，对应于NMS之后获得的结果</span></span><br><span class="line">    boxes_, scores_, labels_ = sess.run([boxes, scores, labels], feed_dict=&#123;input_data: img&#125;)</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment"># rescale the coordinates to the original image</span></span><br><span class="line">    <span class="hljs-comment"># 将坐标重新映射到原始图片上，因为前面的计算都是在resize之后的图片上进行的，所以需要进行映射</span></span><br><span class="line">    boxes_[:, <span class="hljs-number">0</span>] *= (width_ori/float(args.new_size[<span class="hljs-number">0</span>]))</span><br><span class="line">    boxes_[:, <span class="hljs-number">2</span>] *= (width_ori/float(args.new_size[<span class="hljs-number">0</span>]))</span><br><span class="line">    boxes_[:, <span class="hljs-number">1</span>] *= (height_ori/float(args.new_size[<span class="hljs-number">1</span>]))</span><br><span class="line">    boxes_[:, <span class="hljs-number">3</span>] *= (height_ori/float(args.new_size[<span class="hljs-number">1</span>]))</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment"># 输出</span></span><br><span class="line">    print(<span class="hljs-string">"box coords:"</span>)</span><br><span class="line">    print(boxes_)</span><br><span class="line">    print(<span class="hljs-string">'*'</span> * <span class="hljs-number">30</span>)</span><br><span class="line">    print(<span class="hljs-string">"scores:"</span>)</span><br><span class="line">    print(scores_)</span><br><span class="line">    print(<span class="hljs-string">'*'</span> * <span class="hljs-number">30</span>)</span><br><span class="line">    print(<span class="hljs-string">"labels:"</span>)</span><br><span class="line">    print(labels_)</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment"># 绘制并展示，保存最后的结果</span></span><br><span class="line">    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(len(boxes_)):</span><br><span class="line">        x0, y0, x1, y1 = boxes_[i]</span><br><span class="line">        plot_one_box(img_ori, [x0, y0, x1, y1], label=args.classes[labels_[i]], color=color_table[labels_[i]])</span><br><span class="line">    cv2.imshow(<span class="hljs-string">'Detection result'</span>, img_ori)</span><br><span class="line">    cv2.imwrite(<span class="hljs-string">'detection_result.jpg'</span>, img_ori)</span><br><span class="line">    cv2.waitKey(<span class="hljs-number">0</span>)</span><br></pre></td></tr></table></figure>
+
+        </div>
+        
+            <ul class="post-copyright">
+            <li><strong>本文标题：</strong><a href="http://huaxuan0720.github.io/2019/05/22/Note9-YOLOv3-part01/">YOLOv3源码阅读：test_single_image.py</a></li>
+            <li><strong>本文作者：</strong><a href="http://huaxuan0720.github.io">华轩</a></li>
+            <li><strong>本文链接：</strong><a href="http://huaxuan0720.github.io/2019/05/22/Note9-YOLOv3-part01/">http://huaxuan0720.github.io/2019/05/22/Note9-YOLOv3-part01/</a></li>
+            <li><strong>发布时间：</strong>2019-05-22</li>
+            <li><strong>版权声明：</strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
+            </li>
+            </ul>
+        
+        
+        <hr style="height:1px;margin:1rem 0">
+        <div class="level is-size-7 is-uppercase">
+            <div class="level-start">
+                <div class="level-item">
+                    <i class="fas fa-tags has-text-grey"></i>&nbsp;
+                    <a class="has-link-grey -link" href="/tags/YOLOv3/">YOLOv3</a>,&nbsp;<a class="has-link-grey -link" href="/tags/深度学习/">深度学习</a>,&nbsp;<a class="has-link-grey -link" href="/tags/目标检测/">目标检测</a>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+    </div>
+</div>
+
+
+
+<div class="card">
+    <div class="card-content">
+        <h3 class="menu-label has-text-centered">Like this article? Support the author with</h3>
+        <div class="buttons is-centered">
+            
+                
+<a class="button is-info donate">
+    <span class="icon is-small">
+        <i class="fab fa-alipay"></i>
+    </span>
+    <span>Alipay</span>
+    <div class="qrcode"><img src="/images/alipay.jpg" alt="Alipay"></div>
+</a>
+
+                
+                
+<a class="button is-success donate">
+    <span class="icon is-small">
+        <i class="fab fa-weixin"></i>
+    </span>
+    <span>Wechat</span>
+    <div class="qrcode"><img src="/images/wechat.jpg" alt="Wechat"></div>
+</a>
+
+                
+        </div>
+    </div>
+</div>
+
+
+
+<div class="card card-transparent">
+    <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        <div class="level-start">
+            <a class="level level-item has-link-grey  article-nav-prev" href="/2019/05/22/Note10-YOLOv3-part02/">
+                <i class="level-item fas fa-chevron-left"></i>
+                <span class="level-item">YOLOv3：test_single_image.py</span>
+            </a>
+        </div>
+        
+        
+        <div class="level-end">
+            <a class="level level-item has-link-grey  article-nav-next" href="/2019/05/12/Note8-BackProp-3/">
+                <span class="level-item">反向传播算法（三）之完整的反向传播算法</span>
+                <i class="level-item fas fa-chevron-right"></i>
+            </a>
+        </div>
+        
+    </div>
+</div>
+
+
+
+<div class="card">
+    <div class="card-content">
+        <h3 class="title is-5 has-text-weight-normal">Comments</h3>
+        
+<div id="valine-thread" class="content"></div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+<script>
+    new Valine({
+        el: '#valine-thread' ,
+        notify: true,
+        verify: false,
+        app_id: 'iccwxYBr9y70NgcI4taslyB9-gzGzoHsz',
+        app_key: 'ksGgGN0AeLXQQ1HfOy0mCrM0',
+        placeholder: 'xxxxxxxx'
+    });
+</script>
+
+    </div>
+</div>
+
+</div>
+                
+
+
+
+
+<div class="column is-4-tablet is-4-desktop is-3-widescreen  has-order-1 column-left ">
+    
+        
+<div class="card widget">
+    <div class="card-content">
+        <nav class="level" style="margin-bottom:1rem">
+            <div class="level-item has-text-centered">
+                <div>
+                    
+                        <img class="image is-96x96 has-mb-6" src="/images/icon.jpg" alt="华轩">
+                    
+                    
+                    <p class="is-size-4 is-block">
+                        华轩
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-block">
+                        A Student
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-flex is-flex-center has-text-grey">
+                        <i class="fas fa-map-marker-alt has-mr-7"></i>
+                        <span>Hangzhou Zhejiang, China</span>
+                    </p>
+                    
+                </div>
+            </div>
+        </nav>
+        <nav class="level menu-list is-mobile" style="margin-bottom:1rem">
+            <div class="level-item has-text-centered is-marginless">
+                <a href="/archives/">
+                    <p class="heading">
+                        Posts
+                    </p>
+                    <p class="title has-text-weight-normal">
+                        21
+                    </p>
+                </a>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <a href="/categories/">
+                    <p class="heading">
+                        Categories
+                    </p>
+                    <p class="title has-text-weight-normal">
+                        3
+                    </p>
+                </a>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <a href="/tags/">
+                    <p class="heading">
+                        Tags
+                    </p>
+                    <p class="title has-text-weight-normal">
+                        15
+                    </p>
+                </a>
+            </div>
+        </nav>
+        <div class="level">
+            <a class="level-item button is-link is-rounded" href="https://github.com/huaxuan0720" target="_blank">
+                <i class="fab fa-github"></i>&nbsp;&nbsp;Follow</a>
+        </div>
+        
+        
+        <div class="level is-mobile">
+            
+            <a class="level-item button is-white is-marginless" target="_blank" title="Github" href="https://github.com/huaxuan0720">
+                
+                <i class="fab fa-github"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" title="Facebook" href="/">
+                
+                <i class="fab fa-facebook"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" title="Twitter" href="/">
+                
+                <i class="fab fa-twitter"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" title="RSS" href="/">
+                
+                <i class="fas fa-rss"></i>
+                
+            </a>
+            
+        </div>
+        
+    </div>
+</div>
+
+    
+        
+<div class="card widget column-left is-sticky" id="toc">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                Catalogue
+            </h3>
+            <ul class="menu-list"><li>
+        <a class="is-flex" href="#一yolo简介">
+        <span class="has-mr-6">1</span>
+        <span>一、YOLO简介</span>
+        </a></li><li>
+        <a class="is-flex" href="#二代码和注释">
+        <span class="has-mr-6">2</span>
+        <span>二、代码和注释</span>
+        </a></li></ul>
+        </div>
+    </div>
+</div>
+
+
+    
+    
+        <div class="column-right-shadow is-hidden-widescreen ">
+        
+        </div>
+    
+</div>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
+    <div class="container">
+        <div class="level">
+            <div class="level-start has-text-centered-mobile">
+                <a class="footer-logo is-block has-mb-6" href="/">
+                
+                    <img src="/images/favicon.svg" alt="YOLOv3源码阅读：test_single_image.py" height="28">
+                
+                </a>
+                <p class="is-size-7">
+                &copy; 2019 华轩&nbsp;
+                Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> & <a href="http://github.com/ppoffice/hexo-theme-icarus" target="_blank">Icarus</a>
+                
+                <br>
+                <span id="busuanzi_container_site_uv">
+                Visited by <span id="busuanzi_value_site_uv">0</span> users
+                </span>
+                
+                </p>
+            </div>
+            <div class="level-end">
+            
+                <div class="field has-addons is-flex-center-mobile has-mt-5-mobile is-flex-wrap is-flex-middle">
+                
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" title="CC BY-NC-SA 4.0" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                        
+                        <i class="fab fa-creative-commons"></i>&nbsp;<i class="fab fa-creative-commons-by"></i>&nbsp;<i class="fab fa-creative-commons-nc"></i>&nbsp;<i class="fab fa-creative-commons-sa"></i>&nbsp;
+                        
+                    </a>
+                </p>
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" title="Xuan Hua&#39;s GitHub" href="https://www.github.com/huaxuan0720">
+                        
+                        <i class="fab fa-github"></i>&nbsp;
+                        
+                    </a>
+                </p>
+                
+                </div>
+            
+            </div>
+        </div>
+    </div>
+</footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
+<script>moment.locale("en");</script>
+
+
+    
+    
+    
+    <script src="/js/animation.js"></script>
+    
+
+    
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
+    <script src="/js/gallery.js" defer></script>
+    
+
+    
+    
+
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
+            my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        });
+    });
+</script>
+
+
+    
+    
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    MathJax.Hub.Config({
+        'HTML-CSS': {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+});
+</script>
+
+    
+    
+
+<a id="back-to-top" title="Back to Top" href="javascript:;">
+    <i class="fas fa-chevron-up"></i>
+</a>
+<script src="/js/back-to-top.js" defer></script>
+
+
+    
+    
+
+    
+    
+    
+    
+
+    
+    
+    
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
+    <script src="/js/clipboard.js" defer></script>
+    
+
+    
+    
+    
+
+    
+
+
+<script src="/js/main.js" defer></script>
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="Type something...">
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: 'Posts',
+                PAGES: 'Pages',
+                CATEGORIES: 'Categories',
+                TAGS: 'Tags',
+                UNTITLED: '(Untitled)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script src="/js/insight.js" defer></script>
+<link rel="stylesheet" href="/css/search.css">
+<link rel="stylesheet" href="/css/insight.css">
+    
+</body>
+</html>
