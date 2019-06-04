@@ -2,21 +2,25 @@
 <html>
 <head><meta name="generator" content="Hexo 3.8.0">
     <meta charset="utf-8">
-<title>Note20 Softmax and Cross Entropy - Welcome to My Blogs</title>
+<title>Softmax、Cross Entropy及其反向传播（求导） - Welcome to My Blogs</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
 
 
-    <meta property="og:type" content="article">
-<meta property="og:title" content="Note20 Softmax and Cross Entropy">
+    <meta name="description" content="前言   分类问题是深度学习中的最基本的问题，而分类问题中，我们使用最多的就是利用\(softmax\)函数并结合\(cross \; entropy\)计算最后的损失值\(Loss\)。所以我们有必要对其进行一定的了解，并进行其求导的操作，这里的求导就相当于进行反向传播。">
+<meta name="keywords" content="深度学习,反向传播">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Softmax、Cross Entropy及其反向传播（求导）">
 <meta property="og:url" content="http://huaxuan0720.github.io/2019/06/03/Note20-Softmax-and-Cross-Entropy/index.html">
 <meta property="og:site_name" content="Welcome to My Blogs">
+<meta property="og:description" content="前言   分类问题是深度学习中的最基本的问题，而分类问题中，我们使用最多的就是利用\(softmax\)函数并结合\(cross \; entropy\)计算最后的损失值\(Loss\)。所以我们有必要对其进行一定的了解，并进行其求导的操作，这里的求导就相当于进行反向传播。">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="http://huaxuan0720.github.io/images/og_image.png">
-<meta property="og:updated_time" content="2019-06-03T10:30:22.296Z">
+<meta property="og:image" content="http://huaxuan0720.github.io/gallery/DeepLearning.jpg">
+<meta property="og:updated_time" content="2019-06-04T05:51:06.433Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Note20 Softmax and Cross Entropy">
-<meta name="twitter:image" content="http://huaxuan0720.github.io/images/og_image.png">
+<meta name="twitter:title" content="Softmax、Cross Entropy及其反向传播（求导）">
+<meta name="twitter:description" content="前言   分类问题是深度学习中的最基本的问题，而分类问题中，我们使用最多的就是利用\(softmax\)函数并结合\(cross \; entropy\)计算最后的损失值\(Loss\)。所以我们有必要对其进行一定的了解，并进行其求导的操作，这里的求导就相当于进行反向传播。">
+<meta name="twitter:image" content="http://huaxuan0720.github.io/gallery/DeepLearning.jpg">
 
 
 
@@ -94,7 +98,7 @@
         <div class="navbar-brand is-flex-center">
             <a class="navbar-item navbar-logo" href="/">
             
-                <img src="/images/favicon.svg" alt="Note20 Softmax and Cross Entropy" height="28">
+                <img src="/images/favicon.svg" alt="Softmax、Cross Entropy及其反向传播（求导）" height="28">
             
             </a>
         </div>
@@ -126,7 +130,7 @@
                     
                 
                 
-                <a class="navbar-item is-hidden-tablet catalogue" title="Catalogue" href="javascript:;">
+                <a class="navbar-item is-hidden-tablet catalogue" title="Catálogo" href="javascript:;">
                     <i class="fas fa-list-ul"></i>
                 </a>
                 
@@ -145,10 +149,16 @@
             <div class="columns">
                 <div class="column is-8-tablet is-8-desktop is-9-widescreen has-order-2 column-main"><div class="card">
     
+    <div class="card-image">
+        <span class="image is-7by1">
+            <img class="thumbnail" src="/gallery/DeepLearning.jpg" alt="Softmax、Cross Entropy及其反向传播（求导）">
+        </span>
+    </div>
+    
     <div class="card-content article ">
         <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
             
-                <i class="fas fa-angle-double-right"></i>Note20 Softmax and Cross Entropy
+                <i class="fas fa-angle-double-right"></i>Softmax、Cross Entropy及其反向传播（求导）
             
         </h1>
         
@@ -156,15 +166,20 @@
             <div class="level-left">
                 <time class="level-item has-text-grey" datetime="2019-06-03T10:30:22.000Z"><i class="far fa-calendar-alt">&nbsp;</i>2019-06-03</time>
                 
-                <time class="level-item has-text-grey is-hidden-mobile" datetime="2019-06-03T10:30:22.296Z"><i class="far fa-calendar-check">&nbsp;</i>2019-06-03</time>
+                <time class="level-item has-text-grey is-hidden-mobile" datetime="2019-06-04T05:51:06.433Z"><i class="far fa-calendar-check">&nbsp;</i>2019-06-04</time>
                 
+                
+                <div class="level-item">
+                <i class="far fa-folder-open has-text-grey"></i>&nbsp;
+                <a class="has-link-grey -link" href="/categories/深度学习/">深度学习</a>
+                </div>
                 
                 
                 <span class="level-item has-text-grey">
                     <i class="far fa-clock"></i>&nbsp;
                     
                     
-                    a few seconds read (About 0 words)
+                    12 minutes read (About 1747 words)
                 </span>
                 
                 
@@ -177,12 +192,98 @@
         </div>
         
         <div class="content">
-            
+            <h5 id="前言">前言</h5>
+<p>  分类问题是深度学习中的最基本的问题，而分类问题中，我们使用最多的就是利用<span class="math inline">\(softmax\)</span>函数并结合<span class="math inline">\(cross \; entropy\)</span>计算最后的损失值<span class="math inline">\(Loss\)</span>。所以我们有必要对其进行一定的了解，并进行其求导的操作，这里的求导就相当于进行反向传播。</p>
+<a id="more"></a>
+<h5 id="一参数设置">一、参数设置</h5>
+<p>  假设我们输入一个样本，并经过一定的操作，例如卷积，全连接，dropout等一系列操作，最后，我们可以得到关于这个样本的一个长度为<span class="math inline">\(n\)</span>的特征向量，拿到这个特征向量之后，我们往往需要对其使用<span class="math inline">\(softmax\)</span>函数进行归一化，使之满足一个概率分布的基本条件（即所有的概率分量之和为1），然后我们使用<span class="math inline">\(cross \; entropy\)</span>来计算最后的损失值。所以，我们不妨假设我们经过深度学习模型前向传播之后的特征向量为<span class="math inline">\(x\)</span>，所以，我们有：<br>
+<span class="math display">\[
+x = [x_1, x_2, x_3, \cdots, x_n]
+\]</span>   根据<span class="math inline">\(softmax\)</span>的定义，我们会得到以下的特征向量经过变化之后的概率分布，有：<br>
+<span class="math display">\[
+softmax(x) = [\frac{e^{x_1}}{\sum_{i=1}^n e^{x_i}}, \frac{e^{x_2}}{\sum_{i=1}^n e^{x_i}}, \frac{e^{x_3}}{\sum_{i=1}^n e^{x_i}}, \cdots, \frac{e^{x_n}}{\sum_{i=1}^n e^{x_i}}]
+\]</span>   很容易验证上面的结果满足一个概率分布的基本条件（即所有的概率分量之和为1）。</p>
+<p>  为了表述方便，我们将上面的式子表示为：<br>
+<span class="math display">\[
+softmax(x) = [a_1, a_2, a_3, \cdots, a_n]
+\]</span>   其中，<span class="math inline">\(a_k = \frac{e^{x_k}}{\sum_{i=1}^n e^{x_i}}, \; \;(1 \leq k \leq n)\)</span>。</p>
+<p>  我们对上面的结果和实际上给的标签<span class="math inline">\(y\)</span>进行一定的计算，可以得到最后的损失值<span class="math inline">\(Loss\)</span>，然后我们根据这个损失值<span class="math inline">\(Loss\)</span>进行反向传播，因此，我们不妨假设标签<span class="math inline">\(y\)</span>为如下的形式：<br>
+<span class="math display">\[
+y = [y_1, y_2, y_3, \cdots, y_n]
+\]</span>   根据交叉熵<span class="math inline">\(cross \; entropy\)</span>的定义，最后我们的损失值为：<br>
+<span class="math display">\[
+Loss = -\sum_{i = 1}^n y_i \; ln \;a_i
+\]</span></p>
+<h5 id="二softmax求导">二、Softmax求导</h5>
+<p>  可以发现，我们改动<span class="math inline">\(x\)</span>的任何一个分量，最后的结果会影响到每一个分量，所以，当我们需要求<span class="math inline">\(x\)</span>的一个分量<span class="math inline">\(x_k\)</span>的偏导数时，我们需要对上面的每一个分量<span class="math inline">\(a_i\)</span>对<span class="math inline">\(x_k\)</span>求偏导数。</p>
+<p>  但是，很容易可以发现上面的<span class="math inline">\(a\)</span>的分量可以分成两类，一类是<span class="math inline">\(a_k\)</span>，另一类是<span class="math inline">\(a_i\)</span>，其中<span class="math inline">\(i \neq k\)</span>，所以不同的<span class="math inline">\(a\)</span>的分量有不同的对<span class="math inline">\(x_k\)</span>的偏导数求法。<br>
+<span class="math display">\[
+[\frac{\partial a_1}{\partial x_k}, \frac{\partial a_2}{\partial x_k}, \cdots, \frac{\partial a_k}{\partial x_k}, \cdots, \frac{\partial a_n}{\partial x_k}]
+\]</span></p>
+<p>  所以，对于偏导数<span class="math inline">\(\frac{\partial a_k}{\partial x_k}\)</span>来说，我们的计算过程如下：<br>
+<span class="math display">\[
+\frac{\partial a_k}{\partial x_k} 
+= \frac{\partial \frac{e^{x_k}}{\sum_{i=1}^n e^{x_i}}}{\partial x_k} 
+= \frac{e^{x_k}(\sum_{i=1}^n e^{x_i}) - e^{x_k}(e^{x_k})}{(\sum_{i=1}^n e^{x_i})^2} 
+= \frac{e^{x_k}}{\sum_{i=1}^n e^{x_i}} \cdot (1 - \frac{e^{x_k}}{\sum_{i=1}^n e^{x_i}}) = a_k \cdot (1 - a_k)
+\]</span>   对于其他的<span class="math inline">\(\frac{\partial a_j}{\partial x_k}\)</span>，其中<span class="math inline">\(j \neq k\)</span>来说，它的偏导数计算过程如下：<br>
+<span class="math display">\[
+\frac{\partial a_j}{\partial x_k} 
+= \frac{\partial \frac{e^{x_j}}{\sum_{i=1}^n e^{x_i}}}{\partial x_k} 
+= \frac{- e^{x_j}(e^{x_k})}{(\sum_{i=1}^n e^{x_i})^2} 
+= - \frac{e^{x_j}}{\sum_{i=1}^n e^{x_i}} \cdot \frac{e^{x_k}}{\sum_{i=1}^n e^{x_i}} 
+= - a_j \cdot a_k
+\]</span></p>
+<p>  假设我们从上一层接收到的误差为<span class="math inline">\(\delta = [\frac{\partial L}{\partial a_1}, \frac{\partial L}{\partial a_2},\frac{\partial L}{\partial a_3}, \cdots, \frac{\partial L}{\partial a_n}]\)</span>，那么，根据求导的链式法则，我们需要计算的偏导数<span class="math inline">\(\frac{\partial L}{\partial x_k}\)</span>有：<br>
+<span class="math display">\[
+\begin{aligned}
+\frac{\partial L}{\partial x_k} 
+&amp;= \sum_{i = 1}^n \frac{\partial L}{\partial a_i} \cdot \frac{\partial a_i}{\partial x_k} \\
+&amp;= \sum_{i = 1, i \neq k}^n \frac{\partial L}{\partial a_i} \cdot \frac{\partial a_i}{\partial x_k} + \frac{\partial L}{\partial a_k} \cdot \frac{\partial a_k}{\partial x_k} \\
+&amp;= \sum_{i = 1, i \neq k}^n \frac{\partial L}{\partial a_i} \cdot (- a_i \cdot a_k) + \frac{\partial L}{\partial a_k} \cdot (a_k \cdot (1 - a_k)) \\
+&amp;= a_k \{\sum_{i = 1, i \neq k}^n \frac{\partial L}{\partial a_i} \cdot (- a_i) + \frac{\partial L}{\partial a_k} \cdot (1 - a_k) \} \\
+&amp;= a_k \{\sum_{i = 1, i \neq k}^n \frac{\partial L}{\partial a_i} \cdot (- a_i) + \frac{\partial L}{\partial a_k} \cdot (- a_k) + \frac{\partial L}{\partial a_k} \} \\
+&amp;= a_k \{\sum_{i = 1}^n \frac{\partial L}{\partial a_i} \cdot (- a_i)+ \frac{\partial L}{\partial a_k} \} 
+\end{aligned}
+\]</span>   到此为止，我们计算出了<span class="math inline">\(softmax\)</span>层的反向传播的计算公式，下一步就是讨论交叉熵的反向传播（误差计算）。</p>
+<h5 id="三交叉熵cross-entropy的误差计算">三、交叉熵<span class="math inline">\(cross \; entropy\)</span>的误差计算</h5>
+<p>  本质上，我们的交叉熵有如下的计算公式：<br>
+<span class="math display">\[
+Loss = -\sum_{i = 1}^n y_i \; ln \;a_i
+\]</span>   根据对数的求导公式，我们很容易有：<br>
+<span class="math display">\[
+\frac{\partial L}{\partial a_i} = - y_i \frac{1}{a_i}
+\]</span>   我们下面就将上面的公式代入<span class="math inline">\(softmax\)</span>的反向传播的公式中。</p>
+<h5 id="四综合">四、综合</h5>
+<p>  经过前面的计算，我们有：<br>
+<span class="math display">\[
+\frac{\partial L}{\partial x_k} = a_k \{\sum_{i = 1}^n \frac{\partial L}{\partial a_i} \cdot (- a_i)+ \frac{\partial L}{\partial a_k} \}
+\]</span>   接着，我们将<span class="math inline">\(\frac{\partial L}{\partial a_i} = - y_i \frac{1}{a_i}\)</span>代入上面的式子中，即有：<br>
+<span class="math display">\[
+\begin{aligned}
+\frac{\partial L}{\partial x_k} 
+&amp;= a_k \{\sum_{i = 1}^n \frac{\partial L}{\partial a_i} \cdot (- a_i)+ \frac{\partial L}{\partial a_k} \} \\
+&amp;= a_k \{\sum_{i = 1}^n  - y_i \frac{1}{a_i} (-a_i) + - y_k \frac{1}{a_k} \} \\
+&amp;= a_k \{ \sum_{i = 1}^n y_i + - y_k \frac{1}{a_k} \} \\
+&amp;= a_k (\sum_{i = 1}^n y_i) + a_k (- y_k \frac{1}{a_k}) \\
+&amp;= a_k (\sum_{i = 1}^n y_i) - y_k
+\end{aligned}
+\]</span>   考虑到在绝大多数情况下，给定的标签<span class="math inline">\(y\)</span>往往是一个one-hot的向量，即<span class="math inline">\(y\)</span>的所有分量中有且仅有一个分量的值是1，剩下的所有分量的值都是0，所以，我们有：<span class="math inline">\(\sum_{i = 1}^n y_i = 1\)</span>。将这个式子代入上面的公式，我们可以得到一个十分简单的表达：<br>
+<span class="math display">\[
+\frac{\partial L}{\partial x_k} = a_k (\sum_{i = 1}^n y_i) - y_k  = a_k - y_k = \frac{e^{x_k}}{\sum_{i=1}^n e^{x_i}} - y_k
+\]</span>   需要注意的是上面这个简单表达的使用条件：</p>
+<ol type="1">
+<li>使用softmax函数计算概率分布。</li>
+<li>使用交叉熵计算最后的损失值。</li>
+<li>标签必须是one-hot向量。</li>
+</ol>
+<h5 id="五总结">五、总结</h5>
+<p>  总的来说，softmax和交叉熵的组合可以优化神经网络的表达，同时也不会引入过多的反向传播的计算开销。</p>
 
         </div>
         
             <ul class="post-copyright">
-            <li><strong>本文标题：</strong><a href="http://huaxuan0720.github.io/2019/06/03/Note20-Softmax-and-Cross-Entropy/">Note20 Softmax and Cross Entropy</a></li>
+            <li><strong>本文标题：</strong><a href="http://huaxuan0720.github.io/2019/06/03/Note20-Softmax-and-Cross-Entropy/">Softmax、Cross Entropy及其反向传播（求导）</a></li>
             <li><strong>本文作者：</strong><a href="http://huaxuan0720.github.io">华轩</a></li>
             <li><strong>本文链接：</strong><a href="http://huaxuan0720.github.io/2019/06/03/Note20-Softmax-and-Cross-Entropy/">http://huaxuan0720.github.io/2019/06/03/Note20-Softmax-and-Cross-Entropy/</a></li>
             <li><strong>发布时间：</strong>2019-06-03</li>
@@ -190,6 +291,16 @@
             </li>
             </ul>
         
+        
+        <hr style="height:1px;margin:1rem 0">
+        <div class="level is-size-7 is-uppercase">
+            <div class="level-start">
+                <div class="level-item">
+                    <i class="fas fa-tags has-text-grey"></i>&nbsp;
+                    <a class="has-link-grey -link" href="/tags/反向传播/">反向传播</a>,&nbsp;<a class="has-link-grey -link" href="/tags/深度学习/">深度学习</a>
+                </div>
+            </div>
+        </div>
         
         
         
@@ -247,7 +358,7 @@
 
 <div class="card">
     <div class="card-content">
-        <h3 class="title is-5 has-text-weight-normal">Comments</h3>
+        <h3 class="title is-5 has-text-weight-normal">Comentarios</h3>
         
 <div id="valine-thread" class="content"></div>
 <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
@@ -306,7 +417,7 @@
             <div class="level-item has-text-centered is-marginless">
                 <a href="/archives/">
                     <p class="heading">
-                        Posts
+                        Entradas
                     </p>
                     <p class="title has-text-weight-normal">
                         20
@@ -316,7 +427,7 @@
             <div class="level-item has-text-centered is-marginless">
                 <a href="/categories/">
                     <p class="heading">
-                        Categories
+                        Categorias
                     </p>
                     <p class="title has-text-weight-normal">
                         3
@@ -326,7 +437,7 @@
             <div class="level-item has-text-centered is-marginless">
                 <a href="/tags/">
                     <p class="heading">
-                        Tags
+                        Etiquetas
                     </p>
                     <p class="title has-text-weight-normal">
                         15
@@ -336,7 +447,7 @@
         </nav>
         <div class="level">
             <a class="level-item button is-link is-rounded" href="https://github.com/huaxuan0720" target="_blank">
-                <i class="fab fa-github"></i>&nbsp;&nbsp;Follow</a>
+                <i class="fab fa-github"></i>&nbsp;&nbsp;SEGUIR</a>
         </div>
         
         
@@ -377,9 +488,33 @@
     <div class="card-content">
         <div class="menu">
             <h3 class="menu-label">
-                Catalogue
+                Catálogo
             </h3>
-            
+            <ul class="menu-list"><li>
+        <a class="is-flex" href="#前言">
+        <span class="has-mr-6">1</span>
+        <span>前言</span>
+        </a></li><li>
+        <a class="is-flex" href="#一参数设置">
+        <span class="has-mr-6">2</span>
+        <span>一、参数设置</span>
+        </a></li><li>
+        <a class="is-flex" href="#二softmax求导">
+        <span class="has-mr-6">3</span>
+        <span>二、Softmax求导</span>
+        </a></li><li>
+        <a class="is-flex" href="#三交叉熵cross-entropy的误差计算">
+        <span class="has-mr-6">4</span>
+        <span>三、交叉熵\(cross \; entropy\)的误差计算</span>
+        </a></li><li>
+        <a class="is-flex" href="#四综合">
+        <span class="has-mr-6">5</span>
+        <span>四、综合</span>
+        </a></li><li>
+        <a class="is-flex" href="#五总结">
+        <span class="has-mr-6">6</span>
+        <span>五、总结</span>
+        </a></li></ul>
         </div>
     </div>
 </div>
@@ -403,7 +538,7 @@
             <div class="level-start has-text-centered-mobile">
                 <a class="footer-logo is-block has-mb-6" href="/">
                 
-                    <img src="/images/favicon.svg" alt="Note20 Softmax and Cross Entropy" height="28">
+                    <img src="/images/favicon.svg" alt="Softmax、Cross Entropy及其反向传播（求导）" height="28">
                 
                 </a>
                 <p class="is-size-7">
@@ -561,10 +696,10 @@ document.addEventListener('DOMContentLoaded', function () {
     (function (window) {
         var INSIGHT_CONFIG = {
             TRANSLATION: {
-                POSTS: 'Posts',
+                POSTS: 'Entradas',
                 PAGES: 'Pages',
-                CATEGORIES: 'Categories',
-                TAGS: 'Tags',
+                CATEGORIES: 'Categorias',
+                TAGS: 'Etiquetas',
                 UNTITLED: '(Untitled)',
             },
             CONTENT_URL: '/content.json',
