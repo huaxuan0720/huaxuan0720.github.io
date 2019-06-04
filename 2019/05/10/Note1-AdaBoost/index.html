@@ -7,19 +7,19 @@
 
 
 
-    <meta name="description" content="前言   提升方法（boosting）是一种常用的机器学习方法，应用十分广泛，而且效果非常好，近几年的很多比赛的优胜选手都或多或少使用了提升方法用以提高自己的成绩。   提升方法的本质是通过对每一个训练样本赋予一个权重，并通过改变这些样本的权重，来学习多个分类器，并按照一定的算法将这些分类器组合在一起，通常是线性组合，因为单个分类器往往效果有限，因此组合多个分类器往往会提高模型的性能。">
+    <meta name="description" content="前言&amp;emsp;&amp;emsp;提升方法（boosting）是一种常用的机器学习方法，应用十分广泛，而且效果非常好，近几年的很多比赛的优胜选手都或多或少使用了提升方法用以提高自己的成绩。 &amp;emsp;&amp;emsp;提升方法的本质是通过对每一个训练样本赋予一个权重，并通过改变这些样本的权重，来学习多个分类器，并按照一定的算法将这些分类器组合在一起，通常是线性组合，因为单个分类器往往效果有限，因此组合多个分">
 <meta name="keywords" content="机器学习,AdaBoost">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Adaboost算法">
 <meta property="og:url" content="http://huaxuan0720.github.io/2019/05/10/Note1-AdaBoost/index.html">
 <meta property="og:site_name" content="Welcome to My Blogs">
-<meta property="og:description" content="前言   提升方法（boosting）是一种常用的机器学习方法，应用十分广泛，而且效果非常好，近几年的很多比赛的优胜选手都或多或少使用了提升方法用以提高自己的成绩。   提升方法的本质是通过对每一个训练样本赋予一个权重，并通过改变这些样本的权重，来学习多个分类器，并按照一定的算法将这些分类器组合在一起，通常是线性组合，因为单个分类器往往效果有限，因此组合多个分类器往往会提高模型的性能。">
+<meta property="og:description" content="前言&amp;emsp;&amp;emsp;提升方法（boosting）是一种常用的机器学习方法，应用十分广泛，而且效果非常好，近几年的很多比赛的优胜选手都或多或少使用了提升方法用以提高自己的成绩。 &amp;emsp;&amp;emsp;提升方法的本质是通过对每一个训练样本赋予一个权重，并通过改变这些样本的权重，来学习多个分类器，并按照一定的算法将这些分类器组合在一起，通常是线性组合，因为单个分类器往往效果有限，因此组合多个分">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://huaxuan0720.github.io/gallery/MachineLearning.jpg">
 <meta property="og:updated_time" content="2019-05-12T14:41:27.200Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Adaboost算法">
-<meta name="twitter:description" content="前言   提升方法（boosting）是一种常用的机器学习方法，应用十分广泛，而且效果非常好，近几年的很多比赛的优胜选手都或多或少使用了提升方法用以提高自己的成绩。   提升方法的本质是通过对每一个训练样本赋予一个权重，并通过改变这些样本的权重，来学习多个分类器，并按照一定的算法将这些分类器组合在一起，通常是线性组合，因为单个分类器往往效果有限，因此组合多个分类器往往会提高模型的性能。">
+<meta name="twitter:description" content="前言&amp;emsp;&amp;emsp;提升方法（boosting）是一种常用的机器学习方法，应用十分广泛，而且效果非常好，近几年的很多比赛的优胜选手都或多或少使用了提升方法用以提高自己的成绩。 &amp;emsp;&amp;emsp;提升方法的本质是通过对每一个训练样本赋予一个权重，并通过改变这些样本的权重，来学习多个分类器，并按照一定的算法将这些分类器组合在一起，通常是线性组合，因为单个分类器往往效果有限，因此组合多个分">
 <meta name="twitter:image" content="http://huaxuan0720.github.io/gallery/MachineLearning.jpg">
 
 
@@ -192,19 +192,15 @@
         </div>
         
         <div class="content">
-            <h5 id="前言">前言</h5>
-<p>  提升方法（boosting）是一种常用的机器学习方法，应用十分广泛，而且效果非常好，近几年的很多比赛的优胜选手都或多或少使用了提升方法用以提高自己的成绩。</p>
-<p>  提升方法的本质是通过对每一个训练样本赋予一个权重，并通过改变这些样本的权重，来学习多个分类器，并按照一定的算法将这些分类器组合在一起，通常是线性组合，因为单个分类器往往效果有限，因此组合多个分类器往往会提高模型的性能。</p>
-<a id="more"></a>
-<h5 id="一提升方法简介">一、提升方法简介</h5>
-<p>  提升方法（boosting）实际上是集成学习方法的一种，其基于这样的一种朴素思想：对于一个复杂的任务来说，将多个“专家”（这里的“专家”本意是指各种机器学习模型，可以较好地满足实际问题的需要）的意见进行适当的整合，进而得出最后的综合的判断，比其中任何一个单一的“专家”给出的判断要好。实际上，也就是“三个臭皮匠顶过诸葛亮”的意思。因此，boousting的本意就是寻找到合适的“臭皮匠”。</p>
-<p>  在实际的数据处理的过程中，我们往往可以很容易地发现各种各样的弱机器学习模型，这些模型仅仅比随机猜测好一些，但是还远远不能满足实际作业的精度要求。但是要寻找到一个单一的十分强大的机器学习模型往往会十分困难，虽然可以很好的满足要求，但是寻找这样的模型并不容易。不过好在，我们可以通过整合之前发现的弱机器学习模型，来进行综合考虑，从而形成一个可以媲美单一的强大的机器学习模型。这些弱机器学习模型往往被称之为“弱学习方法”，强机器学习模型往往被称之为“强学习方法”。</p>
-<p>  </p>
-<h5 id="二adaboost算法">二、AdaBoost算法</h5>
-<h6 id="adaboost算法的过程">1、AdaBoost算法的过程</h6>
-<p>  </p>
-<h6 id="adaboost的使用">2、AdaBoost的使用</h6>
+            <h5 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h5><p>&emsp;&emsp;提升方法（boosting）是一种常用的机器学习方法，应用十分广泛，而且效果非常好，近几年的很多比赛的优胜选手都或多或少使用了提升方法用以提高自己的成绩。</p>
+<p>&emsp;&emsp;提升方法的本质是通过对每一个训练样本赋予一个权重，并通过改变这些样本的权重，来学习多个分类器，并按照一定的算法将这些分类器组合在一起，通常是线性组合，因为单个分类器往往效果有限，因此组合多个分类器往往会提高模型的性能。 </p>
+<a id="more"></a> 
 
+<h5 id="一、提升方法简介"><a href="#一、提升方法简介" class="headerlink" title="一、提升方法简介"></a>一、提升方法简介</h5><p>&emsp;&emsp;提升方法（boosting）实际上是集成学习方法的一种，其基于这样的一种朴素思想：对于一个复杂的任务来说，将多个“专家”（这里的“专家”本意是指各种机器学习模型，可以较好地满足实际问题的需要）的意见进行适当的整合，进而得出最后的综合的判断，比其中任何一个单一的“专家”给出的判断要好。实际上，也就是“三个臭皮匠顶过诸葛亮”的意思。因此，boousting的本意就是寻找到合适的“臭皮匠”。  </p>
+<p>&emsp;&emsp;在实际的数据处理的过程中，我们往往可以很容易地发现各种各样的弱机器学习模型，这些模型仅仅比随机猜测好一些，但是还远远不能满足实际作业的精度要求。但是要寻找到一个单一的十分强大的机器学习模型往往会十分困难，虽然可以很好的满足要求，但是寻找这样的模型并不容易。不过好在，我们可以通过整合之前发现的弱机器学习模型，来进行综合考虑，从而形成一个可以媲美单一的强大的机器学习模型。这些弱机器学习模型往往被称之为“弱学习方法”，强机器学习模型往往被称之为“强学习方法”。  </p>
+<p>&emsp;&emsp;</p>
+<h5 id="二、AdaBoost算法"><a href="#二、AdaBoost算法" class="headerlink" title="二、AdaBoost算法"></a>二、AdaBoost算法</h5><h6 id="1、AdaBoost算法的过程"><a href="#1、AdaBoost算法的过程" class="headerlink" title="1、AdaBoost算法的过程"></a>1、AdaBoost算法的过程</h6><p>&emsp;&emsp;</p>
+<h6 id="2、AdaBoost的使用"><a href="#2、AdaBoost的使用" class="headerlink" title="2、AdaBoost的使用"></a>2、AdaBoost的使用</h6>
         </div>
         
             <ul class="post-copyright">
@@ -236,7 +232,7 @@
 
 <div class="card">
     <div class="card-content">
-        <h3 class="menu-label has-text-centered">Like this article? Support the author with</h3>
+        <h3 class="menu-label has-text-centered">Suka dengan artikel ini? Bantu penulis dengan donasi melalui</h3>
         <div class="buttons is-centered">
             
                 
@@ -427,19 +423,19 @@
         <span class="has-mr-6">1</span>
         <span>前言</span>
         </a></li><li>
-        <a class="is-flex" href="#一提升方法简介">
+        <a class="is-flex" href="#一、提升方法简介">
         <span class="has-mr-6">2</span>
         <span>一、提升方法简介</span>
         </a></li><li>
-        <a class="is-flex" href="#二adaboost算法">
+        <a class="is-flex" href="#二、AdaBoost算法">
         <span class="has-mr-6">3</span>
         <span>二、AdaBoost算法</span>
         </a><ul class="menu-list"><li>
-        <a class="is-flex" href="#adaboost算法的过程">
+        <a class="is-flex" href="#1、AdaBoost算法的过程">
         <span class="has-mr-6">3.1</span>
         <span>1、AdaBoost算法的过程</span>
         </a></li><li>
-        <a class="is-flex" href="#adaboost的使用">
+        <a class="is-flex" href="#2、AdaBoost的使用">
         <span class="has-mr-6">3.2</span>
         <span>2、AdaBoost的使用</span>
         </a></li></ul></li></ul>
@@ -576,7 +572,7 @@ document.addEventListener('DOMContentLoaded', function () {
     
     
 
-<a id="back-to-top" title="Back to Top" href="javascript:;">
+<a id="back-to-top" title="Kembali ke atas" href="javascript:;">
     <i class="fas fa-chevron-up"></i>
 </a>
 <script src="/js/back-to-top.js" defer></script>
