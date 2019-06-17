@@ -2,7 +2,7 @@
 <html>
 <head><meta name="generator" content="Hexo 3.8.0">
     <meta charset="utf-8">
-<title>Categoria: 深度学习 - Welcome to My Blogs</title>
+<title>Category: 深度学习 - Welcome to My Blogs</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
 
@@ -145,7 +145,7 @@
     <div class="card-content">
         <nav class="breadcrumb" aria-label="breadcrumbs">
         <ul>
-            <li><a href="/categories">Categorias</a></li>
+            <li><a href="/categories">Categories</a></li>
             
             <li class="is-active"><a href="#" aria-current="page">深度学习</a></li>
         </ul>
@@ -193,7 +193,8 @@
         </div>
         
         <div class="content">
-            <h5 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h5><p>&emsp;&emsp;分类问题是深度学习中的最基本的问题，而分类问题中，我们使用最多的就是利用$softmax$函数并结合$cross ; entropy$计算最后的损失值$Loss$。所以我们有必要对其进行一定的了解，并进行其求导的操作，这里的求导就相当于进行反向传播。  </p>
+            <h5 id="前言">前言</h5>
+<p>  分类问题是深度学习中的最基本的问题，而分类问题中，我们使用最多的就是利用<span class="math inline">\(softmax\)</span>函数并结合<span class="math inline">\(cross \; entropy\)</span>计算最后的损失值<span class="math inline">\(Loss\)</span>。所以我们有必要对其进行一定的了解，并进行其求导的操作，这里的求导就相当于进行反向传播。</p>
         </div>
         
         
@@ -267,7 +268,8 @@
         </div>
         
         <div class="content">
-            <h5 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h5><p>&emsp;&emsp;前面讲了很多二维平面上的卷积，甚至用代码实现了一个简单的两层二维卷积网络，但是在实际的情况下，我们使用的更多的是三维矩阵，即矩阵的$shape$往往是$[height, width, channels]$。在这种情况下，我们的卷积核就会多出一个参数来和通道$channels$参数进行匹配，即，这个时候，我们的卷积核的$shape$会变成$[kernel_height, kernel_width, channels]$。所以接下来就是要弄清楚在这种多通道的情况下，卷积是如何进行反向传播的。  </p>
+            <h5 id="前言">前言</h5>
+<p>  前面讲了很多二维平面上的卷积，甚至用代码实现了一个简单的两层二维卷积网络，但是在实际的情况下，我们使用的更多的是三维矩阵，即矩阵的<span class="math inline">\(shape\)</span>往往是<span class="math inline">\([height, width, channels]\)</span>。在这种情况下，我们的卷积核就会多出一个参数来和通道<span class="math inline">\(channels\)</span>参数进行匹配，即，这个时候，我们的卷积核的<span class="math inline">\(shape\)</span>会变成<span class="math inline">\([kernel\_height, kernel\_width, channels]\)</span>。所以接下来就是要弄清楚在这种多通道的情况下，卷积是如何进行反向传播的。</p>
         </div>
         
         
@@ -341,8 +343,9 @@
         </div>
         
         <div class="content">
-            <h5 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h5><p>&emsp;&emsp;在前面的叙述中，我们都是在二维平面上做卷积操作，并在此基础上进行了反向传播算法的推导和计算，但是，如果仅仅限于理论怕是很难验证我们算法的是否是真的可以让结果收敛，因此，这一篇文章中，我们就通过代码来验证一下算法在实际过程中的收敛情况。  </p>
-<p>&emsp;&emsp;必须要说明的是，之前讲解的算法都是十分朴素的，具有很大的改进空间，代码的实现也是基于这种朴素的计算过程，因此，并未对算法进行优化。  </p>
+            <h5 id="前言">前言</h5>
+<p>  在前面的叙述中，我们都是在二维平面上做卷积操作，并在此基础上进行了反向传播算法的推导和计算，但是，如果仅仅限于理论怕是很难验证我们算法的是否是真的可以让结果收敛，因此，这一篇文章中，我们就通过代码来验证一下算法在实际过程中的收敛情况。</p>
+<p>  必须要说明的是，之前讲解的算法都是十分朴素的，具有很大的改进空间，代码的实现也是基于这种朴素的计算过程，因此，并未对算法进行优化。</p>
         </div>
         
         
@@ -416,7 +419,8 @@
         </div>
         
         <div class="content">
-            <h5 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h5><p>&emsp;&emsp;在前面的文章中，介绍了二维平面上的卷积及其反向传播的算法，但是，步长为1和2毕竟都是两个比较小的数字，如果换成更大的数字，反向传播的方式是不是还适合呢？所以，我们考虑下面这个十分极端的例子，来验证反向传播算法的有效性。  </p>
+            <h5 id="前言">前言</h5>
+<p>  在前面的文章中，介绍了二维平面上的卷积及其反向传播的算法，但是，步长为1和2毕竟都是两个比较小的数字，如果换成更大的数字，反向传播的方式是不是还适合呢？所以，我们考虑下面这个十分极端的例子，来验证反向传播算法的有效性。</p>
         </div>
         
         
@@ -490,8 +494,9 @@
         </div>
         
         <div class="content">
-            <h5 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h5><p>&emsp;&emsp;在之前讨论了步长stride为1的卷积方式的反向传播，但是很多时候，使用的卷积步长会大于1，这个情况下的卷积方式的反向传播和步长为1的情况稍稍有些区别，不过区别并没有想象中那么大，因此下面就对步长stride大于1的情况进行简单的阐述。请注意：这里的所有推导过程都只是针对当前设置的参数信息，并不具有一般性，但是所有的推导过程可以推导到一般的运算，因此以下给出的并不是反向传播算法的严格证明，不涉及十分复杂的公式推导，争取可以以一种简单的方式来理解卷积的反向传播。希望可以很好的帮助理解反向传播算法。   </p>
-<p>&emsp;&emsp;需要注意的是，在本文中，所有的正向传播过程中，卷积的步长stride均固定为2。  </p>
+            <h5 id="前言">前言</h5>
+<p>  在之前讨论了步长stride为1的卷积方式的反向传播，但是很多时候，使用的卷积步长会大于1，这个情况下的卷积方式的反向传播和步长为1的情况稍稍有些区别，不过区别并没有想象中那么大，因此下面就对步长stride大于1的情况进行简单的阐述。请注意：这里的所有推导过程都只是针对当前设置的参数信息，并不具有一般性，但是所有的推导过程可以推导到一般的运算，因此以下给出的并不是反向传播算法的严格证明，不涉及十分复杂的公式推导，争取可以以一种简单的方式来理解卷积的反向传播。希望可以很好的帮助理解反向传播算法。</p>
+<p>  需要注意的是，在本文中，所有的正向传播过程中，卷积的步长stride均固定为2。</p>
         </div>
         
         
@@ -565,9 +570,10 @@
         </div>
         
         <div class="content">
-            <h5 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h5><p>&emsp;&emsp;近年来，深度学习的快速发展带来了一系列喜人的成果，不管是在图像领域还是在NLP领域，深度学习都显示了其极其强大的能力。而深度学习之所以可以进行大规模的参数运算，反向传播算法功不可没，可以说，没有反向传播算法，深度学习就不可能得以快速发展，因此在此之前，有必要了解一下反向传播算法的具体原理和公式推导。请注意：这里的所有推导过程都只是针对当前设置的参数信息，并不具有一般性，但是所有的推导过程可以推导到一般的运算，因此以下给出的并不是反向传播算法的严格证明，不涉及十分复杂的公式推导，争取可以以一种简单的方式来理解卷积的反向传播。希望可以很好的帮助理解反向传播算法。  </p>
-<p>&emsp;&emsp;在之前曾经见到的说明过全连接层的反向传播，因此，这一次主要是专注于卷积层的反向传播。  </p>
-<p>&emsp;&emsp;需要注意的是，在本文中，所有的正向传播过程中，卷积的步长stride均固定为1。  </p>
+            <h5 id="前言">前言</h5>
+<p>  近年来，深度学习的快速发展带来了一系列喜人的成果，不管是在图像领域还是在NLP领域，深度学习都显示了其极其强大的能力。而深度学习之所以可以进行大规模的参数运算，反向传播算法功不可没，可以说，没有反向传播算法，深度学习就不可能得以快速发展，因此在此之前，有必要了解一下反向传播算法的具体原理和公式推导。请注意：这里的所有推导过程都只是针对当前设置的参数信息，并不具有一般性，但是所有的推导过程可以推导到一般的运算，因此以下给出的并不是反向传播算法的严格证明，不涉及十分复杂的公式推导，争取可以以一种简单的方式来理解卷积的反向传播。希望可以很好的帮助理解反向传播算法。</p>
+<p>  在之前曾经见到的说明过全连接层的反向传播，因此，这一次主要是专注于卷积层的反向传播。</p>
+<p>  需要注意的是，在本文中，所有的正向传播过程中，卷积的步长stride均固定为1。</p>
         </div>
         
         
@@ -641,17 +647,17 @@
             <div class="level-item has-text-centered is-marginless">
                 <a href="/archives/">
                     <p class="heading">
-                        Entradas
+                        Posts
                     </p>
                     <p class="title has-text-weight-normal">
-                        20
+                        24
                     </p>
                 </a>
             </div>
             <div class="level-item has-text-centered is-marginless">
                 <a href="/categories/">
                     <p class="heading">
-                        Categorias
+                        Categories
                     </p>
                     <p class="title has-text-weight-normal">
                         3
@@ -661,17 +667,17 @@
             <div class="level-item has-text-centered is-marginless">
                 <a href="/tags/">
                     <p class="heading">
-                        Etiquetas
+                        Tags
                     </p>
                     <p class="title has-text-weight-normal">
-                        15
+                        20
                     </p>
                 </a>
             </div>
         </nav>
         <div class="level">
             <a class="level-item button is-link is-rounded" href="https://github.com/huaxuan0720" target="_blank">
-                <i class="fab fa-github"></i>&nbsp;&nbsp;SEGUIR</a>
+                <i class="fab fa-github"></i>&nbsp;&nbsp;Follow</a>
         </div>
         
         
@@ -764,9 +770,9 @@
 <div class="card widget is-hidden-mobile">
     <div class="card-content">
         <h3 class="menu-label">
-            Nube de etiquetas
+            Tag Cloud
         </h3>
-        <a href="/tags/AdaBoost/" style="font-size: 10px;">AdaBoost</a> <a href="/tags/EM算法/" style="font-size: 10px;">EM算法</a> <a href="/tags/PCA/" style="font-size: 10px;">PCA</a> <a href="/tags/SVD/" style="font-size: 10px;">SVD</a> <a href="/tags/Welcome/" style="font-size: 10px;">Welcome</a> <a href="/tags/YOLOv3/" style="font-size: 14px;">YOLOv3</a> <a href="/tags/主成分分析/" style="font-size: 10px;">主成分分析</a> <a href="/tags/卷积/" style="font-size: 14px;">卷积</a> <a href="/tags/反向传播/" style="font-size: 16px;">反向传播</a> <a href="/tags/反向传播算法/" style="font-size: 12px;">反向传播算法</a> <a href="/tags/奇异值分解/" style="font-size: 10px;">奇异值分解</a> <a href="/tags/机器学习/" style="font-size: 18px;">机器学习</a> <a href="/tags/深度学习/" style="font-size: 20px;">深度学习</a> <a href="/tags/目标检测/" style="font-size: 14px;">目标检测</a> <a href="/tags/逻辑回归/" style="font-size: 10px;">逻辑回归</a>
+        <a href="/tags/AdaBoost/" style="font-size: 10px;">AdaBoost</a> <a href="/tags/EM算法/" style="font-size: 10px;">EM算法</a> <a href="/tags/PCA/" style="font-size: 10px;">PCA</a> <a href="/tags/SVD/" style="font-size: 10px;">SVD</a> <a href="/tags/SVM/" style="font-size: 11.67px;">SVM</a> <a href="/tags/SVR/" style="font-size: 10px;">SVR</a> <a href="/tags/Support-Vector-Regression/" style="font-size: 10px;">Support Vector Regression</a> <a href="/tags/Welcome/" style="font-size: 10px;">Welcome</a> <a href="/tags/YOLOv3/" style="font-size: 15px;">YOLOv3</a> <a href="/tags/主成分分析/" style="font-size: 10px;">主成分分析</a> <a href="/tags/卷积/" style="font-size: 15px;">卷积</a> <a href="/tags/反向传播/" style="font-size: 16.67px;">反向传播</a> <a href="/tags/反向传播算法/" style="font-size: 13.33px;">反向传播算法</a> <a href="/tags/奇异值分解/" style="font-size: 10px;">奇异值分解</a> <a href="/tags/支持向量回归/" style="font-size: 10px;">支持向量回归</a> <a href="/tags/支持向量机/" style="font-size: 11.67px;">支持向量机</a> <a href="/tags/机器学习/" style="font-size: 18.33px;">机器学习</a> <a href="/tags/深度学习/" style="font-size: 20px;">深度学习</a> <a href="/tags/目标检测/" style="font-size: 15px;">目标检测</a> <a href="/tags/逻辑回归/" style="font-size: 10px;">逻辑回归</a>
     </div>
 </div>
 
@@ -776,7 +782,7 @@
     <div class="card-content">
         <div class="menu">
         <h3 class="menu-label">
-            Archivos
+            Archives
         </h3>
         <ul class="menu-list">
         
@@ -786,7 +792,7 @@
                     <span class="level-item">June 2019</span>
                 </span>
                 <span class="level-end">
-                    <span class="level-item tag">1</span>
+                    <span class="level-item tag">5</span>
                 </span>
             </a>
         </li>
@@ -815,8 +821,84 @@
 <div class="card widget">
     <div class="card-content">
         <h3 class="menu-label">
-            Recientes
+            Recent
         </h3>
+        
+        <article class="media">
+            
+            <a href="/2019/06/15/Note24-SVR/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/gallery/DeepLearning.jpg" alt="支持向量回归SVR">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-06-15T14:36:28.000Z">2019-06-15</time></div>
+                    <a href="/2019/06/15/Note24-SVR/" class="has-link-black-ter is-size-6">支持向量回归SVR</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/机器学习/">机器学习</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2019/06/15/Note23-SVM-Kernel-Function/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="Note23 SVM:Kernel Function">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-06-15T14:35:31.000Z">2019-06-15</time></div>
+                    <a href="/2019/06/15/Note23-SVM-Kernel-Function/" class="has-link-black-ter is-size-6">Note23 SVM:Kernel Function</a>
+                    <p class="is-size-7 is-uppercase">
+                        
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2019/06/15/Note22-SVM-Soft-Margin/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/gallery/DeepLearning.jpg" alt="线性不可分支持向量机">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-06-15T14:34:02.000Z">2019-06-15</time></div>
+                    <a href="/2019/06/15/Note22-SVM-Soft-Margin/" class="has-link-black-ter is-size-6">线性不可分支持向量机</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/机器学习/">机器学习</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2019/06/15/Note21-SVM-Hard-Margin/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/gallery/DeepLearning.jpg" alt="线性可分支持向量机">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-06-15T14:32:54.000Z">2019-06-15</time></div>
+                    <a href="/2019/06/15/Note21-SVM-Hard-Margin/" class="has-link-black-ter is-size-6">线性可分支持向量机</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/机器学习/">机器学习</a>
+                    </p>
+                </div>
+            </div>
+        </article>
         
         <article class="media">
             
@@ -837,82 +919,6 @@
             </div>
         </article>
         
-        <article class="media">
-            
-            <a href="/2019/05/27/Note18-ConvBackProp-part5/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/gallery/DeepLearning.jpg" alt="多通道卷积以及激活函数">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-05-27T07:09:30.000Z">2019-05-27</time></div>
-                    <a href="/2019/05/27/Note18-ConvBackProp-part5/" class="has-link-black-ter is-size-6">多通道卷积以及激活函数</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/深度学习/">深度学习</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-        <article class="media">
-            
-            <a href="/2019/05/24/Note17-ConvBackProp-part4/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/gallery/DeepLearning.jpg" alt="代码实现二维平面上的卷积及其反向传播">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-05-24T04:32:59.000Z">2019-05-24</time></div>
-                    <a href="/2019/05/24/Note17-ConvBackProp-part4/" class="has-link-black-ter is-size-6">代码实现二维平面上的卷积及其反向传播</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/深度学习/">深度学习</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-        <article class="media">
-            
-            <a href="/2019/05/24/Note16-ConvBackProp-part3/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/gallery/DeepLearning.jpg" alt="步长stride为s的二维卷积方法的反向传播算法：一个十分极端的例子">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-05-24T04:32:45.000Z">2019-05-24</time></div>
-                    <a href="/2019/05/24/Note16-ConvBackProp-part3/" class="has-link-black-ter is-size-6">步长stride为s的二维卷积方法的反向传播算法：一个十分极端的例子</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/深度学习/">深度学习</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-        <article class="media">
-            
-            <a href="/2019/05/24/Note15-ConvBackProp-part2/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/gallery/DeepLearning.jpg" alt="步长stride为s的二维卷积方法的反向传播算法">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-05-24T04:32:31.000Z">2019-05-24</time></div>
-                    <a href="/2019/05/24/Note15-ConvBackProp-part2/" class="has-link-black-ter is-size-6">步长stride为s的二维卷积方法的反向传播算法</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/深度学习/">深度学习</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
     </div>
 </div>
 
@@ -922,7 +928,7 @@
     <div class="card-content">
         <div class="menu">
             <h3 class="menu-label">
-                Categorias
+                Categories
             </h3>
             <ul class="menu-list">
             <li>
@@ -931,7 +937,7 @@
                 <span class="level-item">机器学习</span>
             </span>
             <span class="level-end">
-                <span class="level-item tag">8</span>
+                <span class="level-item tag">11</span>
             </span>
         </a></li><li>
         <a class="level is-marginless" href="/categories/深度学习/">
@@ -970,8 +976,84 @@
 <div class="card widget">
     <div class="card-content">
         <h3 class="menu-label">
-            Recientes
+            Recent
         </h3>
+        
+        <article class="media">
+            
+            <a href="/2019/06/15/Note24-SVR/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/gallery/DeepLearning.jpg" alt="支持向量回归SVR">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-06-15T14:36:28.000Z">2019-06-15</time></div>
+                    <a href="/2019/06/15/Note24-SVR/" class="has-link-black-ter is-size-6">支持向量回归SVR</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/机器学习/">机器学习</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2019/06/15/Note23-SVM-Kernel-Function/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="Note23 SVM:Kernel Function">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-06-15T14:35:31.000Z">2019-06-15</time></div>
+                    <a href="/2019/06/15/Note23-SVM-Kernel-Function/" class="has-link-black-ter is-size-6">Note23 SVM:Kernel Function</a>
+                    <p class="is-size-7 is-uppercase">
+                        
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2019/06/15/Note22-SVM-Soft-Margin/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/gallery/DeepLearning.jpg" alt="线性不可分支持向量机">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-06-15T14:34:02.000Z">2019-06-15</time></div>
+                    <a href="/2019/06/15/Note22-SVM-Soft-Margin/" class="has-link-black-ter is-size-6">线性不可分支持向量机</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/机器学习/">机器学习</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/2019/06/15/Note21-SVM-Hard-Margin/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/gallery/DeepLearning.jpg" alt="线性可分支持向量机">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-06-15T14:32:54.000Z">2019-06-15</time></div>
+                    <a href="/2019/06/15/Note21-SVM-Hard-Margin/" class="has-link-black-ter is-size-6">线性可分支持向量机</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/机器学习/">机器学习</a>
+                    </p>
+                </div>
+            </div>
+        </article>
         
         <article class="media">
             
@@ -992,82 +1074,6 @@
             </div>
         </article>
         
-        <article class="media">
-            
-            <a href="/2019/05/27/Note18-ConvBackProp-part5/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/gallery/DeepLearning.jpg" alt="多通道卷积以及激活函数">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-05-27T07:09:30.000Z">2019-05-27</time></div>
-                    <a href="/2019/05/27/Note18-ConvBackProp-part5/" class="has-link-black-ter is-size-6">多通道卷积以及激活函数</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/深度学习/">深度学习</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-        <article class="media">
-            
-            <a href="/2019/05/24/Note17-ConvBackProp-part4/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/gallery/DeepLearning.jpg" alt="代码实现二维平面上的卷积及其反向传播">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-05-24T04:32:59.000Z">2019-05-24</time></div>
-                    <a href="/2019/05/24/Note17-ConvBackProp-part4/" class="has-link-black-ter is-size-6">代码实现二维平面上的卷积及其反向传播</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/深度学习/">深度学习</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-        <article class="media">
-            
-            <a href="/2019/05/24/Note16-ConvBackProp-part3/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/gallery/DeepLearning.jpg" alt="步长stride为s的二维卷积方法的反向传播算法：一个十分极端的例子">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-05-24T04:32:45.000Z">2019-05-24</time></div>
-                    <a href="/2019/05/24/Note16-ConvBackProp-part3/" class="has-link-black-ter is-size-6">步长stride为s的二维卷积方法的反向传播算法：一个十分极端的例子</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/深度学习/">深度学习</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-        <article class="media">
-            
-            <a href="/2019/05/24/Note15-ConvBackProp-part2/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/gallery/DeepLearning.jpg" alt="步长stride为s的二维卷积方法的反向传播算法">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-05-24T04:32:31.000Z">2019-05-24</time></div>
-                    <a href="/2019/05/24/Note15-ConvBackProp-part2/" class="has-link-black-ter is-size-6">步长stride为s的二维卷积方法的反向传播算法</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/深度学习/">深度学习</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
     </div>
 </div>
 
@@ -1077,7 +1083,7 @@
     <div class="card-content">
         <div class="menu">
             <h3 class="menu-label">
-                Categorias
+                Categories
             </h3>
             <ul class="menu-list">
             <li>
@@ -1086,7 +1092,7 @@
                 <span class="level-item">机器学习</span>
             </span>
             <span class="level-end">
-                <span class="level-item tag">8</span>
+                <span class="level-item tag">11</span>
             </span>
         </a></li><li>
         <a class="level is-marginless" href="/categories/深度学习/">
@@ -1232,7 +1238,7 @@ document.addEventListener('DOMContentLoaded', function () {
     
     
 
-<a id="back-to-top" title="Kembali ke atas" href="javascript:;">
+<a id="back-to-top" title="Back to Top" href="javascript:;">
     <i class="fas fa-chevron-up"></i>
 </a>
 <script src="/js/back-to-top.js" defer></script>
@@ -1280,10 +1286,10 @@ document.addEventListener('DOMContentLoaded', function () {
     (function (window) {
         var INSIGHT_CONFIG = {
             TRANSLATION: {
-                POSTS: 'Entradas',
+                POSTS: 'Posts',
                 PAGES: 'Pages',
-                CATEGORIES: 'Categorias',
-                TAGS: 'Etiquetas',
+                CATEGORIES: 'Categories',
+                TAGS: 'Tags',
                 UNTITLED: '(Untitled)',
             },
             CONTENT_URL: '/content.json',
