@@ -182,8 +182,9 @@
         </div>
         
         <div class="content">
-            <h5 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h5><p>&emsp;&emsp;在之前讨论了步长stride为1的卷积方式的反向传播，但是很多时候，使用的卷积步长会大于1，这个情况下的卷积方式的反向传播和步长为1的情况稍稍有些区别，不过区别并没有想象中那么大，因此下面就对步长stride大于1的情况进行简单的阐述。请注意：这里的所有推导过程都只是针对当前设置的参数信息，并不具有一般性，但是所有的推导过程可以推导到一般的运算，因此以下给出的并不是反向传播算法的严格证明，不涉及十分复杂的公式推导，争取可以以一种简单的方式来理解卷积的反向传播。希望可以很好的帮助理解反向传播算法。   </p>
-<p>&emsp;&emsp;需要注意的是，在本文中，所有的正向传播过程中，卷积的步长stride均固定为2。  </p>
+            <h5 id="前言">前言</h5>
+<p>  在之前讨论了步长stride为1的卷积方式的反向传播，但是很多时候，使用的卷积步长会大于1，这个情况下的卷积方式的反向传播和步长为1的情况稍稍有些区别，不过区别并没有想象中那么大，因此下面就对步长stride大于1的情况进行简单的阐述。请注意：这里的所有推导过程都只是针对当前设置的参数信息，并不具有一般性，但是所有的推导过程可以推导到一般的运算，因此以下给出的并不是反向传播算法的严格证明，不涉及十分复杂的公式推导，争取可以以一种简单的方式来理解卷积的反向传播。希望可以很好的帮助理解反向传播算法。</p>
+<p>  需要注意的是，在本文中，所有的正向传播过程中，卷积的步长stride均固定为2。</p>
         </div>
         
         
@@ -257,9 +258,10 @@
         </div>
         
         <div class="content">
-            <h5 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h5><p>&emsp;&emsp;近年来，深度学习的快速发展带来了一系列喜人的成果，不管是在图像领域还是在NLP领域，深度学习都显示了其极其强大的能力。而深度学习之所以可以进行大规模的参数运算，反向传播算法功不可没，可以说，没有反向传播算法，深度学习就不可能得以快速发展，因此在此之前，有必要了解一下反向传播算法的具体原理和公式推导。请注意：这里的所有推导过程都只是针对当前设置的参数信息，并不具有一般性，但是所有的推导过程可以推导到一般的运算，因此以下给出的并不是反向传播算法的严格证明，不涉及十分复杂的公式推导，争取可以以一种简单的方式来理解卷积的反向传播。希望可以很好的帮助理解反向传播算法。  </p>
-<p>&emsp;&emsp;在之前曾经见到的说明过全连接层的反向传播，因此，这一次主要是专注于卷积层的反向传播。  </p>
-<p>&emsp;&emsp;需要注意的是，在本文中，所有的正向传播过程中，卷积的步长stride均固定为1。  </p>
+            <h5 id="前言">前言</h5>
+<p>  近年来，深度学习的快速发展带来了一系列喜人的成果，不管是在图像领域还是在NLP领域，深度学习都显示了其极其强大的能力。而深度学习之所以可以进行大规模的参数运算，反向传播算法功不可没，可以说，没有反向传播算法，深度学习就不可能得以快速发展，因此在此之前，有必要了解一下反向传播算法的具体原理和公式推导。请注意：这里的所有推导过程都只是针对当前设置的参数信息，并不具有一般性，但是所有的推导过程可以推导到一般的运算，因此以下给出的并不是反向传播算法的严格证明，不涉及十分复杂的公式推导，争取可以以一种简单的方式来理解卷积的反向传播。希望可以很好的帮助理解反向传播算法。</p>
+<p>  在之前曾经见到的说明过全连接层的反向传播，因此，这一次主要是专注于卷积层的反向传播。</p>
+<p>  需要注意的是，在本文中，所有的正向传播过程中，卷积的步长stride均固定为1。</p>
         </div>
         
         
@@ -333,8 +335,9 @@
         </div>
         
         <div class="content">
-            <h5 id="一、YOLO简介"><a href="#一、YOLO简介" class="headerlink" title="一、YOLO简介"></a>一、YOLO简介</h5><p>&emsp;&emsp;YOLO（You Only Look Once）是一个高效的目标检测算法，属于One-Stage大家族，</p>
-<p>&emsp;&emsp;本文参考的源码地址为：<a href="https://github.com/wizyoung/YOLOv3_TensorFlow" target="_blank" rel="noopener">https://github.com/wizyoung/YOLOv3_TensorFlow</a></p>
+            <h5 id="一yolo简介">一、YOLO简介</h5>
+<p>  YOLO（You Only Look Once）是一个高效的目标检测算法，属于One-Stage大家族，</p>
+<p>  本文参考的源码地址为：<a href="https://github.com/wizyoung/YOLOv3_TensorFlow" class="uri" target="_blank" rel="noopener">https://github.com/wizyoung/YOLOv3_TensorFlow</a></p>
         </div>
         
         
@@ -408,8 +411,9 @@
         </div>
         
         <div class="content">
-            <h5 id="一、YOLO简介"><a href="#一、YOLO简介" class="headerlink" title="一、YOLO简介"></a>一、YOLO简介</h5><p>&emsp;&emsp;YOLO（You Only Look Once）是一个高效的目标检测算法，属于One-Stage大家族，</p>
-<p>&emsp;&emsp;本文参考的源码地址为：<a href="https://github.com/wizyoung/YOLOv3_TensorFlow" target="_blank" rel="noopener">https://github.com/wizyoung/YOLOv3_TensorFlow</a></p>
+            <h5 id="一yolo简介">一、YOLO简介</h5>
+<p>  YOLO（You Only Look Once）是一个高效的目标检测算法，属于One-Stage大家族，</p>
+<p>  本文参考的源码地址为：<a href="https://github.com/wizyoung/YOLOv3_TensorFlow" class="uri" target="_blank" rel="noopener">https://github.com/wizyoung/YOLOv3_TensorFlow</a></p>
         </div>
         
         
@@ -483,9 +487,10 @@
         </div>
         
         <div class="content">
-            <h5 id="一、YOLO简介"><a href="#一、YOLO简介" class="headerlink" title="一、YOLO简介"></a>一、YOLO简介</h5><p>&emsp;&emsp;YOLO（You Only Look Once）是一个高效的目标检测算法，属于One-Stage大家族，针对于Two-Stage目标检测算法普遍存在的运算速度慢的缺点，YOLO创造性的提出了One-Stage。也就是将物体分类和物体定位在一个步骤中完成。YOLO直接在输出层回归bounding box的位置和bounding box所属类别，从而实现one-stage。  </p>
-<p>&emsp;&emsp;经过两次迭代，YOLO目前的最新版本为<a href="https://pjreddie.com/media/files/papers/YOLOv3.pdf" target="_blank" rel="noopener">YOLOv3</a>，在前两版的基础上，YOLOv3进行了一些比较细节的改动，效果有所提升。  </p>
-<p>&emsp;&emsp;本文正是希望可以将源码加以注释，方便自己学习，同时也愿意分享出来和大家一起学习。由于本人还是一学生，如果有错还请大家不吝指出。  </p>
+            <h5 id="一yolo简介">一、YOLO简介</h5>
+<p>  YOLO（You Only Look Once）是一个高效的目标检测算法，属于One-Stage大家族，针对于Two-Stage目标检测算法普遍存在的运算速度慢的缺点，YOLO创造性的提出了One-Stage。也就是将物体分类和物体定位在一个步骤中完成。YOLO直接在输出层回归bounding box的位置和bounding box所属类别，从而实现one-stage。</p>
+<p>  经过两次迭代，YOLO目前的最新版本为<a href="https://pjreddie.com/media/files/papers/YOLOv3.pdf" target="_blank" rel="noopener">YOLOv3</a>，在前两版的基础上，YOLOv3进行了一些比较细节的改动，效果有所提升。</p>
+<p>  本文正是希望可以将源码加以注释，方便自己学习，同时也愿意分享出来和大家一起学习。由于本人还是一学生，如果有错还请大家不吝指出。</p>
         </div>
         
         
@@ -559,9 +564,10 @@
         </div>
         
         <div class="content">
-            <h5 id="一、YOLO简介"><a href="#一、YOLO简介" class="headerlink" title="一、YOLO简介"></a>一、YOLO简介</h5><p>&emsp;&emsp;YOLO（You Only Look Once）是一个高效的目标检测算法，属于One-Stage大家族，针对于Two-Stage目标检测算法普遍存在的运算速度慢的缺点，YOLO创造性的提出了One-Stage。也就是将物体分类和物体定位在一个步骤中完成。YOLO直接在输出层回归bounding box的位置和bounding box所属类别，从而实现one-stage。  </p>
-<p>&emsp;&emsp;经过两次迭代，YOLO目前的最新版本为<a href="https://pjreddie.com/media/files/papers/YOLOv3.pdf" target="_blank" rel="noopener">YOLOv3</a>，在前两版的基础上，YOLOv3进行了一些比较细节的改动，效果有所提升。  </p>
-<p>&emsp;&emsp;本文正是希望可以将源码加以注释，方便自己学习，同时也愿意分享出来和大家一起学习。由于本人还是一学生，如果有错还请大家不吝指出。  </p>
+            <h5 id="一yolo简介">一、YOLO简介</h5>
+<p>  YOLO（You Only Look Once）是一个高效的目标检测算法，属于One-Stage大家族，针对于Two-Stage目标检测算法普遍存在的运算速度慢的缺点，YOLO创造性的提出了One-Stage。也就是将物体分类和物体定位在一个步骤中完成。YOLO直接在输出层回归bounding box的位置和bounding box所属类别，从而实现one-stage。</p>
+<p>  经过两次迭代，YOLO目前的最新版本为<a href="https://pjreddie.com/media/files/papers/YOLOv3.pdf" target="_blank" rel="noopener">YOLOv3</a>，在前两版的基础上，YOLOv3进行了一些比较细节的改动，效果有所提升。</p>
+<p>  本文正是希望可以将源码加以注释，方便自己学习，同时也愿意分享出来和大家一起学习。由于本人还是一学生，如果有错还请大家不吝指出。</p>
         </div>
         
         
@@ -635,9 +641,10 @@
         </div>
         
         <div class="content">
-            <h5 id="一、YOLO简介"><a href="#一、YOLO简介" class="headerlink" title="一、YOLO简介"></a>一、YOLO简介</h5><p>&emsp;&emsp;YOLO（You Only Look Once）是一个高效的目标检测算法，属于One-Stage大家族，针对于Two-Stage目标检测算法普遍存在的运算速度慢的缺点，YOLO创造性的提出了One-Stage。也就是将物体分类和物体定位在一个步骤中完成。YOLO直接在输出层回归bounding box的位置和bounding box所属类别，从而实现one-stage。  </p>
-<p>&emsp;&emsp;经过两次迭代，YOLO目前的最新版本为<a href="https://pjreddie.com/media/files/papers/YOLOv3.pdf" target="_blank" rel="noopener">YOLOv3</a>，在前两版的基础上，YOLOv3进行了一些比较细节的改动，效果有所提升。  </p>
-<p>&emsp;&emsp;本文正是希望可以将源码加以注释，方便自己学习，同时也愿意分享出来和大家一起学习。由于本人还是一学生，如果有错还请大家不吝指出。  </p>
+            <h5 id="一yolo简介">一、YOLO简介</h5>
+<p>  YOLO（You Only Look Once）是一个高效的目标检测算法，属于One-Stage大家族，针对于Two-Stage目标检测算法普遍存在的运算速度慢的缺点，YOLO创造性的提出了One-Stage。也就是将物体分类和物体定位在一个步骤中完成。YOLO直接在输出层回归bounding box的位置和bounding box所属类别，从而实现one-stage。</p>
+<p>  经过两次迭代，YOLO目前的最新版本为<a href="https://pjreddie.com/media/files/papers/YOLOv3.pdf" target="_blank" rel="noopener">YOLOv3</a>，在前两版的基础上，YOLOv3进行了一些比较细节的改动，效果有所提升。</p>
+<p>  本文正是希望可以将源码加以注释，方便自己学习，同时也愿意分享出来和大家一起学习。由于本人还是一学生，如果有错还请大家不吝指出。</p>
         </div>
         
         
@@ -711,7 +718,8 @@
         </div>
         
         <div class="content">
-            <h5 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h5><p>&emsp;&emsp;前面介绍了单层全连接层并使用激活函数激活的情况，尝试去进行了多样本的梯度下降计算，这一篇文章打算简单介绍一下多层全连接层的梯度下降的情况，重点在于如何进行梯度的向后传播。还是请注意：这里的所有推导过程都只是针对当前设置的参数信息，并不具有一般性，但是所有的推导过程可以推导到一般的运算，因此以下给出的并不是反向传播算法的严格证明，但是可以很好的帮助理解反向传播算法。  </p>
+            <h5 id="前言">前言</h5>
+<p>  前面介绍了单层全连接层并使用激活函数激活的情况，尝试去进行了多样本的梯度下降计算，这一篇文章打算简单介绍一下多层全连接层的梯度下降的情况，重点在于如何进行梯度的向后传播。还是请注意：这里的所有推导过程都只是针对当前设置的参数信息，并不具有一般性，但是所有的推导过程可以推导到一般的运算，因此以下给出的并不是反向传播算法的严格证明，但是可以很好的帮助理解反向传播算法。</p>
         </div>
         
         
@@ -785,7 +793,8 @@
         </div>
         
         <div class="content">
-            <h5 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h5><p>&emsp;&emsp;前面介绍了单层全连接层，并且没有使用激活函数，这种情况比较简单，这一篇文章打算简单介绍一下多个输出，以及使用激活函数进行非线性激活的情况。还是请注意：这里的所有推导过程都只是针对当前设置的参数信息，并不具有一般性，但是所有的推导过程可以推导到一般的运算，因此以下给出的并不是反向传播算法的严格证明，但是可以很好的帮助理解反向传播算法。</p>
+            <h5 id="前言">前言</h5>
+<p>  前面介绍了单层全连接层，并且没有使用激活函数，这种情况比较简单，这一篇文章打算简单介绍一下多个输出，以及使用激活函数进行非线性激活的情况。还是请注意：这里的所有推导过程都只是针对当前设置的参数信息，并不具有一般性，但是所有的推导过程可以推导到一般的运算，因此以下给出的并不是反向传播算法的严格证明，但是可以很好的帮助理解反向传播算法。</p>
         </div>
         
         
@@ -859,7 +868,8 @@
         </div>
         
         <div class="content">
-            <h5 id="一、反向传播算法"><a href="#一、反向传播算法" class="headerlink" title="一、反向传播算法"></a>一、反向传播算法</h5><p>&emsp;&emsp;近年来，深度学习的快速发展带来了一系列喜人的成果，不管是在图像领域还是在NLP领域，深度学习都显示了其极其强大的能力。而深度学习之所以可以进行大规模的参数运算，反向传播算法功不可没，可以说，没有反向传播算法，深度学习就不可能得以快速发展，因此在此之前，有必要了解一下反向传播算法的具体原理和公式推导。请注意：这里的所有推导过程都只是针对当前设置的参数信息，并不具有一般性，但是所有的推导过程可以推导到一般的运算，因此以下给出的并不是反向传播算法的严格证明，但是可以很好的帮助理解反向传播算法。  </p>
+            <h5 id="一反向传播算法">一、反向传播算法</h5>
+<p>  近年来，深度学习的快速发展带来了一系列喜人的成果，不管是在图像领域还是在NLP领域，深度学习都显示了其极其强大的能力。而深度学习之所以可以进行大规模的参数运算，反向传播算法功不可没，可以说，没有反向传播算法，深度学习就不可能得以快速发展，因此在此之前，有必要了解一下反向传播算法的具体原理和公式推导。请注意：这里的所有推导过程都只是针对当前设置的参数信息，并不具有一般性，但是所有的推导过程可以推导到一般的运算，因此以下给出的并不是反向传播算法的严格证明，但是可以很好的帮助理解反向传播算法。<br></p>
         </div>
         
         
@@ -898,10 +908,10 @@
 <div class="card card-transparent">
     <nav class="pagination is-centered" role="navigation" aria-label="pagination">
         <div class="pagination-previous">
-            <a class="is-flex-grow has-text-black-ter" href="/">Anterior</a>
+            <a class="is-flex-grow has-text-black-ter" href="/">Previous</a>
         </div>
         <div class="pagination-next">
-            <a class="is-flex-grow has-text-black-ter" href="/page/3/">Siguiente</a>
+            <a class="is-flex-grow has-text-black-ter" href="/page/3/">Next</a>
         </div>
         <ul class="pagination-list is-hidden-mobile">
             
@@ -929,11 +939,11 @@
             <div class="level-item has-text-centered">
                 <div>
                     
-                        <img class="image is-96x96 has-mb-6" src="/images/icon.jpg" alt="华轩">
+                        <img class="image is-96x96 has-mb-6" src="/images/icon.jpg" alt="Da Vinci">
                     
                     
                     <p class="is-size-4 is-block">
-                        华轩
+                        Da Vinci
                     </p>
                     
                     
@@ -954,7 +964,7 @@
             <div class="level-item has-text-centered is-marginless">
                 <a href="/archives/">
                     <p class="heading">
-                        Entradas
+                        Posts
                     </p>
                     <p class="title has-text-weight-normal">
                         25
@@ -964,7 +974,7 @@
             <div class="level-item has-text-centered is-marginless">
                 <a href="/categories/">
                     <p class="heading">
-                        Categorias
+                        Categories
                     </p>
                     <p class="title has-text-weight-normal">
                         3
@@ -974,7 +984,7 @@
             <div class="level-item has-text-centered is-marginless">
                 <a href="/tags/">
                     <p class="heading">
-                        Etiquetas
+                        Tags
                     </p>
                     <p class="title has-text-weight-normal">
                         21
@@ -984,7 +994,7 @@
         </nav>
         <div class="level">
             <a class="level-item button is-link is-rounded" href="https://github.com/huaxuan0720" target="_blank">
-                <i class="fab fa-github"></i>&nbsp;&nbsp;SEGUIR</a>
+                <i class="fab fa-github"></i>&nbsp;&nbsp;Follow</a>
         </div>
         
         
@@ -1077,7 +1087,7 @@
 <div class="card widget is-hidden-mobile">
     <div class="card-content">
         <h3 class="menu-label">
-            Nube de etiquetas
+            Tag Cloud
         </h3>
         <a href="/tags/AdaBoost/" style="font-size: 10px;">AdaBoost</a> <a href="/tags/EM算法/" style="font-size: 10px;">EM算法</a> <a href="/tags/PCA/" style="font-size: 11.67px;">PCA</a> <a href="/tags/SVD/" style="font-size: 10px;">SVD</a> <a href="/tags/SVM/" style="font-size: 13.33px;">SVM</a> <a href="/tags/SVR/" style="font-size: 10px;">SVR</a> <a href="/tags/Support-Vector-Regression/" style="font-size: 10px;">Support Vector Regression</a> <a href="/tags/Welcome/" style="font-size: 10px;">Welcome</a> <a href="/tags/YOLOv3/" style="font-size: 15px;">YOLOv3</a> <a href="/tags/主成分分析/" style="font-size: 11.67px;">主成分分析</a> <a href="/tags/卷积/" style="font-size: 15px;">卷积</a> <a href="/tags/反向传播/" style="font-size: 16.67px;">反向传播</a> <a href="/tags/反向传播算法/" style="font-size: 13.33px;">反向传播算法</a> <a href="/tags/奇异值分解/" style="font-size: 10px;">奇异值分解</a> <a href="/tags/支持向量回归/" style="font-size: 10px;">支持向量回归</a> <a href="/tags/支持向量机/" style="font-size: 13.33px;">支持向量机</a> <a href="/tags/机器学习/" style="font-size: 20px;">机器学习</a> <a href="/tags/核函数/" style="font-size: 10px;">核函数</a> <a href="/tags/深度学习/" style="font-size: 18.33px;">深度学习</a> <a href="/tags/目标检测/" style="font-size: 15px;">目标检测</a> <a href="/tags/逻辑回归/" style="font-size: 10px;">逻辑回归</a>
     </div>
@@ -1089,7 +1099,7 @@
     <div class="card-content">
         <div class="menu">
         <h3 class="menu-label">
-            Archivos
+            Archives
         </h3>
         <ul class="menu-list">
         
@@ -1139,7 +1149,7 @@
 <div class="card widget">
     <div class="card-content">
         <h3 class="menu-label">
-            Recientes
+            Recent
         </h3>
         
         <article class="media">
@@ -1246,7 +1256,7 @@
     <div class="card-content">
         <div class="menu">
             <h3 class="menu-label">
-                Categorias
+                Categories
             </h3>
             <ul class="menu-list">
             <li>
@@ -1294,7 +1304,7 @@
 <div class="card widget">
     <div class="card-content">
         <h3 class="menu-label">
-            Recientes
+            Recent
         </h3>
         
         <article class="media">
@@ -1401,7 +1411,7 @@
     <div class="card-content">
         <div class="menu">
             <h3 class="menu-label">
-                Categorias
+                Categories
             </h3>
             <ul class="menu-list">
             <li>
@@ -1604,10 +1614,10 @@ document.addEventListener('DOMContentLoaded', function () {
     (function (window) {
         var INSIGHT_CONFIG = {
             TRANSLATION: {
-                POSTS: 'Entradas',
+                POSTS: 'Posts',
                 PAGES: 'Pages',
-                CATEGORIES: 'Categorias',
-                TAGS: 'Etiquetas',
+                CATEGORIES: 'Categories',
+                TAGS: 'Tags',
                 UNTITLED: '(Untitled)',
             },
             CONTENT_URL: '/content.json',

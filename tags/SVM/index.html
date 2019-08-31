@@ -2,7 +2,7 @@
 <html>
 <head><meta name="generator" content="Hexo 3.8.0">
     <meta charset="utf-8">
-<title>Etiqueta: SVM - Welcome to My Blogs</title>
+<title>Tag: SVM - Welcome to My Blogs</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
 
@@ -145,7 +145,7 @@
     <div class="card-content">
         <nav class="breadcrumb" aria-label="breadcrumbs">
         <ul>
-            <li><a href="/tags">Etiquetas</a></li>
+            <li><a href="/tags">Tags</a></li>
             <li class="is-active"><a href="#" aria-current="page">SVM</a></li>
         </ul>
         </nav>
@@ -193,6 +193,7 @@
         
         <div class="content">
             
+
         </div>
         
         
@@ -249,7 +250,8 @@
         </div>
         
         <div class="content">
-            <h5 id="一、硬间隔SVM和软间隔SVM"><a href="#一、硬间隔SVM和软间隔SVM" class="headerlink" title="一、硬间隔SVM和软间隔SVM"></a>一、硬间隔SVM和软间隔SVM</h5><p>&emsp;&emsp;前面简单介绍了以下线性可分SVM，本质上前面介绍的SVM属于硬间隔SVM，因为我们已经知道存在一个超平面 $S:\omega \cdot x + b = 0$ 可以将所有的样本数据完美分开。但是实际上，并不是所有的样本数据都这么完美。有时候存在这种情况，给定一个样本数据集，绝大多数的样本都是线性可分的，但是存在某些特别的样本是线性不可分的。例如，如果我们将 $y = 0$ 这条直线看作一个分类的超平面， $y = 0$ 以上的点标记为1， $y = 0$ 以下的点标记为-1，那么绝大多数的样本点符合这个规则，但是有一些点位于 $y = 0$ 以上，却被标记为-1，有些点位于 $y = 0$ 以下，却被标记为了1，这样就会导致整个数据集线性不可分。</p>
+            <h5 id="一硬间隔svm和软间隔svm">一、硬间隔SVM和软间隔SVM</h5>
+<p>  前面简单介绍了以下线性可分SVM，本质上前面介绍的SVM属于硬间隔SVM，因为我们已经知道存在一个超平面 <span class="math inline">\(S:\omega \cdot x + b = 0\)</span> 可以将所有的样本数据完美分开。但是实际上，并不是所有的样本数据都这么完美。有时候存在这种情况，给定一个样本数据集，绝大多数的样本都是线性可分的，但是存在某些特别的样本是线性不可分的。例如，如果我们将 <span class="math inline">\(y = 0\)</span> 这条直线看作一个分类的超平面， <span class="math inline">\(y = 0\)</span> 以上的点标记为1， <span class="math inline">\(y = 0\)</span> 以下的点标记为-1，那么绝大多数的样本点符合这个规则，但是有一些点位于 <span class="math inline">\(y = 0\)</span> 以上，却被标记为-1，有些点位于 <span class="math inline">\(y = 0\)</span> 以下，却被标记为了1，这样就会导致整个数据集线性不可分。</p>
         </div>
         
         
@@ -323,7 +325,8 @@
         </div>
         
         <div class="content">
-            <h5 id="一、支持向量机"><a href="#一、支持向量机" class="headerlink" title="一、支持向量机"></a>一、支持向量机</h5><p>&emsp;&emsp;支持向量机（support vector machines，简称SVM）是一种非常高效的分类器，在神经网络出现前，SVM被称为最强分类器。SVM的核心思想就是，对于两个类别的数据，每个数据点都可以抽象为多维空间中的一个坐标点，每一个点都对应于一个标签。那么我们已经知道这两个类别可以被一个超平面相隔开，即在超平面的一侧是一个类别，另一侧是另一个类别。很明显。在绝大多数情况下，这样的超平面并不唯一。其中，将两个类别分开，并且距离两个类别中离超平面最近的若干个点距离之和最大的那一个超平面则最能满足我们的要求。因为有这样的一个超平面，所有当我们引入一个新的样本数据时，我们就有最高的把握可以将这个新的样本点分类正确。这就是SVM的核心思想。  </p>
+            <h5 id="一支持向量机">一、支持向量机</h5>
+<p>  支持向量机（support vector machines，简称SVM）是一种非常高效的分类器，在神经网络出现前，SVM被称为最强分类器。SVM的核心思想就是，对于两个类别的数据，每个数据点都可以抽象为多维空间中的一个坐标点，每一个点都对应于一个标签。那么我们已经知道这两个类别可以被一个超平面相隔开，即在超平面的一侧是一个类别，另一侧是另一个类别。很明显。在绝大多数情况下，这样的超平面并不唯一。其中，将两个类别分开，并且距离两个类别中离超平面最近的若干个点距离之和最大的那一个超平面则最能满足我们的要求。因为有这样的一个超平面，所有当我们引入一个新的样本数据时，我们就有最高的把握可以将这个新的样本点分类正确。这就是SVM的核心思想。</p>
         </div>
         
         
@@ -372,11 +375,11 @@
             <div class="level-item has-text-centered">
                 <div>
                     
-                        <img class="image is-96x96 has-mb-6" src="/images/icon.jpg" alt="华轩">
+                        <img class="image is-96x96 has-mb-6" src="/images/icon.jpg" alt="Da Vinci">
                     
                     
                     <p class="is-size-4 is-block">
-                        华轩
+                        Da Vinci
                     </p>
                     
                     
@@ -397,7 +400,7 @@
             <div class="level-item has-text-centered is-marginless">
                 <a href="/archives/">
                     <p class="heading">
-                        Entradas
+                        Posts
                     </p>
                     <p class="title has-text-weight-normal">
                         25
@@ -407,7 +410,7 @@
             <div class="level-item has-text-centered is-marginless">
                 <a href="/categories/">
                     <p class="heading">
-                        Categorias
+                        Categories
                     </p>
                     <p class="title has-text-weight-normal">
                         3
@@ -417,7 +420,7 @@
             <div class="level-item has-text-centered is-marginless">
                 <a href="/tags/">
                     <p class="heading">
-                        Etiquetas
+                        Tags
                     </p>
                     <p class="title has-text-weight-normal">
                         21
@@ -427,7 +430,7 @@
         </nav>
         <div class="level">
             <a class="level-item button is-link is-rounded" href="https://github.com/huaxuan0720" target="_blank">
-                <i class="fab fa-github"></i>&nbsp;&nbsp;SEGUIR</a>
+                <i class="fab fa-github"></i>&nbsp;&nbsp;Follow</a>
         </div>
         
         
@@ -520,7 +523,7 @@
 <div class="card widget is-hidden-mobile">
     <div class="card-content">
         <h3 class="menu-label">
-            Nube de etiquetas
+            Tag Cloud
         </h3>
         <a href="/tags/AdaBoost/" style="font-size: 10px;">AdaBoost</a> <a href="/tags/EM算法/" style="font-size: 10px;">EM算法</a> <a href="/tags/PCA/" style="font-size: 11.67px;">PCA</a> <a href="/tags/SVD/" style="font-size: 10px;">SVD</a> <a href="/tags/SVM/" style="font-size: 13.33px;">SVM</a> <a href="/tags/SVR/" style="font-size: 10px;">SVR</a> <a href="/tags/Support-Vector-Regression/" style="font-size: 10px;">Support Vector Regression</a> <a href="/tags/Welcome/" style="font-size: 10px;">Welcome</a> <a href="/tags/YOLOv3/" style="font-size: 15px;">YOLOv3</a> <a href="/tags/主成分分析/" style="font-size: 11.67px;">主成分分析</a> <a href="/tags/卷积/" style="font-size: 15px;">卷积</a> <a href="/tags/反向传播/" style="font-size: 16.67px;">反向传播</a> <a href="/tags/反向传播算法/" style="font-size: 13.33px;">反向传播算法</a> <a href="/tags/奇异值分解/" style="font-size: 10px;">奇异值分解</a> <a href="/tags/支持向量回归/" style="font-size: 10px;">支持向量回归</a> <a href="/tags/支持向量机/" style="font-size: 13.33px;">支持向量机</a> <a href="/tags/机器学习/" style="font-size: 20px;">机器学习</a> <a href="/tags/核函数/" style="font-size: 10px;">核函数</a> <a href="/tags/深度学习/" style="font-size: 18.33px;">深度学习</a> <a href="/tags/目标检测/" style="font-size: 15px;">目标检测</a> <a href="/tags/逻辑回归/" style="font-size: 10px;">逻辑回归</a>
     </div>
@@ -532,7 +535,7 @@
     <div class="card-content">
         <div class="menu">
         <h3 class="menu-label">
-            Archivos
+            Archives
         </h3>
         <ul class="menu-list">
         
@@ -582,7 +585,7 @@
 <div class="card widget">
     <div class="card-content">
         <h3 class="menu-label">
-            Recientes
+            Recent
         </h3>
         
         <article class="media">
@@ -689,7 +692,7 @@
     <div class="card-content">
         <div class="menu">
             <h3 class="menu-label">
-                Categorias
+                Categories
             </h3>
             <ul class="menu-list">
             <li>
@@ -737,7 +740,7 @@
 <div class="card widget">
     <div class="card-content">
         <h3 class="menu-label">
-            Recientes
+            Recent
         </h3>
         
         <article class="media">
@@ -844,7 +847,7 @@
     <div class="card-content">
         <div class="menu">
             <h3 class="menu-label">
-                Categorias
+                Categories
             </h3>
             <ul class="menu-list">
             <li>
@@ -1047,10 +1050,10 @@ document.addEventListener('DOMContentLoaded', function () {
     (function (window) {
         var INSIGHT_CONFIG = {
             TRANSLATION: {
-                POSTS: 'Entradas',
+                POSTS: 'Posts',
                 PAGES: 'Pages',
-                CATEGORIES: 'Categorias',
-                TAGS: 'Etiquetas',
+                CATEGORIES: 'Categories',
+                TAGS: 'Tags',
                 UNTITLED: '(Untitled)',
             },
             CONTENT_URL: '/content.json',

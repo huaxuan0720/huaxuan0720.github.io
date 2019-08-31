@@ -7,19 +7,19 @@
 
 
 
-    <meta name="description" content="一、PCA&amp;emsp;&amp;emsp; 在之前讲述过如何使用PCA以及背后的基本的几何原理。但是并没有给出详细的数学推导，因此，在这里补上PCA的详细数学推导过程。">
+    <meta name="description" content="一、PCA    在之前讲述过如何使用PCA以及背后的基本的几何原理。但是并没有给出详细的数学推导，因此，在这里补上PCA的详细数学推导过程。">
 <meta name="keywords" content="机器学习,PCA,主成分分析">
 <meta property="og:type" content="article">
 <meta property="og:title" content="PCA背后的公式推导">
 <meta property="og:url" content="http://huaxuan0720.github.io/2019/08/14/Note25-PCAMathDerivation/index.html">
 <meta property="og:site_name" content="Welcome to My Blogs">
-<meta property="og:description" content="一、PCA&amp;emsp;&amp;emsp; 在之前讲述过如何使用PCA以及背后的基本的几何原理。但是并没有给出详细的数学推导，因此，在这里补上PCA的详细数学推导过程。">
+<meta property="og:description" content="一、PCA    在之前讲述过如何使用PCA以及背后的基本的几何原理。但是并没有给出详细的数学推导，因此，在这里补上PCA的详细数学推导过程。">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://huaxuan0720.github.io/gallery/MachineLearning.jpg">
 <meta property="og:updated_time" content="2019-08-24T14:51:09.360Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="PCA背后的公式推导">
-<meta name="twitter:description" content="一、PCA&amp;emsp;&amp;emsp; 在之前讲述过如何使用PCA以及背后的基本的几何原理。但是并没有给出详细的数学推导，因此，在这里补上PCA的详细数学推导过程。">
+<meta name="twitter:description" content="一、PCA    在之前讲述过如何使用PCA以及背后的基本的几何原理。但是并没有给出详细的数学推导，因此，在这里补上PCA的详细数学推导过程。">
 <meta name="twitter:image" content="http://huaxuan0720.github.io/gallery/MachineLearning.jpg">
 
 
@@ -130,7 +130,7 @@
                     
                 
                 
-                <a class="navbar-item is-hidden-tablet catalogue" title="Catálogo" href="javascript:;">
+                <a class="navbar-item is-hidden-tablet catalogue" title="Catalogue" href="javascript:;">
                     <i class="fas fa-list-ul"></i>
                 </a>
                 
@@ -192,23 +192,94 @@
         </div>
         
         <div class="content">
-            <h5 id="一、PCA"><a href="#一、PCA" class="headerlink" title="一、PCA"></a>一、PCA</h5><p>&emsp;&emsp; 在之前讲述过如何使用PCA以及背后的基本的几何原理。但是并没有给出详细的数学推导，因此，在这里补上PCA的详细数学推导过程。  </p>
+            <h5 id="一pca">一、PCA</h5>
+<p>   在之前讲述过如何使用PCA以及背后的基本的几何原理。但是并没有给出详细的数学推导，因此，在这里补上PCA的详细数学推导过程。</p>
 <a id="more"></a>
-
-<h5 id="二、预备知识"><a href="#二、预备知识" class="headerlink" title="二、预备知识"></a>二、预备知识</h5><h6 id="1-矩阵的特征值分解"><a href="#1-矩阵的特征值分解" class="headerlink" title="1. 矩阵的特征值分解"></a>1. 矩阵的特征值分解</h6><p>&emsp;&emsp; 这一部分是线性代数的基本内容。  </p>
-<h6 id="2-Frobenius-范数"><a href="#2-Frobenius-范数" class="headerlink" title="2. Frobenius 范数"></a>2. Frobenius 范数</h6><p>&emsp;&emsp; 在线性代数中会有很有的范数来进行约束，Frobenius范数就是其中之一，它的定义十分简单，就是对矩阵中的每个元素进行平方，再进行求和，最后对计算得到的和进行开方。Frobenius范数通常记作$||A||<em>F$，用公式表达如下：<br>$$<br>Frobenius(A) = ||A||_F = \sqrt{\sum_i\sum_j A</em>{i, j}^2} \tag{1}<br>$$<br>&emsp;&emsp;其中，$A$表示一个矩阵，$A_{i, j}$表示的是矩阵中第$i$行第$j$列的元素。  </p>
-<p>&emsp;&emsp;如果将矩阵是做一个多维空间中的一个点的话，那么Frobenius范数就代表这个点和原点之间的距离。  </p>
-<h6 id="3-矩阵的迹（Trace）"><a href="#3-矩阵的迹（Trace）" class="headerlink" title="3. 矩阵的迹（Trace）"></a>3. 矩阵的迹（Trace）</h6><p>&emsp;&emsp;在线性代数中，还有一个十分朴素但却十分重要的概念就是矩阵的迹（Trace），它表示的是矩阵的对角线上的元素的和， 记作$Tr(A)$，用公式表达如下：<br>$$<br>Tr(A) = \sum_i A_{i, i} \tag{2}<br>$$</p>
-<p>&emsp;&emsp; 矩阵的迹（trace）有时候可以简化矩阵的计算，在线性代数中有很重要的用处。</p>
-<h6 id="4-矩阵的迹（trace）和Frobenius范数的关系"><a href="#4-矩阵的迹（trace）和Frobenius范数的关系" class="headerlink" title="4.矩阵的迹（trace）和Frobenius范数的关系"></a>4.矩阵的迹（trace）和Frobenius范数的关系</h6><p>&emsp;&emsp; 在《深度学习》（中文版）（即有人称之为“花书”）中，第29页给出了一个公式：<br>$$<br>||A||_F = \sqrt{Tr(AA^T)} \tag{3}<br>$$<br>&emsp;&emsp; 在这里，我们简单证明一下。</p>
-<p>&emsp;&emsp; 假设我们的矩阵$A$可以表示为列向量的集合，即：<br>$$<br>A = \begin{bmatrix}<br>\vec{a_1}&amp; \vec{a_2}&amp; \cdots&amp; \vec{a_n}<br>\end{bmatrix}<br>$$<br>&emsp;&emsp; 其中，每一项都是一个长度$m$的列向量，即$\vec{a_i} \in \Bbb{R^m}$。所以$A \in \Bbb{R^{m \times n}}$。</p>
-<p>&emsp;&emsp; 有上面的表示法，我们可以得到$A^T$，$A^T \in \Bbb{R^{n \times m}}$：<br>$$<br>A^T = \begin{bmatrix} \vec{a_1}^T \ \vec{a_2}^T \ \vdots \ \vec{a_n}^T \end{bmatrix}<br>$$<br>&emsp;&emsp; 于是我们可以得到：<br>$$<br>\begin{aligned}<br>A^T \cdot A=&amp;\begin{bmatrix}<br>\vec{a_1}^T \<br>\vec{a_2}^T \<br>\vdots \<br>\vec{a_n}^T<br>\end{bmatrix}<br>\cdot<br>\begin{bmatrix}<br>\vec{a_1}&amp; \vec{a_2}&amp; \cdots&amp; \vec{a_n}<br>\end{bmatrix} \<br>=&amp; \begin{bmatrix}<br>\vec{a_1}^T \cdot \vec{a_1}&amp; \vec{a_1}^T \cdot \vec{a_2}&amp;  \cdots&amp; \vec{a_1}^T \cdot \vec{a_n} \<br>\vec{a_2}^T \cdot \vec{a_1}&amp; \vec{a_2}^T \cdot \vec{a_2}&amp;  \cdots&amp;  \vec{a_2}^T \cdot \vec{a_n} \<br>\vdots&amp;  \vdots&amp;  \ddots&amp;  \vdots\<br>\vec{a_n}^T \cdot \vec{a_1}&amp; \vec{a_n}^T \cdot \vec{a_2}&amp;  \cdots&amp;  \vec{a_n}^T \cdot \vec{a_n}<br>\end{bmatrix}<br>\end{aligned} \tag{4}<br>$$<br>&emsp;&emsp; 所以：<br>$$<br>Tr(A^TA) = \sum_{i=1}^n \vec{a_i}^T \cdot \vec{a_i} \tag{5}<br>$$<br>&emsp;&emsp; 我们考察其中的某一个$\vec{a_i}^T \cdot \vec{a_i}$。由于$\vec{a_i}$表示的是长度为$m$的列向量，表示的是矩阵$A$的第$i$列，因此，我们有：<br>$$<br>\begin{aligned}<br>\vec{a_i}^T \cdot \vec{a_i} &amp;=\begin{bmatrix} A_{1, i} \ A_{2, i} \ \vdots \ A_{m, i} \end{bmatrix} \cdot \begin{bmatrix} A_{1, i} &amp; A_{2, i}&amp; \cdots &amp; A_{m, i} \end{bmatrix} \<br>&amp;= \sum_{k = 1}^m A_{k, i} ^2<br>\end{aligned} \tag{6}<br>$$</p>
-<p>&emsp;&emsp; 将$\vec{a_i}^T \cdot \vec{a_i} =\sum_{k = 1}^m A_{k, i} ^2$代入式子（5），有：<br>$$<br>\begin{aligned}<br>Tr(A^TA) &amp;= \sum_{i=1}^n \vec{a_i}^T \cdot \vec{a_i} \<br>&amp;= \sum_{i= 1}^n \sum_{k = 1}^m A_{k, i}^2 \<br>&amp;= \sum_{i= 1}^n \sum_{j = 1}^m A_{j, i}^2  \<br>&amp;= \sum_{j = 1}^m \sum_{i= 1}^n  A_{j, i}^2 \<br>&amp;= ||A||_F^2<br>\end{aligned} \tag{7}<br>$$<br>&emsp;&emsp;考虑到对于一个矩阵，有：$Tr(A^T A) = Tr(A A^T)$，故：<br>$$<br>||A||_F = \sqrt{Tr(A^T A)} =  \sqrt{Tr(A A^T)} \tag{8}<br>$$<br>&emsp;&emsp;命题得证。  </p>
-<h5 id="三、详细推导过程"><a href="#三、详细推导过程" class="headerlink" title="三、详细推导过程"></a>三、详细推导过程</h5><h6 id="1-编码和解码"><a href="#1-编码和解码" class="headerlink" title="1. 编码和解码"></a>1. 编码和解码</h6><p>&emsp;&emsp;在之前也讲述过PCA的求解过程，甚至也进行了代码的编写，但是并没有给出严格的数学证明，只是从感性上进行理解，即挑选若干个坐标的基，使得每个基上的样本的方差尽可能大，从而达到数据降维的目的。假设我们的每一个样本点都是一个列向量，长度为$n$，不妨记作$x_i$，$x_i \in \Bbb{R^n}$。一共收集到了$m$个样本数据，则这些矩阵可以组成我们的样本矩阵$A$，如下：<br>$$<br>A = \begin{bmatrix}x_0 &amp; x_1 &amp; \cdots &amp; x_m \end{bmatrix}, A \in \Bbb{R^{n \times m }}<br>$$<br>&emsp;&emsp;按照之前的说明，我们求解$\Sigma= AA^T$，$\Sigma$表示的是样本矩阵的协方差矩阵，接着我们对该协方差矩阵进行特征分解，会产生$n$个特征值，我们选择较大的若干个特征值，并选择对应的特征向量，组成一个对应的变换矩阵$S$，然后对数据矩阵应用这个变换矩阵，有$R = A S^T$，则这个$R$矩阵就是我们最后求得的结果，这个结果会存在一定的精度损失，不过一般可以忽略不记。</p>
-<p>&emsp;&emsp;如果我们此时在矩阵的右侧重新乘以变换矩阵$S$，则结果会还原成我们的原始的数据矩阵，即：<br>$$<br>RS = AS^T S = A<br>$$<br>&emsp;&emsp;从上面的过程中可以看出，我们完全可以将PCA看作一个线性的编码和解码的过程，因此，我们所需要的就是求解编码和解码的矩阵信息。</p>
-<h6 id="2-编码矩阵和解码矩阵的关系"><a href="#2-编码矩阵和解码矩阵的关系" class="headerlink" title="2.编码矩阵和解码矩阵的关系"></a>2.编码矩阵和解码矩阵的关系</h6><p>&emsp;&emsp;现在开始，让我们从头开始推导PCA的相关公式。根据我们的经验，线性变换是所有变换中最简单的，因此我们就从最简单的线性变换开始。</p>
-<p>&emsp;&emsp;假设我们的数据矩阵依旧表示成上面的形式，如果我们收集数据维度太多，不便于进一步分析，我们希望可以对数据进行一定的线性压缩，这种压缩是可逆的，存在一个解码矩阵可以将数据还原成原始的数据。</p>
-<p>&emsp;&emsp;我们考虑其中的一个数据向量$x_i$，$x_i \in \Bbb{R^m}$。编码压缩之后的数据向量为$c_i$，$c_i \in \Bbb{R^l}$，其中$l &lt; m$。我们可以将这个编码过程表示成一个函数，即$f(x_i) = c_i$。同时也可以将解码函数表示成一个函数，即</p>
+<h5 id="二预备知识">二、预备知识</h5>
+<h6 id="矩阵的特征值分解">1. 矩阵的特征值分解</h6>
+<p>   这一部分是线性代数的基本内容。</p>
+<h6 id="frobenius-范数">2. Frobenius 范数</h6>
+<p>   在线性代数中会有很有的范数来进行约束，Frobenius范数就是其中之一，它的定义十分简单，就是对矩阵中的每个元素进行平方，再进行求和，最后对计算得到的和进行开方。Frobenius范数通常记作<span class="math inline">\(||A||_F\)</span>，用公式表达如下：<br>
+<span class="math display">\[
+Frobenius(A) = ||A||_F = \sqrt{\sum_i\sum_j A_{i, j}^2} \tag{1}
+\]</span>   其中，<span class="math inline">\(A\)</span>表示一个矩阵，<span class="math inline">\(A_{i, j}\)</span>表示的是矩阵中第<span class="math inline">\(i\)</span>行第<span class="math inline">\(j\)</span>列的元素。</p>
+<p>  如果将矩阵是做一个多维空间中的一个点的话，那么Frobenius范数就代表这个点和原点之间的距离。</p>
+<h6 id="矩阵的迹trace">3. 矩阵的迹（Trace）</h6>
+<p>  在线性代数中，还有一个十分朴素但却十分重要的概念就是矩阵的迹（Trace），它表示的是矩阵的对角线上的元素的和， 记作<span class="math inline">\(Tr(A)\)</span>，用公式表达如下：<br>
+<span class="math display">\[
+Tr(A) = \sum_i A_{i, i} \tag{2}
+\]</span></p>
+<p>   矩阵的迹（trace）有时候可以简化矩阵的计算，在线性代数中有很重要的用处。</p>
+<h6 id="矩阵的迹trace和frobenius范数的关系">4.矩阵的迹（trace）和Frobenius范数的关系</h6>
+<p>   在《深度学习》（中文版）（即有人称之为“花书”）中，第29页给出了一个公式：<br>
+<span class="math display">\[
+||A||_F = \sqrt{Tr(AA^T)} \tag{3}
+\]</span>    在这里，我们简单证明一下。</p>
+<p>   假设我们的矩阵<span class="math inline">\(A\)</span>可以表示为列向量的集合，即：<br>
+<span class="math display">\[
+A = \begin{bmatrix} 
+\vec{a_1}&amp; \vec{a_2}&amp; \cdots&amp; \vec{a_n} 
+\end{bmatrix}
+\]</span>    其中，每一项都是一个长度<span class="math inline">\(m\)</span>的列向量，即<span class="math inline">\(\vec{a_i} \in \Bbb{R^m}\)</span>。所以<span class="math inline">\(A \in \Bbb{R^{m \times n}}\)</span>。</p>
+<p>   有上面的表示法，我们可以得到<span class="math inline">\(A^T\)</span>，<span class="math inline">\(A^T \in \Bbb{R^{n \times m}}\)</span>：<br>
+<span class="math display">\[
+A^T = \begin{bmatrix} \vec{a_1}^T \\ \vec{a_2}^T \\ \vdots \\ \vec{a_n}^T \end{bmatrix}
+\]</span>    于是我们可以得到：<br>
+<span class="math display">\[
+\begin{aligned}
+A^T \cdot A=&amp;\begin{bmatrix} 
+\vec{a_1}^T \\ 
+\vec{a_2}^T \\ 
+\vdots \\ 
+\vec{a_n}^T 
+\end{bmatrix} 
+\cdot 
+\begin{bmatrix} 
+\vec{a_1}&amp; \vec{a_2}&amp; \cdots&amp; \vec{a_n} 
+\end{bmatrix} \\
+=&amp; \begin{bmatrix} 
+\vec{a_1}^T \cdot \vec{a_1}&amp; \vec{a_1}^T \cdot \vec{a_2}&amp;  \cdots&amp; \vec{a_1}^T \cdot \vec{a_n} \\
+\vec{a_2}^T \cdot \vec{a_1}&amp; \vec{a_2}^T \cdot \vec{a_2}&amp;  \cdots&amp;  \vec{a_2}^T \cdot \vec{a_n} \\
+\vdots&amp;  \vdots&amp;  \ddots&amp;  \vdots\\
+\vec{a_n}^T \cdot \vec{a_1}&amp; \vec{a_n}^T \cdot \vec{a_2}&amp;  \cdots&amp;  \vec{a_n}^T \cdot \vec{a_n}
+\end{bmatrix}
+\end{aligned} \tag{4}
+\]</span>    所以：<br>
+<span class="math display">\[
+Tr(A^TA) = \sum_{i=1}^n \vec{a_i}^T \cdot \vec{a_i} \tag{5}
+\]</span>    我们考察其中的某一个<span class="math inline">\(\vec{a_i}^T \cdot \vec{a_i}\)</span>。由于<span class="math inline">\(\vec{a_i}\)</span>表示的是长度为<span class="math inline">\(m\)</span>的列向量，表示的是矩阵<span class="math inline">\(A\)</span>的第<span class="math inline">\(i\)</span>列，因此，我们有：<br>
+<span class="math display">\[
+\begin{aligned}
+\vec{a_i}^T \cdot \vec{a_i} &amp;=\begin{bmatrix} A_{1, i} \\ A_{2, i} \\ \vdots \\ A_{m, i} \end{bmatrix} \cdot \begin{bmatrix} A_{1, i} &amp; A_{2, i}&amp; \cdots &amp; A_{m, i} \end{bmatrix} \\
+&amp;= \sum_{k = 1}^m A_{k, i} ^2
+\end{aligned} \tag{6}
+\]</span></p>
+<p>   将<span class="math inline">\(\vec{a_i}^T \cdot \vec{a_i} =\sum_{k = 1}^m A_{k, i} ^2\)</span>代入式子（5），有：<br>
+<span class="math display">\[
+\begin{aligned}
+Tr(A^TA) &amp;= \sum_{i=1}^n \vec{a_i}^T \cdot \vec{a_i} \\
+&amp;= \sum_{i= 1}^n \sum_{k = 1}^m A_{k, i}^2 \\
+&amp;= \sum_{i= 1}^n \sum_{j = 1}^m A_{j, i}^2  \\
+&amp;= \sum_{j = 1}^m \sum_{i= 1}^n  A_{j, i}^2 \\
+&amp;= ||A||_F^2
+\end{aligned} \tag{7}
+\]</span>   考虑到对于一个矩阵，有：<span class="math inline">\(Tr(A^T A) = Tr(A A^T)\)</span>，故：<br>
+<span class="math display">\[
+||A||_F = \sqrt{Tr(A^T A)} =  \sqrt{Tr(A A^T)} \tag{8}
+\]</span>   命题得证。</p>
+<h5 id="三详细推导过程">三、详细推导过程</h5>
+<h6 id="编码和解码">1. 编码和解码</h6>
+<p>  在之前也讲述过PCA的求解过程，甚至也进行了代码的编写，但是并没有给出严格的数学证明，只是从感性上进行理解，即挑选若干个坐标的基，使得每个基上的样本的方差尽可能大，从而达到数据降维的目的。假设我们的每一个样本点都是一个列向量，长度为<span class="math inline">\(n\)</span>，不妨记作<span class="math inline">\(x_i\)</span>，<span class="math inline">\(x_i \in \Bbb{R^n}\)</span>。一共收集到了<span class="math inline">\(m\)</span>个样本数据，则这些矩阵可以组成我们的样本矩阵<span class="math inline">\(A\)</span>，如下：<br>
+<span class="math display">\[
+A = \begin{bmatrix}x_0 &amp; x_1 &amp; \cdots &amp; x_m \end{bmatrix}, A \in \Bbb{R^{n \times m }}
+\]</span>   按照之前的说明，我们求解<span class="math inline">\(\Sigma= AA^T\)</span>，<span class="math inline">\(\Sigma\)</span>表示的是样本矩阵的协方差矩阵，接着我们对该协方差矩阵进行特征分解，会产生<span class="math inline">\(n\)</span>个特征值，我们选择较大的若干个特征值，并选择对应的特征向量，组成一个对应的变换矩阵<span class="math inline">\(S\)</span>，然后对数据矩阵应用这个变换矩阵，有<span class="math inline">\(R = A S^T\)</span>，则这个<span class="math inline">\(R\)</span>矩阵就是我们最后求得的结果，这个结果会存在一定的精度损失，不过一般可以忽略不记。</p>
+<p>  如果我们此时在矩阵的右侧重新乘以变换矩阵<span class="math inline">\(S\)</span>，则结果会还原成我们的原始的数据矩阵，即： <span class="math display">\[
+RS = AS^T S = A
+\]</span>   从上面的过程中可以看出，我们完全可以将PCA看作一个线性的编码和解码的过程，因此，我们所需要的就是求解编码和解码的矩阵信息。</p>
+<h6 id="编码矩阵和解码矩阵的关系">2.编码矩阵和解码矩阵的关系</h6>
+<p>  现在开始，让我们从头开始推导PCA的相关公式。根据我们的经验，线性变换是所有变换中最简单的，因此我们就从最简单的线性变换开始。</p>
+<p>  假设我们的数据矩阵依旧表示成上面的形式，如果我们收集数据维度太多，不便于进一步分析，我们希望可以对数据进行一定的线性压缩，这种压缩是可逆的，存在一个解码矩阵可以将数据还原成原始的数据。</p>
+<p>  我们考虑其中的一个数据向量<span class="math inline">\(x_i\)</span>，<span class="math inline">\(x_i \in \Bbb{R^m}\)</span>。编码压缩之后的数据向量为<span class="math inline">\(c_i\)</span>，<span class="math inline">\(c_i \in \Bbb{R^l}\)</span>，其中<span class="math inline">\(l &lt; m\)</span>。我们可以将这个编码过程表示成一个函数，即<span class="math inline">\(f(x_i) = c_i\)</span>。同时也可以将解码函数表示成一个函数，即</p>
 
         </div>
         
@@ -288,7 +359,7 @@
 
 <div class="card">
     <div class="card-content">
-        <h3 class="title is-5 has-text-weight-normal">Comentarios</h3>
+        <h3 class="title is-5 has-text-weight-normal">Comments</h3>
         
 <div id="valine-thread" class="content"></div>
 <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
@@ -322,11 +393,11 @@
             <div class="level-item has-text-centered">
                 <div>
                     
-                        <img class="image is-96x96 has-mb-6" src="/images/icon.jpg" alt="华轩">
+                        <img class="image is-96x96 has-mb-6" src="/images/icon.jpg" alt="Da Vinci">
                     
                     
                     <p class="is-size-4 is-block">
-                        华轩
+                        Da Vinci
                     </p>
                     
                     
@@ -347,7 +418,7 @@
             <div class="level-item has-text-centered is-marginless">
                 <a href="/archives/">
                     <p class="heading">
-                        Entradas
+                        Posts
                     </p>
                     <p class="title has-text-weight-normal">
                         25
@@ -357,7 +428,7 @@
             <div class="level-item has-text-centered is-marginless">
                 <a href="/categories/">
                     <p class="heading">
-                        Categorias
+                        Categories
                     </p>
                     <p class="title has-text-weight-normal">
                         3
@@ -367,7 +438,7 @@
             <div class="level-item has-text-centered is-marginless">
                 <a href="/tags/">
                     <p class="heading">
-                        Etiquetas
+                        Tags
                     </p>
                     <p class="title has-text-weight-normal">
                         21
@@ -377,7 +448,7 @@
         </nav>
         <div class="level">
             <a class="level-item button is-link is-rounded" href="https://github.com/huaxuan0720" target="_blank">
-                <i class="fab fa-github"></i>&nbsp;&nbsp;SEGUIR</a>
+                <i class="fab fa-github"></i>&nbsp;&nbsp;Follow</a>
         </div>
         
         
@@ -418,42 +489,42 @@
     <div class="card-content">
         <div class="menu">
             <h3 class="menu-label">
-                Catálogo
+                Catalogue
             </h3>
             <ul class="menu-list"><li>
-        <a class="is-flex" href="#一、PCA">
+        <a class="is-flex" href="#一pca">
         <span class="has-mr-6">1</span>
         <span>一、PCA</span>
         </a></li><li>
-        <a class="is-flex" href="#二、预备知识">
+        <a class="is-flex" href="#二预备知识">
         <span class="has-mr-6">2</span>
         <span>二、预备知识</span>
         </a><ul class="menu-list"><li>
-        <a class="is-flex" href="#1-矩阵的特征值分解">
+        <a class="is-flex" href="#矩阵的特征值分解">
         <span class="has-mr-6">2.1</span>
         <span>1. 矩阵的特征值分解</span>
         </a></li><li>
-        <a class="is-flex" href="#2-Frobenius-范数">
+        <a class="is-flex" href="#frobenius-范数">
         <span class="has-mr-6">2.2</span>
         <span>2. Frobenius 范数</span>
         </a></li><li>
-        <a class="is-flex" href="#3-矩阵的迹（Trace）">
+        <a class="is-flex" href="#矩阵的迹trace">
         <span class="has-mr-6">2.3</span>
         <span>3. 矩阵的迹（Trace）</span>
         </a></li><li>
-        <a class="is-flex" href="#4-矩阵的迹（trace）和Frobenius范数的关系">
+        <a class="is-flex" href="#矩阵的迹trace和frobenius范数的关系">
         <span class="has-mr-6">2.4</span>
         <span>4.矩阵的迹（trace）和Frobenius范数的关系</span>
         </a></li></ul></li><li>
-        <a class="is-flex" href="#三、详细推导过程">
+        <a class="is-flex" href="#三详细推导过程">
         <span class="has-mr-6">3</span>
         <span>三、详细推导过程</span>
         </a><ul class="menu-list"><li>
-        <a class="is-flex" href="#1-编码和解码">
+        <a class="is-flex" href="#编码和解码">
         <span class="has-mr-6">3.1</span>
         <span>1. 编码和解码</span>
         </a></li><li>
-        <a class="is-flex" href="#2-编码矩阵和解码矩阵的关系">
+        <a class="is-flex" href="#编码矩阵和解码矩阵的关系">
         <span class="has-mr-6">3.2</span>
         <span>2.编码矩阵和解码矩阵的关系</span>
         </a></li></ul></li></ul>
@@ -638,10 +709,10 @@ document.addEventListener('DOMContentLoaded', function () {
     (function (window) {
         var INSIGHT_CONFIG = {
             TRANSLATION: {
-                POSTS: 'Entradas',
+                POSTS: 'Posts',
                 PAGES: 'Pages',
-                CATEGORIES: 'Categorias',
-                TAGS: 'Etiquetas',
+                CATEGORIES: 'Categories',
+                TAGS: 'Tags',
                 UNTITLED: '(Untitled)',
             },
             CONTENT_URL: '/content.json',
