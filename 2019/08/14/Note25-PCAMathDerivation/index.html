@@ -2,24 +2,24 @@
 <html>
 <head><meta name="generator" content="Hexo 3.8.0">
     <meta charset="utf-8">
-<title>Adaboost算法 - Welcome to My Blogs</title>
+<title>PCA背后的公式推导 - Welcome to My Blogs</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
 
 
-    <meta name="description" content="前言   提升方法（boosting）是一种常用的机器学习方法，应用十分广泛，而且效果非常好，近几年的很多比赛的优胜选手都或多或少使用了提升方法用以提高自己的成绩。   提升方法的本质是通过对每一个训练样本赋予一个权重，并通过改变这些样本的权重，来学习多个分类器，并按照一定的算法将这些分类器组合在一起，通常是线性组合，因为单个分类器往往效果有限，因此组合多个分类器往往会提高模型的性能。">
-<meta name="keywords" content="机器学习,AdaBoost">
+    <meta name="description" content="一、PCA    在之前讲述过如何使用PCA以及背后的基本的几何原理。但是并没有给出详细的数学推导，因此，在这里补上PCA的详细数学推导过程。">
+<meta name="keywords" content="机器学习,PCA,主成分分析">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Adaboost算法">
-<meta property="og:url" content="http://huaxuan0720.github.io/2019/05/10/Note1-AdaBoost/index.html">
+<meta property="og:title" content="PCA背后的公式推导">
+<meta property="og:url" content="http://huaxuan0720.github.io/2019/08/14/Note25-PCAMathDerivation/index.html">
 <meta property="og:site_name" content="Welcome to My Blogs">
-<meta property="og:description" content="前言   提升方法（boosting）是一种常用的机器学习方法，应用十分广泛，而且效果非常好，近几年的很多比赛的优胜选手都或多或少使用了提升方法用以提高自己的成绩。   提升方法的本质是通过对每一个训练样本赋予一个权重，并通过改变这些样本的权重，来学习多个分类器，并按照一定的算法将这些分类器组合在一起，通常是线性组合，因为单个分类器往往效果有限，因此组合多个分类器往往会提高模型的性能。">
+<meta property="og:description" content="一、PCA    在之前讲述过如何使用PCA以及背后的基本的几何原理。但是并没有给出详细的数学推导，因此，在这里补上PCA的详细数学推导过程。">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://huaxuan0720.github.io/gallery/MachineLearning.jpg">
-<meta property="og:updated_time" content="2019-05-12T14:41:27.200Z">
+<meta property="og:updated_time" content="2019-08-24T14:51:09.360Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Adaboost算法">
-<meta name="twitter:description" content="前言   提升方法（boosting）是一种常用的机器学习方法，应用十分广泛，而且效果非常好，近几年的很多比赛的优胜选手都或多或少使用了提升方法用以提高自己的成绩。   提升方法的本质是通过对每一个训练样本赋予一个权重，并通过改变这些样本的权重，来学习多个分类器，并按照一定的算法将这些分类器组合在一起，通常是线性组合，因为单个分类器往往效果有限，因此组合多个分类器往往会提高模型的性能。">
+<meta name="twitter:title" content="PCA背后的公式推导">
+<meta name="twitter:description" content="一、PCA    在之前讲述过如何使用PCA以及背后的基本的几何原理。但是并没有给出详细的数学推导，因此，在这里补上PCA的详细数学推导过程。">
 <meta name="twitter:image" content="http://huaxuan0720.github.io/gallery/MachineLearning.jpg">
 
 
@@ -98,7 +98,7 @@
         <div class="navbar-brand is-flex-center">
             <a class="navbar-item navbar-logo" href="/">
             
-                <img src="/images/favicon.svg" alt="Adaboost算法" height="28">
+                <img src="/images/favicon.svg" alt="PCA背后的公式推导" height="28">
             
             </a>
         </div>
@@ -151,22 +151,22 @@
     
     <div class="card-image">
         <span class="image is-7by1">
-            <img class="thumbnail" src="/gallery/MachineLearning.jpg" alt="Adaboost算法">
+            <img class="thumbnail" src="/gallery/MachineLearning.jpg" alt="PCA背后的公式推导">
         </span>
     </div>
     
     <div class="card-content article ">
         <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
             
-                <i class="fas fa-angle-double-right"></i>Adaboost算法
+                <i class="fas fa-angle-double-right"></i>PCA背后的公式推导
             
         </h1>
         
         <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
             <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2019-05-10T03:41:51.000Z"><i class="far fa-calendar-alt">&nbsp;</i>2019-05-10</time>
+                <time class="level-item has-text-grey" datetime="2019-08-14T08:56:03.000Z"><i class="far fa-calendar-alt">&nbsp;</i>2019-08-14</time>
                 
-                <time class="level-item has-text-grey is-hidden-mobile" datetime="2019-05-12T14:41:27.200Z"><i class="far fa-calendar-check">&nbsp;</i>2019-05-12</time>
+                <time class="level-item has-text-grey is-hidden-mobile" datetime="2019-08-24T14:51:09.360Z"><i class="far fa-calendar-check">&nbsp;</i>2019-08-24</time>
                 
                 
                 <div class="level-item">
@@ -179,7 +179,7 @@
                     <i class="far fa-clock"></i>&nbsp;
                     
                     
-                    4 minutes read (About 627 words)
+                    11 minutes read (About 1692 words)
                 </span>
                 
                 
@@ -192,26 +192,102 @@
         </div>
         
         <div class="content">
-            <h5 id="前言">前言</h5>
-<p>  提升方法（boosting）是一种常用的机器学习方法，应用十分广泛，而且效果非常好，近几年的很多比赛的优胜选手都或多或少使用了提升方法用以提高自己的成绩。</p>
-<p>  提升方法的本质是通过对每一个训练样本赋予一个权重，并通过改变这些样本的权重，来学习多个分类器，并按照一定的算法将这些分类器组合在一起，通常是线性组合，因为单个分类器往往效果有限，因此组合多个分类器往往会提高模型的性能。</p>
+            <h5 id="一pca">一、PCA</h5>
+<p>   在之前讲述过如何使用PCA以及背后的基本的几何原理。但是并没有给出详细的数学推导，因此，在这里补上PCA的详细数学推导过程。</p>
 <a id="more"></a>
-<h5 id="一提升方法简介">一、提升方法简介</h5>
-<p>  提升方法（boosting）实际上是集成学习方法的一种，其基于这样的一种朴素思想：对于一个复杂的任务来说，将多个“专家”（这里的“专家”本意是指各种机器学习模型，可以较好地满足实际问题的需要）的意见进行适当的整合，进而得出最后的综合的判断，比其中任何一个单一的“专家”给出的判断要好。实际上，也就是“三个臭皮匠顶过诸葛亮”的意思。因此，boousting的本意就是寻找到合适的“臭皮匠”。</p>
-<p>  在实际的数据处理的过程中，我们往往可以很容易地发现各种各样的弱机器学习模型，这些模型仅仅比随机猜测好一些，但是还远远不能满足实际作业的精度要求。但是要寻找到一个单一的十分强大的机器学习模型往往会十分困难，虽然可以很好的满足要求，但是寻找这样的模型并不容易。不过好在，我们可以通过整合之前发现的弱机器学习模型，来进行综合考虑，从而形成一个可以媲美单一的强大的机器学习模型。这些弱机器学习模型往往被称之为“弱学习方法”，强机器学习模型往往被称之为“强学习方法”。</p>
-<p>  </p>
-<h5 id="二adaboost算法">二、AdaBoost算法</h5>
-<h6 id="adaboost算法的过程">1、AdaBoost算法的过程</h6>
-<p>  </p>
-<h6 id="adaboost的使用">2、AdaBoost的使用</h6>
+<h5 id="二预备知识">二、预备知识</h5>
+<h6 id="矩阵的特征值分解">1. 矩阵的特征值分解</h6>
+<p>   这一部分是线性代数的基本内容。</p>
+<h6 id="frobenius-范数">2. Frobenius 范数</h6>
+<p>   在线性代数中会有很有的范数来进行约束，Frobenius范数就是其中之一，它的定义十分简单，就是对矩阵中的每个元素进行平方，再进行求和，最后对计算得到的和进行开方。Frobenius范数通常记作<span class="math inline">\(||A||_F\)</span>，用公式表达如下：<br>
+<span class="math display">\[
+Frobenius(A) = ||A||_F = \sqrt{\sum_i\sum_j A_{i, j}^2} \tag{1}
+\]</span>   其中，<span class="math inline">\(A\)</span>表示一个矩阵，<span class="math inline">\(A_{i, j}\)</span>表示的是矩阵中第<span class="math inline">\(i\)</span>行第<span class="math inline">\(j\)</span>列的元素。</p>
+<p>  如果将矩阵是做一个多维空间中的一个点的话，那么Frobenius范数就代表这个点和原点之间的距离。</p>
+<h6 id="矩阵的迹trace">3. 矩阵的迹（Trace）</h6>
+<p>  在线性代数中，还有一个十分朴素但却十分重要的概念就是矩阵的迹（Trace），它表示的是矩阵的对角线上的元素的和， 记作<span class="math inline">\(Tr(A)\)</span>，用公式表达如下：<br>
+<span class="math display">\[
+Tr(A) = \sum_i A_{i, i} \tag{2}
+\]</span></p>
+<p>   矩阵的迹（trace）有时候可以简化矩阵的计算，在线性代数中有很重要的用处。</p>
+<h6 id="矩阵的迹trace和frobenius范数的关系">4.矩阵的迹（trace）和Frobenius范数的关系</h6>
+<p>   在《深度学习》（中文版）（即有人称之为“花书”）中，第29页给出了一个公式：<br>
+<span class="math display">\[
+||A||_F = \sqrt{Tr(AA^T)} \tag{3}
+\]</span>    在这里，我们简单证明一下。</p>
+<p>   假设我们的矩阵<span class="math inline">\(A\)</span>可以表示为列向量的集合，即：<br>
+<span class="math display">\[
+A = \begin{bmatrix} 
+\vec{a_1}&amp; \vec{a_2}&amp; \cdots&amp; \vec{a_n} 
+\end{bmatrix}
+\]</span>    其中，每一项都是一个长度<span class="math inline">\(m\)</span>的列向量，即<span class="math inline">\(\vec{a_i} \in \Bbb{R^m}\)</span>。所以<span class="math inline">\(A \in \Bbb{R^{m \times n}}\)</span>。</p>
+<p>   有上面的表示法，我们可以得到<span class="math inline">\(A^T\)</span>，<span class="math inline">\(A^T \in \Bbb{R^{n \times m}}\)</span>：<br>
+<span class="math display">\[
+A^T = \begin{bmatrix} \vec{a_1}^T \\ \vec{a_2}^T \\ \vdots \\ \vec{a_n}^T \end{bmatrix}
+\]</span>    于是我们可以得到：<br>
+<span class="math display">\[
+\begin{aligned}
+A^T \cdot A=&amp;\begin{bmatrix} 
+\vec{a_1}^T \\ 
+\vec{a_2}^T \\ 
+\vdots \\ 
+\vec{a_n}^T 
+\end{bmatrix} 
+\cdot 
+\begin{bmatrix} 
+\vec{a_1}&amp; \vec{a_2}&amp; \cdots&amp; \vec{a_n} 
+\end{bmatrix} \\
+=&amp; \begin{bmatrix} 
+\vec{a_1}^T \cdot \vec{a_1}&amp; \vec{a_1}^T \cdot \vec{a_2}&amp;  \cdots&amp; \vec{a_1}^T \cdot \vec{a_n} \\
+\vec{a_2}^T \cdot \vec{a_1}&amp; \vec{a_2}^T \cdot \vec{a_2}&amp;  \cdots&amp;  \vec{a_2}^T \cdot \vec{a_n} \\
+\vdots&amp;  \vdots&amp;  \ddots&amp;  \vdots\\
+\vec{a_n}^T \cdot \vec{a_1}&amp; \vec{a_n}^T \cdot \vec{a_2}&amp;  \cdots&amp;  \vec{a_n}^T \cdot \vec{a_n}
+\end{bmatrix}
+\end{aligned} \tag{4}
+\]</span>    所以：<br>
+<span class="math display">\[
+Tr(A^TA) = \sum_{i=1}^n \vec{a_i}^T \cdot \vec{a_i} \tag{5}
+\]</span>    我们考察其中的某一个<span class="math inline">\(\vec{a_i}^T \cdot \vec{a_i}\)</span>。由于<span class="math inline">\(\vec{a_i}\)</span>表示的是长度为<span class="math inline">\(m\)</span>的列向量，表示的是矩阵<span class="math inline">\(A\)</span>的第<span class="math inline">\(i\)</span>列，因此，我们有：<br>
+<span class="math display">\[
+\begin{aligned}
+\vec{a_i}^T \cdot \vec{a_i} &amp;=\begin{bmatrix} A_{1, i} \\ A_{2, i} \\ \vdots \\ A_{m, i} \end{bmatrix} \cdot \begin{bmatrix} A_{1, i} &amp; A_{2, i}&amp; \cdots &amp; A_{m, i} \end{bmatrix} \\
+&amp;= \sum_{k = 1}^m A_{k, i} ^2
+\end{aligned} \tag{6}
+\]</span></p>
+<p>   将<span class="math inline">\(\vec{a_i}^T \cdot \vec{a_i} =\sum_{k = 1}^m A_{k, i} ^2\)</span>代入式子（5），有：<br>
+<span class="math display">\[
+\begin{aligned}
+Tr(A^TA) &amp;= \sum_{i=1}^n \vec{a_i}^T \cdot \vec{a_i} \\
+&amp;= \sum_{i= 1}^n \sum_{k = 1}^m A_{k, i}^2 \\
+&amp;= \sum_{i= 1}^n \sum_{j = 1}^m A_{j, i}^2  \\
+&amp;= \sum_{j = 1}^m \sum_{i= 1}^n  A_{j, i}^2 \\
+&amp;= ||A||_F^2
+\end{aligned} \tag{7}
+\]</span>   考虑到对于一个矩阵，有：<span class="math inline">\(Tr(A^T A) = Tr(A A^T)\)</span>，故：<br>
+<span class="math display">\[
+||A||_F = \sqrt{Tr(A^T A)} =  \sqrt{Tr(A A^T)} \tag{8}
+\]</span>   命题得证。</p>
+<h5 id="三详细推导过程">三、详细推导过程</h5>
+<h6 id="编码和解码">1. 编码和解码</h6>
+<p>  在之前也讲述过PCA的求解过程，甚至也进行了代码的编写，但是并没有给出严格的数学证明，只是从感性上进行理解，即挑选若干个坐标的基，使得每个基上的样本的方差尽可能大，从而达到数据降维的目的。假设我们的每一个样本点都是一个列向量，长度为<span class="math inline">\(n\)</span>，不妨记作<span class="math inline">\(x_i\)</span>，<span class="math inline">\(x_i \in \Bbb{R^n}\)</span>。一共收集到了<span class="math inline">\(m\)</span>个样本数据，则这些矩阵可以组成我们的样本矩阵<span class="math inline">\(A\)</span>，如下：<br>
+<span class="math display">\[
+A = \begin{bmatrix}x_0 &amp; x_1 &amp; \cdots &amp; x_m \end{bmatrix}, A \in \Bbb{R^{n \times m }}
+\]</span>   按照之前的说明，我们求解<span class="math inline">\(\Sigma= AA^T\)</span>，<span class="math inline">\(\Sigma\)</span>表示的是样本矩阵的协方差矩阵，接着我们对该协方差矩阵进行特征分解，会产生<span class="math inline">\(n\)</span>个特征值，我们选择较大的若干个特征值，并选择对应的特征向量，组成一个对应的变换矩阵<span class="math inline">\(S\)</span>，然后对数据矩阵应用这个变换矩阵，有<span class="math inline">\(R = A S^T\)</span>，则这个<span class="math inline">\(R\)</span>矩阵就是我们最后求得的结果，这个结果会存在一定的精度损失，不过一般可以忽略不记。</p>
+<p>  如果我们此时在矩阵的右侧重新乘以变换矩阵<span class="math inline">\(S\)</span>，则结果会还原成我们的原始的数据矩阵，即： <span class="math display">\[
+RS = AS^T S = A
+\]</span>   从上面的过程中可以看出，我们完全可以将PCA看作一个线性的编码和解码的过程，因此，我们所需要的就是求解编码和解码的矩阵信息。</p>
+<h6 id="编码矩阵和解码矩阵的关系">2.编码矩阵和解码矩阵的关系</h6>
+<p>  现在开始，让我们从头开始推导PCA的相关公式。根据我们的经验，线性变换是所有变换中最简单的，因此我们就从最简单的线性变换开始。</p>
+<p>  假设我们的数据矩阵依旧表示成上面的形式，如果我们收集数据维度太多，不便于进一步分析，我们希望可以对数据进行一定的线性压缩，这种压缩是可逆的，存在一个解码矩阵可以将数据还原成原始的数据。</p>
+<p>  我们考虑其中的一个数据向量<span class="math inline">\(x_i\)</span>，<span class="math inline">\(x_i \in \Bbb{R^m}\)</span>。编码压缩之后的数据向量为<span class="math inline">\(c_i\)</span>，<span class="math inline">\(c_i \in \Bbb{R^l}\)</span>，其中<span class="math inline">\(l &lt; m\)</span>。我们可以将这个编码过程表示成一个函数，即<span class="math inline">\(f(x_i) = c_i\)</span>。同时也可以将解码函数表示成一个函数，即</p>
 
         </div>
         
             <ul class="post-copyright">
-            <li><strong>本文标题：</strong><a href="http://huaxuan0720.github.io/2019/05/10/Note1-AdaBoost/">Adaboost算法</a></li>
+            <li><strong>本文标题：</strong><a href="http://huaxuan0720.github.io/2019/08/14/Note25-PCAMathDerivation/">PCA背后的公式推导</a></li>
             <li><strong>本文作者：</strong><a href="http://huaxuan0720.github.io">华轩</a></li>
-            <li><strong>本文链接：</strong><a href="http://huaxuan0720.github.io/2019/05/10/Note1-AdaBoost/">http://huaxuan0720.github.io/2019/05/10/Note1-AdaBoost/</a></li>
-            <li><strong>发布时间：</strong>2019-05-10</li>
+            <li><strong>本文链接：</strong><a href="http://huaxuan0720.github.io/2019/08/14/Note25-PCAMathDerivation/">http://huaxuan0720.github.io/2019/08/14/Note25-PCAMathDerivation/</a></li>
+            <li><strong>发布时间：</strong>2019-08-14</li>
             <li><strong>版权声明：</strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
             </li>
             </ul>
@@ -222,7 +298,7 @@
             <div class="level-start">
                 <div class="level-item">
                     <i class="fas fa-tags has-text-grey"></i>&nbsp;
-                    <a class="has-link-grey -link" href="/tags/AdaBoost/">AdaBoost</a>,&nbsp;<a class="has-link-grey -link" href="/tags/机器学习/">机器学习</a>
+                    <a class="has-link-grey -link" href="/tags/PCA/">PCA</a>,&nbsp;<a class="has-link-grey -link" href="/tags/主成分分析/">主成分分析</a>,&nbsp;<a class="has-link-grey -link" href="/tags/机器学习/">机器学习</a>
                 </div>
             </div>
         </div>
@@ -268,17 +344,10 @@
 <div class="card card-transparent">
     <div class="level post-navigation is-flex-wrap is-mobile">
         
-        <div class="level-start">
-            <a class="level level-item has-link-grey  article-nav-prev" href="/2019/05/10/Note2-EM-Algorithm/">
-                <i class="level-item fas fa-chevron-left"></i>
-                <span class="level-item">EM算法</span>
-            </a>
-        </div>
-        
         
         <div class="level-end">
-            <a class="level level-item has-link-grey  article-nav-next" href="/2019/05/09/Welcome/">
-                <span class="level-item">Welcome</span>
+            <a class="level level-item has-link-grey  article-nav-next" href="/2019/06/15/Note24-SVR/">
+                <span class="level-item">支持向量回归SVR</span>
                 <i class="level-item fas fa-chevron-right"></i>
             </a>
         </div>
@@ -423,25 +492,41 @@
                 Catalogue
             </h3>
             <ul class="menu-list"><li>
-        <a class="is-flex" href="#前言">
+        <a class="is-flex" href="#一pca">
         <span class="has-mr-6">1</span>
-        <span>前言</span>
+        <span>一、PCA</span>
         </a></li><li>
-        <a class="is-flex" href="#一提升方法简介">
+        <a class="is-flex" href="#二预备知识">
         <span class="has-mr-6">2</span>
-        <span>一、提升方法简介</span>
-        </a></li><li>
-        <a class="is-flex" href="#二adaboost算法">
-        <span class="has-mr-6">3</span>
-        <span>二、AdaBoost算法</span>
+        <span>二、预备知识</span>
         </a><ul class="menu-list"><li>
-        <a class="is-flex" href="#adaboost算法的过程">
-        <span class="has-mr-6">3.1</span>
-        <span>1、AdaBoost算法的过程</span>
+        <a class="is-flex" href="#矩阵的特征值分解">
+        <span class="has-mr-6">2.1</span>
+        <span>1. 矩阵的特征值分解</span>
         </a></li><li>
-        <a class="is-flex" href="#adaboost的使用">
+        <a class="is-flex" href="#frobenius-范数">
+        <span class="has-mr-6">2.2</span>
+        <span>2. Frobenius 范数</span>
+        </a></li><li>
+        <a class="is-flex" href="#矩阵的迹trace">
+        <span class="has-mr-6">2.3</span>
+        <span>3. 矩阵的迹（Trace）</span>
+        </a></li><li>
+        <a class="is-flex" href="#矩阵的迹trace和frobenius范数的关系">
+        <span class="has-mr-6">2.4</span>
+        <span>4.矩阵的迹（trace）和Frobenius范数的关系</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#三详细推导过程">
+        <span class="has-mr-6">3</span>
+        <span>三、详细推导过程</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#编码和解码">
+        <span class="has-mr-6">3.1</span>
+        <span>1. 编码和解码</span>
+        </a></li><li>
+        <a class="is-flex" href="#编码矩阵和解码矩阵的关系">
         <span class="has-mr-6">3.2</span>
-        <span>2、AdaBoost的使用</span>
+        <span>2.编码矩阵和解码矩阵的关系</span>
         </a></li></ul></li></ul>
         </div>
     </div>
@@ -466,7 +551,7 @@
             <div class="level-start has-text-centered-mobile">
                 <a class="footer-logo is-block has-mb-6" href="/">
                 
-                    <img src="/images/favicon.svg" alt="Adaboost算法" height="28">
+                    <img src="/images/favicon.svg" alt="PCA背后的公式推导" height="28">
                 
                 </a>
                 <p class="is-size-7">
