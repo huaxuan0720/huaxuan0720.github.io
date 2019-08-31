@@ -7,19 +7,19 @@
 
 
 
-    <meta name="description" content="前言   在之前讨论了步长stride为1的卷积方式的反向传播，但是很多时候，使用的卷积步长会大于1，这个情况下的卷积方式的反向传播和步长为1的情况稍稍有些区别，不过区别并没有想象中那么大，因此下面就对步长stride大于1的情况进行简单的阐述。请注意：这里的所有推导过程都只是针对当前设置的参数信息，并不具有一般性，但是所有的推导过程可以推导到一般的运算，因此以下给出的并不是反向传播算法的严格证">
+    <meta name="description" content="前言&amp;emsp;&amp;emsp;在之前讨论了步长stride为1的卷积方式的反向传播，但是很多时候，使用的卷积步长会大于1，这个情况下的卷积方式的反向传播和步长为1的情况稍稍有些区别，不过区别并没有想象中那么大，因此下面就对步长stride大于1的情况进行简单的阐述。请注意：这里的所有推导过程都只是针对当前设置的参数信息，并不具有一般性，但是所有的推导过程可以推导到一般的运算，因此以下给出的并不是反向">
 <meta name="keywords" content="深度学习,反向传播,卷积">
 <meta property="og:type" content="article">
 <meta property="og:title" content="步长stride为s的二维卷积方法的反向传播算法">
 <meta property="og:url" content="http://huaxuan0720.github.io/2019/05/24/Note15-ConvBackProp-part2/index.html">
 <meta property="og:site_name" content="Welcome to My Blogs">
-<meta property="og:description" content="前言   在之前讨论了步长stride为1的卷积方式的反向传播，但是很多时候，使用的卷积步长会大于1，这个情况下的卷积方式的反向传播和步长为1的情况稍稍有些区别，不过区别并没有想象中那么大，因此下面就对步长stride大于1的情况进行简单的阐述。请注意：这里的所有推导过程都只是针对当前设置的参数信息，并不具有一般性，但是所有的推导过程可以推导到一般的运算，因此以下给出的并不是反向传播算法的严格证">
+<meta property="og:description" content="前言&amp;emsp;&amp;emsp;在之前讨论了步长stride为1的卷积方式的反向传播，但是很多时候，使用的卷积步长会大于1，这个情况下的卷积方式的反向传播和步长为1的情况稍稍有些区别，不过区别并没有想象中那么大，因此下面就对步长stride大于1的情况进行简单的阐述。请注意：这里的所有推导过程都只是针对当前设置的参数信息，并不具有一般性，但是所有的推导过程可以推导到一般的运算，因此以下给出的并不是反向">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://huaxuan0720.github.io/gallery/DeepLearning.jpg">
 <meta property="og:updated_time" content="2019-05-29T08:59:43.251Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="步长stride为s的二维卷积方法的反向传播算法">
-<meta name="twitter:description" content="前言   在之前讨论了步长stride为1的卷积方式的反向传播，但是很多时候，使用的卷积步长会大于1，这个情况下的卷积方式的反向传播和步长为1的情况稍稍有些区别，不过区别并没有想象中那么大，因此下面就对步长stride大于1的情况进行简单的阐述。请注意：这里的所有推导过程都只是针对当前设置的参数信息，并不具有一般性，但是所有的推导过程可以推导到一般的运算，因此以下给出的并不是反向传播算法的严格证">
+<meta name="twitter:description" content="前言&amp;emsp;&amp;emsp;在之前讨论了步长stride为1的卷积方式的反向传播，但是很多时候，使用的卷积步长会大于1，这个情况下的卷积方式的反向传播和步长为1的情况稍稍有些区别，不过区别并没有想象中那么大，因此下面就对步长stride大于1的情况进行简单的阐述。请注意：这里的所有推导过程都只是针对当前设置的参数信息，并不具有一般性，但是所有的推导过程可以推导到一般的运算，因此以下给出的并不是反向">
 <meta name="twitter:image" content="http://huaxuan0720.github.io/gallery/DeepLearning.jpg">
 
 
@@ -130,7 +130,7 @@
                     
                 
                 
-                <a class="navbar-item is-hidden-tablet catalogue" title="Catalogue" href="javascript:;">
+                <a class="navbar-item is-hidden-tablet catalogue" title="Catálogo" href="javascript:;">
                     <i class="fas fa-list-ul"></i>
                 </a>
                 
@@ -192,560 +192,334 @@
         </div>
         
         <div class="content">
-            <h5 id="前言">前言</h5>
-<p>  在之前讨论了步长stride为1的卷积方式的反向传播，但是很多时候，使用的卷积步长会大于1，这个情况下的卷积方式的反向传播和步长为1的情况稍稍有些区别，不过区别并没有想象中那么大，因此下面就对步长stride大于1的情况进行简单的阐述。请注意：这里的所有推导过程都只是针对当前设置的参数信息，并不具有一般性，但是所有的推导过程可以推导到一般的运算，因此以下给出的并不是反向传播算法的严格证明，不涉及十分复杂的公式推导，争取可以以一种简单的方式来理解卷积的反向传播。希望可以很好的帮助理解反向传播算法。</p>
-<p>  需要注意的是，在本文中，所有的正向传播过程中，卷积的步长stride均固定为2。</p>
+            <h5 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h5><p>&emsp;&emsp;在之前讨论了步长stride为1的卷积方式的反向传播，但是很多时候，使用的卷积步长会大于1，这个情况下的卷积方式的反向传播和步长为1的情况稍稍有些区别，不过区别并没有想象中那么大，因此下面就对步长stride大于1的情况进行简单的阐述。请注意：这里的所有推导过程都只是针对当前设置的参数信息，并不具有一般性，但是所有的推导过程可以推导到一般的运算，因此以下给出的并不是反向传播算法的严格证明，不涉及十分复杂的公式推导，争取可以以一种简单的方式来理解卷积的反向传播。希望可以很好的帮助理解反向传播算法。   </p>
+<p>&emsp;&emsp;需要注意的是，在本文中，所有的正向传播过程中，卷积的步长stride均固定为2。  </p>
 <a id="more"></a>
-<h5 id="一参数设置">一，参数设置</h5>
-<p>  这里我们设置我们的数据矩阵（记作<span class="math inline">\(x\)</span>）大小为5x5，卷积核（记作<span class="math inline">\(k\)</span>）大小为3x3，由于步长是2，因此，卷积之后获得的结果是一个2x2大小的数据矩阵（不妨我们记作<span class="math inline">\(u\)</span>）。偏置项我们记为<span class="math inline">\(b\)</span>，将和卷积之后的矩阵进行相加。</p>
-<p>  我们的参数汇总如下：</p>
+
+<h5 id="一，参数设置"><a href="#一，参数设置" class="headerlink" title="一，参数设置"></a>一，参数设置</h5><p>&emsp;&emsp;这里我们设置我们的数据矩阵（记作$x$）大小为5x5，卷积核（记作$k$）大小为3x3，由于步长是2，因此，卷积之后获得的结果是一个2x2大小的数据矩阵（不妨我们记作$u$）。偏置项我们记为$b$，将和卷积之后的矩阵进行相加。  </p>
+<p>&emsp;&emsp;我们的参数汇总如下：  </p>
 <table>
 <thead>
-<tr class="header">
+<tr>
 <th>参数</th>
 <th>设置</th>
 </tr>
 </thead>
-<tbody>
-<tr class="odd">
-<td>输入矩阵<span class="math inline">\(x\)</span></td>
+<tbody><tr>
+<td>输入矩阵$x$</td>
 <td>一个二维矩阵，大小为5x5</td>
 </tr>
-<tr class="even">
-<td>输入卷积核<span class="math inline">\(k\)</span></td>
+<tr>
+<td>输入卷积核$k$</td>
 <td>一个二维矩阵，大小为3x3</td>
 </tr>
-<tr class="odd">
-<td>步长<span class="math inline">\(stride\)</span></td>
+<tr>
+<td>步长$stride$</td>
 <td>设置为2</td>
 </tr>
-<tr class="even">
+<tr>
 <td>padding</td>
 <td>VALID</td>
 </tr>
-<tr class="odd">
-<td>偏置项<span class="math inline">\(b\)</span></td>
+<tr>
+<td>偏置项$b$</td>
 <td>一个浮点数</td>
 </tr>
-</tbody>
-</table>
-<p>  和前面一样，我们定义卷积操作的符号为<span class="math inline">\(conv\)</span>，我们可以将卷积表示为（需要注意的是这里步长选取为2）：</p>
-<p><span class="math display">\[
-x \; conv \; k + b = u
-\]</span></p>
-<p>  展开之后，我们可以得到：</p>
-<p><span class="math display">\[
-\begin{bmatrix}
-x_{1, 1} &amp; x_{1, 2} &amp; x_{1, 3} &amp;x_{1, 4} &amp;x_{1, 5} \\
-x_{2, 1} &amp; x_{2, 2} &amp; x_{2, 3} &amp;x_{2, 4} &amp;x_{2, 5} \\
-x_{3, 1} &amp; x_{3, 2} &amp; x_{3, 3} &amp;x_{3, 4} &amp;x_{3, 5} \\
-x_{4, 1} &amp; x_{4, 2} &amp; x_{4, 3} &amp;x_{4, 4} &amp;x_{4, 5} \\
-x_{5, 1} &amp; x_{5, 2} &amp; x_{5, 3} &amp;x_{5, 4} &amp;x_{5, 5} \\
-\end{bmatrix} \; conv \;
-\begin{bmatrix}
-k_{1, 1} &amp; k_{1, 2} &amp; k_{1, 3}\\
-k_{2, 1} &amp; k_{2, 2} &amp; k_{2, 3}\\
-k_{3, 1} &amp; k_{3, 2} &amp; k_{3, 3}\\
-\end{bmatrix} + b = 
-\begin{bmatrix}
-u_{1, 1} &amp; u_{1, 2} \\
-u_{2, 1} &amp; u_{2, 2} \\
-\end{bmatrix}
-\]</span></p>
-<p>  将矩阵<span class="math inline">\(u\)</span>进一步展开，我们有：</p>
-<p><span class="math display">\[
-\begin{bmatrix}
-u_{1, 1} &amp; u_{1, 2} \\
-u_{2, 1} &amp; u_{2, 2} \\
-\end{bmatrix} = \\ 
-\begin{bmatrix}
-\begin{matrix}
-x_{1, 1}k_{1, 1} + x_{1, 2}k_{1, 2} +x_{1, 3}k_{1, 3} + \\
-x_{2, 1}k_{2, 1} + x_{2, 2}k_{2, 2} +x_{2, 3}k_{2, 3} + \\
-x_{3, 1}k_{3, 1} + x_{3, 2}k_{3, 2} +x_{3, 3}k_{3, 3} + b \\
-\end{matrix} &amp; \begin{matrix}
-x_{1, 3}k_{1, 1} + x_{1, 4}k_{1, 2} +x_{1, 5}k_{1, 3} + \\
-x_{2, 3}k_{2, 1} + x_{2, 4}k_{2, 2} +x_{2, 5}k_{2, 3} + \\
-x_{3, 3}k_{3, 1} + x_{3, 4}k_{3, 2} +x_{3, 5}k_{3, 3} + b \\
-\end{matrix} \\ \\
-\begin{matrix}
-x_{3, 1}k_{1, 1} + x_{3, 2}k_{1, 2} +x_{3, 3}k_{1, 3} + \\
-x_{4, 1}k_{2, 1} + x_{4, 2}k_{2, 2} +x_{4, 3}k_{2, 3} + \\
-x_{5, 1}k_{3, 1} + x_{5, 2}k_{3, 2} +x_{5, 3}k_{3, 3} + b \\
-\end{matrix} &amp; \begin{matrix}
-x_{3, 3}k_{1, 1} + x_{3, 4}k_{1, 2} +x_{3, 5}k_{1, 3} + \\
-x_{4, 3}k_{2, 1} + x_{4, 4}k_{2, 2} +x_{4, 5}k_{2, 3} + \\
-x_{5, 3}k_{3, 1} + x_{5, 4}k_{3, 2} +x_{5, 5}k_{3, 3} + b \\
-\end{matrix} \\
-\end{bmatrix}
-\]</span></p>
-<h5 id="二误差传递">二、误差传递</h5>
-<p>  步长为2的二维卷积已经在上面的式子中被完整的表示出来了，因此，下一步就是需要对误差进行传递，和前面步长为1的情况一样，我们可以将上面的结果保存在一张表格中，每一列表示的是一个特定的输出 <span class="math inline">\(\partial u_{i, j}\)</span>，每一行表示的是一个特定的输入值<span class="math inline">\(\partial x_{p, k}\)</span>，行与列相交的地方表示的就是二者相除的结果，表示的是输出对于输入的偏导数，即<span class="math inline">\(\frac{\partial u_{i, j}}{\partial x_{p, k}}\)</span>。于是，表格如下：</p>
-<table style="width:100%;">
-<colgroup>
-<col style="width: 16%">
-<col style="width: 16%">
-<col style="width: 16%">
-<col style="width: 16%">
-<col style="width: 16%">
-<col style="width: 16%">
-</colgroup>
-<thead>
-<tr class="header">
-<th></th>
-<th style="text-align: center;"><span class="math inline">\(\partial u_{1, 1}\)</span></th>
-<th style="text-align: center;"><span class="math inline">\(\partial u_{1, 2}\)</span></th>
-<th style="text-align: center;"><span class="math inline">\(\partial u_{2, 1}\)</span></th>
-<th style="text-align: center;"><span class="math inline">\(\partial u_{2, 2}\)</span></th>
-<th style="text-align: left;"><span class="math inline">\(\frac{\partial L}{\partial x_{i, j}}\)</span></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><span class="math inline">\(\partial x_{1, 1}\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(k_{1, 1}\)</span></td>
-<td style="text-align: center;">0</td>
-<td style="text-align: center;">0</td>
-<td style="text-align: center;">0</td>
-<td style="text-align: left;"><span class="math inline">\(\frac{\partial L}{\partial x_{1, 1}} = \delta_{1, 1} k_{1, 1}\)</span></td>
-</tr>
-<tr class="even">
-<td><span class="math inline">\(\partial x_{1, 2}\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(k_{1, 2}\)</span></td>
-<td style="text-align: center;">0</td>
-<td style="text-align: center;">0</td>
-<td style="text-align: center;">0</td>
-<td style="text-align: left;"><span class="math inline">\(\frac{\partial L}{\partial x_{1, 2}} = \delta_{1, 1} k_{1, 2}\)</span></td>
-</tr>
-<tr class="odd">
-<td><span class="math inline">\(\partial x_{1, 3}\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(k_{1, 3}\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(k_{1, 1}\)</span></td>
-<td style="text-align: center;">0</td>
-<td style="text-align: center;">0</td>
-<td style="text-align: left;"><span class="math inline">\(\frac{\partial L}{\partial x_{1, 3}} = \delta_{1, 1} k_{1, 3} + \delta_{1, 2}k_{1, 1}\)</span></td>
-</tr>
-<tr class="even">
-<td><span class="math inline">\(\partial x_{1, 4}\)</span></td>
-<td style="text-align: center;">0</td>
-<td style="text-align: center;"><span class="math inline">\(k_{1, 2}\)</span></td>
-<td style="text-align: center;">0</td>
-<td style="text-align: center;">0</td>
-<td style="text-align: left;"><span class="math inline">\(\frac{\partial L}{\partial x_{1, 4}} = \delta_{1, 2}k_{1, 2}\)</span></td>
-</tr>
-<tr class="odd">
-<td><span class="math inline">\(\partial x_{1, 5}\)</span></td>
-<td style="text-align: center;">0</td>
-<td style="text-align: center;"><span class="math inline">\(k_{1, 3}\)</span></td>
-<td style="text-align: center;">0</td>
-<td style="text-align: center;">0</td>
-<td style="text-align: left;"><span class="math inline">\(\frac{\partial L}{\partial x_{1, 5}} = \delta_{1, 2}k_{1, 3}\)</span></td>
-</tr>
-<tr class="even">
-<td><span class="math inline">\(\partial x_{2, 1}\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(k_{2, 1}\)</span></td>
-<td style="text-align: center;">0</td>
-<td style="text-align: center;">0</td>
-<td style="text-align: center;">0</td>
-<td style="text-align: left;"><span class="math inline">\(\frac{\partial L}{\partial x_{2, 1}} = \delta_{1, 1} k_{2, 1}\)</span></td>
-</tr>
-<tr class="odd">
-<td><span class="math inline">\(\partial x_{2, 2}\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(k_{2, 2}\)</span></td>
-<td style="text-align: center;">0</td>
-<td style="text-align: center;">0</td>
-<td style="text-align: center;">0</td>
-<td style="text-align: left;"><span class="math inline">\(\frac{\partial L}{\partial x_{2, 2}} = \delta_{1, 1} k_{2, 2}\)</span></td>
-</tr>
-<tr class="even">
-<td><span class="math inline">\(\partial x_{2, 3}\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(k_{2, 3}\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(k_{2, 1}\)</span></td>
-<td style="text-align: center;">0</td>
-<td style="text-align: center;">0</td>
-<td style="text-align: left;"><span class="math inline">\(\frac{\partial L}{\partial x_{2, 3}} = \delta_{1, 1} k_{1, 3} + \delta_{1, 2}k_{2, 1}\)</span></td>
-</tr>
-<tr class="odd">
-<td><span class="math inline">\(\partial x_{2, 4}\)</span></td>
-<td style="text-align: center;">0</td>
-<td style="text-align: center;"><span class="math inline">\(k_{2, 2}\)</span></td>
-<td style="text-align: center;">0</td>
-<td style="text-align: center;">0</td>
-<td style="text-align: left;"><span class="math inline">\(\frac{\partial L}{\partial x_{2, 4}} = \delta_{1, 2}k_{2, 2}\)</span></td>
-</tr>
-<tr class="even">
-<td><span class="math inline">\(\partial x_{2, 5}\)</span></td>
-<td style="text-align: center;">0</td>
-<td style="text-align: center;"><span class="math inline">\(k_{2, 3}\)</span></td>
-<td style="text-align: center;">0</td>
-<td style="text-align: center;">0</td>
-<td style="text-align: left;"><span class="math inline">\(\frac{\partial L}{\partial x_{2, 5}} = \delta_{1, 2}k_{2, 3}\)</span></td>
-</tr>
-<tr class="odd">
-<td><span class="math inline">\(\partial x_{3, 1}\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(k_{3, 1}\)</span></td>
-<td style="text-align: center;">0</td>
-<td style="text-align: center;"><span class="math inline">\(k_{1, 1}\)</span></td>
-<td style="text-align: center;">0</td>
-<td style="text-align: left;"><span class="math inline">\(\frac{\partial L}{\partial x_{3, 1}} = \delta_{1, 1}k_{3, 1} + \delta_{2, 1}k_{1, 1}\)</span></td>
-</tr>
-<tr class="even">
-<td><span class="math inline">\(\partial x_{3, 2}\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(k_{3, 2}\)</span></td>
-<td style="text-align: center;">0</td>
-<td style="text-align: center;"><span class="math inline">\(k_{1, 2}\)</span></td>
-<td style="text-align: center;">0</td>
-<td style="text-align: left;"><span class="math inline">\(\frac{\partial L}{\partial x_{3, 2}} = \delta_{1, 1}k_{3, 2} + \delta_{2, 1}k_{1, 2}\)</span></td>
-</tr>
-<tr class="odd">
-<td><span class="math inline">\(\partial x_{3, 3}\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(k_{3, 3}\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(k_{3, 1}\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(k_{1, 3}\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(k_{1, 1}\)</span></td>
-<td style="text-align: left;"><span class="math inline">\(\frac{\partial L}{\partial x_{3, 3}} = \delta_{1, 1}k_{3, 3} + \delta_{1, 2}k_{3, 1} + \delta_{2, 1}k_{1, 3} + \delta_{2, 2}k_{1, 1}\)</span></td>
-</tr>
-<tr class="even">
-<td><span class="math inline">\(\partial x_{3, 4}\)</span></td>
-<td style="text-align: center;">0</td>
-<td style="text-align: center;"><span class="math inline">\(k_{3, 2}\)</span></td>
-<td style="text-align: center;">0</td>
-<td style="text-align: center;"><span class="math inline">\(k_{1, 2}\)</span></td>
-<td style="text-align: left;"><span class="math inline">\(\frac{\partial L}{\partial x_{3, 4}} = \delta_{1, 2}k_{3, 2} + \delta_{2, 2}k_{1, 2}\)</span></td>
-</tr>
-<tr class="odd">
-<td><span class="math inline">\(\partial x_{3, 5}\)</span></td>
-<td style="text-align: center;">0</td>
-<td style="text-align: center;"><span class="math inline">\(k_{3, 3}\)</span></td>
-<td style="text-align: center;">0</td>
-<td style="text-align: center;"><span class="math inline">\(k_{1, 3}\)</span></td>
-<td style="text-align: left;"><span class="math inline">\(\frac{\partial L}{\partial x_{3, 5}} = \delta_{1, 2}k_{3, 3} + \delta_{2, 2}k_{1, 3}\)</span></td>
-</tr>
-<tr class="even">
-<td><span class="math inline">\(\partial x_{4, 1}\)</span></td>
-<td style="text-align: center;">0</td>
-<td style="text-align: center;">0</td>
-<td style="text-align: center;"><span class="math inline">\(k_{2, 1}\)</span></td>
-<td style="text-align: center;">0</td>
-<td style="text-align: left;"><span class="math inline">\(\frac{\partial L}{\partial x_{4, 1}} = \delta_{2, 1}k_{2, 1}\)</span></td>
-</tr>
-<tr class="odd">
-<td><span class="math inline">\(\partial x_{4, 2}\)</span></td>
-<td style="text-align: center;">0</td>
-<td style="text-align: center;">0</td>
-<td style="text-align: center;"><span class="math inline">\(k_{2, 2}\)</span></td>
-<td style="text-align: center;">0</td>
-<td style="text-align: left;"><span class="math inline">\(\frac{\partial L}{\partial x_{4, 2}} = \delta_{2, 1}k_{2, 2}\)</span></td>
-</tr>
-<tr class="even">
-<td><span class="math inline">\(\partial x_{4, 3}\)</span></td>
-<td style="text-align: center;">0</td>
-<td style="text-align: center;">0</td>
-<td style="text-align: center;"><span class="math inline">\(k_{2, 3}\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(k_{2, 1}\)</span></td>
-<td style="text-align: left;"><span class="math inline">\(\frac{\partial L}{\partial x_{4, 3}} = \delta_{2, 1}k_{2, 3} + \delta_{2, 2}k_{2, 1}\)</span></td>
-</tr>
-<tr class="odd">
-<td><span class="math inline">\(\partial x_{4, 4}\)</span></td>
-<td style="text-align: center;">0</td>
-<td style="text-align: center;">0</td>
-<td style="text-align: center;">0</td>
-<td style="text-align: center;"><span class="math inline">\(k_{2, 2}\)</span></td>
-<td style="text-align: left;"><span class="math inline">\(\frac{\partial L}{\partial x_{4, 4}} = \delta_{2, 2}k_{2, 2}\)</span></td>
-</tr>
-<tr class="even">
-<td><span class="math inline">\(\partial x_{4, 5}\)</span></td>
-<td style="text-align: center;">0</td>
-<td style="text-align: center;">0</td>
-<td style="text-align: center;">0</td>
-<td style="text-align: center;"><span class="math inline">\(k_{2, 3}\)</span></td>
-<td style="text-align: left;"><span class="math inline">\(\frac{\partial L}{\partial x_{4, 5}} = \delta_{2, 2}k_{2, 3}\)</span></td>
-</tr>
-<tr class="odd">
-<td><span class="math inline">\(\partial x_{5, 1}\)</span></td>
-<td style="text-align: center;">0</td>
-<td style="text-align: center;">0</td>
-<td style="text-align: center;"><span class="math inline">\(k_{3, 1}\)</span></td>
-<td style="text-align: center;">0</td>
-<td style="text-align: left;"><span class="math inline">\(\frac{\partial L}{\partial x_{5, 1}} = \delta_{2, 1}k_{3, 1}\)</span></td>
-</tr>
-<tr class="even">
-<td><span class="math inline">\(\partial x_{5, 2}\)</span></td>
-<td style="text-align: center;">0</td>
-<td style="text-align: center;">0</td>
-<td style="text-align: center;"><span class="math inline">\(k_{3, 2}\)</span></td>
-<td style="text-align: center;">0</td>
-<td style="text-align: left;"><span class="math inline">\(\frac{\partial L}{\partial x_{5, 2}} = \delta_{2, 1}k_{3, 2}\)</span></td>
-</tr>
-<tr class="odd">
-<td><span class="math inline">\(\partial x_{5, 3}\)</span></td>
-<td style="text-align: center;">0</td>
-<td style="text-align: center;">0</td>
-<td style="text-align: center;"><span class="math inline">\(k_{3, 3}\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(k_{3, 1}\)</span></td>
-<td style="text-align: left;"><span class="math inline">\(\frac{\partial L}{\partial x_{5, 3}} = \delta_{2, 1}k_{3, 3} + \delta_{2, 2}k_{3, 1}\)</span></td>
-</tr>
-<tr class="even">
-<td><span class="math inline">\(\partial x_{5, 4}\)</span></td>
-<td style="text-align: center;">0</td>
-<td style="text-align: center;">0</td>
-<td style="text-align: center;">0</td>
-<td style="text-align: center;"><span class="math inline">\(k_{3, 2}\)</span></td>
-<td style="text-align: left;"><span class="math inline">\(\frac{\partial L}{\partial x_{5, 4}} = \delta_{2, 2}k_{3, 2}\)</span></td>
-</tr>
-<tr class="odd">
-<td><span class="math inline">\(\partial x_{5, 5}\)</span></td>
-<td style="text-align: center;">0</td>
-<td style="text-align: center;">0</td>
-<td style="text-align: center;">0</td>
-<td style="text-align: center;"><span class="math inline">\(k_{3, 3}\)</span></td>
-<td style="text-align: left;"><span class="math inline">\(\frac{\partial L}{\partial x_{5, 5}} = \delta_{2, 2}k_{3, 3}\)</span></td>
-</tr>
-</tbody>
-</table>
-<p>  可以看出，数据依然都是很规律的进行着重复。</p>
-<p>  我们假设后面传递过来的误差是 <span class="math inline">\(\delta\)</span> ，即：</p>
-<p><span class="math display">\[
-\delta = 
-\begin{bmatrix}
-\delta_{1, 1} &amp; \delta_{1, 2} \\
-\delta_{2, 1} &amp; \delta_{2, 2} \\
-\end{bmatrix}
-\]</span></p>
-<p>  其中，<span class="math inline">\(\delta_{i, j} = \frac{\partial L}{\partial u_{i, j}}\)</span>，误差分别对应于每一个输出项。这里的<span class="math inline">\(L\)</span>表示的是最后的Loss损失。我们的目的就是希望这个损失尽可能小。那么，根据求导的链式法则，我们有：</p>
-<p>  根据求偏导数的链式法则，我们可以有：</p>
-<p><span class="math display">\[
-\frac{\partial L}{\partial x_{i, j}} = \sum_{p = 1} \sum_{k = 1} \frac{\partial L}{\partial u_{p, k}} \cdot \frac{\partial u_{p, k}}{\partial x_{i, j}} = \sum_{p = 1} \sum_{k = 1} \delta_{p, k} \cdot \frac{\partial u_{p, k}}{\partial x_{i, j}}
-\]</span></p>
-<p>  我们以<span class="math inline">\(\frac{\partial L}{\partial x_{3, 3}}\)</span>为例，我们有：</p>
-<p><span class="math display">\[
-\begin{aligned}
-\frac{\partial L}{\partial x_{3, 3}} 
-&amp;= \sum_{p = 1} \sum_{k = 1} \frac{\partial L}{\partial u_{p, k}} \cdot \frac{\partial u_{p, k}}{\partial x_{3, 3}} \\
-&amp;= \sum_{p = 1} \sum_{k = 1} \delta_{p, k} \cdot \frac{\partial u_{p, k}}{\partial x_{3, 3}} \\
-&amp;= \delta_{1, 1}\frac{\partial u_{1, 1}}{\partial x_{3, 3}} + \delta_{1, 2}\frac{\partial u_{1, 2}}{\partial x_{3, 3}} + \delta_{2, 1}\frac{\partial u_{2, 1}}{\partial x_{3, 3}} + \delta_{2, 2}\frac{\partial u_{2, 2}}{\partial x_{3, 3}} \\
-&amp;= \delta_{1, 1}k_{3, 3} + \delta_{1, 2}k_{3, 1} + \delta_{2, 1}k_{1, 3} + \delta_{2, 2}k_{1, 1}
-\end{aligned}
-\]</span></p>
-<p>   类似地，我们可以计算出所有的输入矩阵中的元素所对应的偏导数信息，所有的偏导数计算结果均在上表中列出。</p>
-<p>  和前面步长stride为1的卷积方式的误差传递类似，我们需要对传递来的误差矩阵和卷积核进行一定的处理，然后再进行卷积，得到应该传递到下一层的网络结构中，所以我们需要的解决问题的问题有三个，即：1.误差矩阵如何处理，2.卷积核如何处理，3.如何进行卷积。</p>
-<p>  同样，我们将<span class="math inline">\(\frac{\partial L}{\partial x_{3, 3}}\)</span>单独拿出来进行考察，如果需要用到全部的卷积核的元素的话，并不能和传递来的误差矩阵相匹配，为了使得两者可以再维度上相匹配，我们再误差矩阵中添加若干0，和步长stride为1的卷积反向传播一样，我们也将卷积核进行180°翻转，于是，我们可以得到：</p>
-<p><span class="math display">\[
-\frac{\partial L}{\partial x_{3, 3}} = \begin{bmatrix}
-\delta_{1, 1} &amp; 0 &amp; \delta_{1, 2} \\
-0 &amp; 0 &amp; 0 \\
-\delta_{2, 1} &amp; 0 &amp; \delta_{2, 2} \\
-\end{bmatrix}
-\; conv \;\begin{bmatrix}
-k_{3, 3} &amp; k_{3, 2} &amp; k_{3, 1} \\
-k_{2, 3} &amp; k_{2, 2} &amp; k_{2, 1} \\
-k_{1, 3} &amp; k_{1, 2} &amp; k_{1, 1} \\
-\end{bmatrix}
-\]</span></p>
-<p>  由于padding策略一直默认为是VALID，而且上面的两个矩阵形状相同，所以此时的步长stride参数不会影响到最终的结果。</p>
-<p>  如果按照我们之前的策略，再在添加0之后的误差矩阵外面填补上合适数目的0的话，有：</p>
-<p><span class="math display">\[
-\begin{bmatrix}
-0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\
-0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\
-0 &amp; 0 &amp; \delta_{1, 1} &amp; 0 &amp; \delta_{1, 2} &amp; 0 &amp; 0 \\
-0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\
-0 &amp; 0 &amp; \delta_{2, 1} &amp; 0 &amp; \delta_{2, 2} &amp; 0 &amp; 0 \\
-0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\
-0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\
-\end{bmatrix}
-\; conv \;\begin{bmatrix}
-k_{3, 3} &amp; k_{3, 2} &amp; k_{3, 1} \\
-k_{2, 3} &amp; k_{2, 2} &amp; k_{2, 1} \\
-k_{1, 3} &amp; k_{1, 2} &amp; k_{1, 1} \\
-\end{bmatrix}
-\]</span></p>
-<p>  同样，上面的卷积过程步长stride参数为1。</p>
-<p>  不妨将上面的卷积的结果记为<span class="math inline">\(conv1\)</span>，然后，我们将<span class="math inline">\(\frac{\partial L}{\partial x_{i, j}}\)</span>按照对应的顺序进行排列，我们将结果记作<span class="math inline">\(conv2\)</span>，即：</p>
-<p><span class="math display">\[
-conv2 = \begin{bmatrix}
-\frac{\partial L}{\partial x_{1, 1}} &amp; \frac{\partial L}{\partial x_{1, 2}} &amp; \frac{\partial L}{\partial x_{1, 3}}&amp; \frac{\partial L}{\partial x_{1, 4}} &amp; \frac{\partial L}{\partial x_{1, 5}} \\
-\frac{\partial L}{\partial x_{2, 1}} &amp; \frac{\partial L}{\partial x_{2, 2}} &amp; \frac{\partial L}{\partial x_{2, 3}}&amp; \frac{\partial L}{\partial x_{2, 4}} &amp; \frac{\partial L}{\partial x_{2, 5}} \\
-\frac{\partial L}{\partial x_{3, 1}} &amp; \frac{\partial L}{\partial x_{3, 2}} &amp; \frac{\partial L}{\partial x_{3, 3}}&amp; \frac{\partial L}{\partial x_{3, 4}} &amp; \frac{\partial L}{\partial x_{3, 5}} \\
-\frac{\partial L}{\partial x_{4, 1}} &amp; \frac{\partial L}{\partial x_{4, 2}} &amp; \frac{\partial L}{\partial x_{4, 3}}&amp; \frac{\partial L}{\partial x_{4, 4}} &amp; \frac{\partial L}{\partial x_{4, 5}} \\
-\frac{\partial L}{\partial x_{5, 1}} &amp; \frac{\partial L}{\partial x_{5, 2}} &amp; \frac{\partial L}{\partial x_{5, 3}}&amp; \frac{\partial L}{\partial x_{5, 4}} &amp; \frac{\partial L}{\partial x_{5, 5}} \\
-\end{bmatrix}
-\]</span></p>
-<p>  经过计算，我们发现<span class="math inline">\(conv1\)</span>和<span class="math inline">\(conv2\)</span>正好相等。即：</p>
-<p><span class="math display">\[
-\begin{bmatrix}
-\frac{\partial L}{\partial x_{1, 1}} &amp; \frac{\partial L}{\partial x_{1, 2}} &amp; \frac{\partial L}{\partial x_{1, 3}}&amp; \frac{\partial L}{\partial x_{1, 4}} &amp; \frac{\partial L}{\partial x_{1, 5}} \\
-\frac{\partial L}{\partial x_{2, 1}} &amp; \frac{\partial L}{\partial x_{2, 2}} &amp; \frac{\partial L}{\partial x_{2, 3}}&amp; \frac{\partial L}{\partial x_{2, 4}} &amp; \frac{\partial L}{\partial x_{2, 5}} \\
-\frac{\partial L}{\partial x_{3, 1}} &amp; \frac{\partial L}{\partial x_{3, 2}} &amp; \frac{\partial L}{\partial x_{3, 3}}&amp; \frac{\partial L}{\partial x_{3, 4}} &amp; \frac{\partial L}{\partial x_{3, 5}} \\
-\frac{\partial L}{\partial x_{4, 1}} &amp; \frac{\partial L}{\partial x_{4, 2}} &amp; \frac{\partial L}{\partial x_{4, 3}}&amp; \frac{\partial L}{\partial x_{4, 4}} &amp; \frac{\partial L}{\partial x_{4, 5}} \\
-\frac{\partial L}{\partial x_{5, 1}} &amp; \frac{\partial L}{\partial x_{5, 2}} &amp; \frac{\partial L}{\partial x_{5, 3}}&amp; \frac{\partial L}{\partial x_{5, 4}} &amp; \frac{\partial L}{\partial x_{5, 5}} \\
-\end{bmatrix} = 
-\begin{bmatrix}
-0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\
-0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\
-0 &amp; 0 &amp; \delta_{1, 1} &amp; 0 &amp; \delta_{1, 2} &amp; 0 &amp; 0 \\
-0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\
-0 &amp; 0 &amp; \delta_{2, 1} &amp; 0 &amp; \delta_{2, 2} &amp; 0 &amp; 0 \\
-0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\
-0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\
-\end{bmatrix}
-\; conv \;\begin{bmatrix}
-k_{3, 3} &amp; k_{3, 2} &amp; k_{3, 1} \\
-k_{2, 3} &amp; k_{2, 2} &amp; k_{2, 1} \\
-k_{1, 3} &amp; k_{1, 2} &amp; k_{1, 1} \\
-\end{bmatrix}
-\]</span></p>
-<p>  可以发现，在前面提出的三个问题中，有两个问题的答案是和步长stride为1的二维卷积相同的，唯一不同的是，我们需要在误差矩阵的相邻元素之间插入若干0来完成卷积误差的产生。</p>
-<h6 id="误差矩阵插入0的方式">误差矩阵插入0的方式</h6>
-<p>  很明显，我们唯一需要解决的问题就是如何在误差矩阵中插入0。在这里直接给出结论，那就是<strong>每个相邻的元素之间应该插入（步长stride - 1）个0，或者说每个元素之间的距离是卷积的步长。</strong>因为在这个模型中，唯一和前面的卷积方式不同的变量就是步长stride，那么需要满足的条件也必然和步长有关。</p>
-<p>  当我们在元素之间插入合适数目的0之后，接下来就是在误差矩阵周围填补上合适数目的0层，然后将卷积核旋转180°，最后按照步长为1的方式进行卷积，最后得到应该向前传递的误差矩阵。 这两步和步长stride为1的反向传播算法相同。</p>
-<h5 id="三参数更新">三、参数更新</h5>
-<p>  当我们解决了误差的向前传递之后，下一步就是解决参数的更新的问题。和前面的定义一样，假设我们在这一阶段接收到的后方传递过来的误差为<span class="math inline">\(\delta\)</span>， 即：</p>
-<p><span class="math display">\[
-\delta = 
-\begin{bmatrix}
-\delta_{1, 1} &amp; \delta_{1, 2} &amp; \delta_{1, 3} \\
-\delta_{2, 1} &amp; \delta_{2, 2} &amp; \delta_{2, 3} \\
-\delta_{3, 1} &amp; \delta_{3, 2} &amp; \delta_{3, 3} \\
-\end{bmatrix}
-\]</span></p>
-<p>  那么根据偏导数求解的链式法则，我们可以有下面的式子：这里以求解<span class="math inline">\(\frac{\partial L}{\partial k_{1, 1}}\)</span> 为例：</p>
-<p><span class="math display">\[
-\begin{aligned}
-\frac{\partial L}{\partial k_{1, 1}} =&amp; 
-\frac{\partial L}{\partial u_{1, 1}} \frac{\partial u_{1, 1}}{k_{1, 1}} + \frac{\partial L}{\partial u_{1, 2}} \frac{\partial u_{1, 2}}{k_{1, 1}} +
-\frac{\partial L}{\partial u_{2, 1}} \frac{\partial u_{2, 1}}{k_{1, 1}} +  
-\frac{\partial L}{\partial u_{2, 2}} \frac{\partial u_{2, 2}}{k_{1, 1}} \\
-=&amp;
-\delta_{1, 1} \frac{\partial u_{1, 1}}{k_{1, 1}} +
-\delta_{1, 2} \frac{\partial u_{1, 2}}{k_{1, 1}} +  
-\delta_{2, 1} \frac{\partial u_{2, 1}}{k_{1, 1}} +  
-\delta_{2, 2} \frac{\partial u_{2, 2}}{k_{1, 1}} \\
-=&amp;
-\delta_{1, 1} x_{1, 1} +
-\delta_{1, 2} x_{1, 3} + 
-\delta_{2, 1} x_{3, 1} +  
-\delta_{2, 2} x_{3, 3}
-\end{aligned}
-\]</span></p>
-<p>  类似地，我们将所有地偏导数信息都求出来，汇总如下：</p>
-<p><span class="math display">\[
-\frac{\partial L}{\partial k_{1, 1}} = 
-\delta_{1, 1} x_{1, 1} +
-\delta_{1, 2} x_{1, 3} + 
-\delta_{2, 1} x_{3, 1} +  
-\delta_{2, 2} x_{3, 3}
-\]</span> <span class="math display">\[
-\frac{\partial L}{\partial k_{1, 2}} = 
-\delta_{1, 1} x_{1, 2} +
-\delta_{1, 2} x_{1, 4} + 
-\delta_{2, 1} x_{3, 2} +  
-\delta_{2, 2} x_{3, 4}
-\]</span> <span class="math display">\[
-\frac{\partial L}{\partial k_{1, 3}} = 
-\delta_{1, 1} x_{1, 3} +
-\delta_{1, 2} x_{1, 5} + 
-\delta_{2, 1} x_{3, 3} +  
-\delta_{2, 2} x_{3, 5}
-\]</span> <span class="math display">\[
-\frac{\partial L}{\partial k_{2, 1}} = 
-\delta_{1, 1} x_{2, 1} +
-\delta_{1, 2} x_{2, 3} + 
-\delta_{2, 1} x_{4, 1} +  
-\delta_{2, 2} x_{4, 3}
-\]</span> <span class="math display">\[
-\frac{\partial L}{\partial k_{2, 2}} = 
-\delta_{1, 1} x_{2, 2} +
-\delta_{1, 2} x_{2, 4} + 
-\delta_{2, 1} x_{4, 2} +  
-\delta_{2, 2} x_{4, 4}
-\]</span> <span class="math display">\[
-\frac{\partial L}{\partial k_{2, 3}} = 
-\delta_{1, 1} x_{2, 3} +
-\delta_{1, 2} x_{2, 5} + 
-\delta_{2, 1} x_{4, 3} +  
-\delta_{2, 2} x_{4, 5}
-\]</span> <span class="math display">\[
-\frac{\partial L}{\partial k_{3, 1}} = 
-\delta_{1, 1} x_{3, 1} +
-\delta_{1, 2} x_{3, 3} + 
-\delta_{2, 1} x_{5, 1} +  
-\delta_{2, 2} x_{5, 3}
-\]</span> <span class="math display">\[
-\frac{\partial L}{\partial k_{3, 2}} = 
-\delta_{1, 1} x_{3, 2} +
-\delta_{1, 2} x_{3, 4} + 
-\delta_{2, 1} x_{5, 2} +  
-\delta_{2, 2} x_{5, 4}
-\]</span> <span class="math display">\[
-\frac{\partial L}{\partial k_{3, 3}} = 
-\delta_{1, 1} x_{3, 3} +
-\delta_{1, 2} x_{3, 5} + 
-\delta_{2, 1} x_{5, 3} +  
-\delta_{2, 2} x_{5, 5}
-\]</span></p>
-<p><span class="math display">\[
-\frac{\partial L}{\partial b} = \delta_{1, 1} + \delta_{1, 2} + \delta_{2, 1} + \delta_{2, 2}
-\]</span></p>
-<p>  和前面地误差传递类似，我们发现可以在误差矩阵中插入若干个0来和输入矩阵<span class="math inline">\(x\)</span>来保持维度上的匹配。即有：</p>
-<p><span class="math display">\[
-\frac{\partial L}{\partial k} = [\frac{\partial L}{\partial k_{i, j}}]
-= \begin{bmatrix}
-x_{1, 1} &amp; x_{1, 2} &amp; x_{1, 3} &amp;x_{1, 4} &amp;x_{1, 5} \\
-x_{2, 1} &amp; x_{2, 2} &amp; x_{2, 3} &amp;x_{2, 4} &amp;x_{2, 5} \\
-x_{3, 1} &amp; x_{3, 2} &amp; x_{3, 3} &amp;x_{3, 4} &amp;x_{3, 5} \\
-x_{4, 1} &amp; x_{4, 2} &amp; x_{4, 3} &amp;x_{4, 4} &amp;x_{4, 5} \\
-x_{5, 1} &amp; x_{5, 2} &amp; x_{5, 3} &amp;x_{5, 4} &amp;x_{5, 5} \\
-\end{bmatrix} \; conv \; \begin{bmatrix}
-\delta_{1, 1} &amp; 0 &amp; \delta_{1, 2} \\
-0 &amp; 0 &amp; 0 \\
-\delta_{2, 1} &amp; 0 &amp; \delta_{2, 2} \\
-\end{bmatrix}
-\]</span></p>
-<p>  据此，我们可以发现，<strong>在卷积核参数更新的过程中，我们也需要对误差矩阵进行插入0的操作。而且插入0的方式和误差传递过程中的方式完全相同。</strong>所以，我们可以总结出步长为s的时候卷积反向传播的卷积核参数更新的方法，即：1.首先在接收到的误差矩阵中插入合适数目的0，2.在输入矩阵<span class="math inline">\(x\)</span>上应用误差矩阵进行步长为1的卷积，从而得到卷积核的更新梯度。</p>
-<p>  同样，我们由上面的推导可以发现，无论是何种方式的卷积操作，偏置项<span class="math inline">\(b\)</span>的更新梯度都是接收到的误差矩阵中的元素之和。</p>
-<h5 id="四总结">四、总结</h5>
-<p>  我们将上面的求解过程总结如下有：</p>
+</tbody></table>
+<p>&emsp;&emsp;和前面一样，我们定义卷积操作的符号为$conv$，我们可以将卷积表示为（需要注意的是这里步长选取为2）：  </p>
+<p>$$<br>x ; conv ; k + b = u<br>$$</p>
+<p>&emsp;&emsp;展开之后，我们可以得到：  </p>
+<p>$$<br>\begin{bmatrix}<br>x_{1, 1} &amp; x_{1, 2} &amp; x_{1, 3} &amp;x_{1, 4} &amp;x_{1, 5} \<br>x_{2, 1} &amp; x_{2, 2} &amp; x_{2, 3} &amp;x_{2, 4} &amp;x_{2, 5} \<br>x_{3, 1} &amp; x_{3, 2} &amp; x_{3, 3} &amp;x_{3, 4} &amp;x_{3, 5} \<br>x_{4, 1} &amp; x_{4, 2} &amp; x_{4, 3} &amp;x_{4, 4} &amp;x_{4, 5} \<br>x_{5, 1} &amp; x_{5, 2} &amp; x_{5, 3} &amp;x_{5, 4} &amp;x_{5, 5} \<br>\end{bmatrix} ; conv ;<br>\begin{bmatrix}<br>k_{1, 1} &amp; k_{1, 2} &amp; k_{1, 3}\<br>k_{2, 1} &amp; k_{2, 2} &amp; k_{2, 3}\<br>k_{3, 1} &amp; k_{3, 2} &amp; k_{3, 3}\<br>\end{bmatrix} + b =<br>\begin{bmatrix}<br>u_{1, 1} &amp; u_{1, 2} \<br>u_{2, 1} &amp; u_{2, 2} \<br>\end{bmatrix}<br>$$</p>
+<p>&emsp;&emsp;将矩阵$u$进一步展开，我们有：  </p>
+<p>$$<br>\begin{bmatrix}<br>u_{1, 1} &amp; u_{1, 2} \<br>u_{2, 1} &amp; u_{2, 2} \<br>\end{bmatrix} = \<br>\begin{bmatrix}<br>\begin{matrix}<br>x_{1, 1}k_{1, 1} + x_{1, 2}k_{1, 2} +x_{1, 3}k_{1, 3} + \<br>x_{2, 1}k_{2, 1} + x_{2, 2}k_{2, 2} +x_{2, 3}k_{2, 3} + \<br>x_{3, 1}k_{3, 1} + x_{3, 2}k_{3, 2} +x_{3, 3}k_{3, 3} + b \<br>\end{matrix} &amp; \begin{matrix}<br>x_{1, 3}k_{1, 1} + x_{1, 4}k_{1, 2} +x_{1, 5}k_{1, 3} + \<br>x_{2, 3}k_{2, 1} + x_{2, 4}k_{2, 2} +x_{2, 5}k_{2, 3} + \<br>x_{3, 3}k_{3, 1} + x_{3, 4}k_{3, 2} +x_{3, 5}k_{3, 3} + b \<br>\end{matrix} \ \<br>\begin{matrix}<br>x_{3, 1}k_{1, 1} + x_{3, 2}k_{1, 2} +x_{3, 3}k_{1, 3} + \<br>x_{4, 1}k_{2, 1} + x_{4, 2}k_{2, 2} +x_{4, 3}k_{2, 3} + \<br>x_{5, 1}k_{3, 1} + x_{5, 2}k_{3, 2} +x_{5, 3}k_{3, 3} + b \<br>\end{matrix} &amp; \begin{matrix}<br>x_{3, 3}k_{1, 1} + x_{3, 4}k_{1, 2} +x_{3, 5}k_{1, 3} + \<br>x_{4, 3}k_{2, 1} + x_{4, 4}k_{2, 2} +x_{4, 5}k_{2, 3} + \<br>x_{5, 3}k_{3, 1} + x_{5, 4}k_{3, 2} +x_{5, 5}k_{3, 3} + b \<br>\end{matrix} \<br>\end{bmatrix}<br>$$</p>
+<h5 id="二、误差传递"><a href="#二、误差传递" class="headerlink" title="二、误差传递"></a>二、误差传递</h5><p>&emsp;&emsp;步长为2的二维卷积已经在上面的式子中被完整的表示出来了，因此，下一步就是需要对误差进行传递，和前面步长为1的情况一样，我们可以将上面的结果保存在一张表格中，每一列表示的是一个特定的输出 $\partial u_{i, j}$，每一行表示的是一个特定的输入值$\partial x_{p, k}$，行与列相交的地方表示的就是二者相除的结果，表示的是输出对于输入的偏导数，即$\frac{\partial u_{i, j}}{\partial x_{p, k}}$。于是，表格如下：  </p>
 <table>
 <thead>
-<tr class="header">
+<tr>
+<th></th>
+<th align="center">$\partial u_{1, 1}$</th>
+<th align="center">$\partial u_{1, 2}$</th>
+<th align="center">$\partial u_{2, 1}$</th>
+<th align="center">$\partial u_{2, 2}$</th>
+<th align="left">$\frac{\partial L}{\partial x_{i, j}}$</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>$\partial x_{1, 1}$</td>
+<td align="center">$k_{1, 1}$</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="left">$\frac{\partial L}{\partial x_{1, 1}} = \delta_{1, 1} k_{1, 1}$</td>
+</tr>
+<tr>
+<td>$\partial x_{1, 2}$</td>
+<td align="center">$k_{1, 2}$</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="left">$\frac{\partial L}{\partial x_{1, 2}} = \delta_{1, 1} k_{1, 2}$</td>
+</tr>
+<tr>
+<td>$\partial x_{1, 3}$</td>
+<td align="center">$k_{1, 3}$</td>
+<td align="center">$k_{1, 1}$</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="left">$\frac{\partial L}{\partial x_{1, 3}} = \delta_{1, 1} k_{1, 3} + \delta_{1, 2}k_{1, 1}$</td>
+</tr>
+<tr>
+<td>$\partial x_{1, 4}$</td>
+<td align="center">0</td>
+<td align="center">$k_{1, 2}$</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="left">$\frac{\partial L}{\partial x_{1, 4}} = \delta_{1, 2}k_{1, 2}$</td>
+</tr>
+<tr>
+<td>$\partial x_{1, 5}$</td>
+<td align="center">0</td>
+<td align="center">$k_{1, 3}$</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="left">$\frac{\partial L}{\partial x_{1, 5}} = \delta_{1, 2}k_{1, 3}$</td>
+</tr>
+<tr>
+<td>$\partial x_{2, 1}$</td>
+<td align="center">$k_{2, 1}$</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="left">$\frac{\partial L}{\partial x_{2, 1}} = \delta_{1, 1} k_{2, 1}$</td>
+</tr>
+<tr>
+<td>$\partial x_{2, 2}$</td>
+<td align="center">$k_{2, 2}$</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="left">$\frac{\partial L}{\partial x_{2, 2}} = \delta_{1, 1} k_{2, 2}$</td>
+</tr>
+<tr>
+<td>$\partial x_{2, 3}$</td>
+<td align="center">$k_{2, 3}$</td>
+<td align="center">$k_{2, 1}$</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="left">$\frac{\partial L}{\partial x_{2, 3}} = \delta_{1, 1} k_{1, 3} + \delta_{1, 2}k_{2, 1}$</td>
+</tr>
+<tr>
+<td>$\partial x_{2, 4}$</td>
+<td align="center">0</td>
+<td align="center">$k_{2, 2}$</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="left">$\frac{\partial L}{\partial x_{2, 4}} = \delta_{1, 2}k_{2, 2}$</td>
+</tr>
+<tr>
+<td>$\partial x_{2, 5}$</td>
+<td align="center">0</td>
+<td align="center">$k_{2, 3}$</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="left">$\frac{\partial L}{\partial x_{2, 5}} = \delta_{1, 2}k_{2, 3}$</td>
+</tr>
+<tr>
+<td>$\partial x_{3, 1}$</td>
+<td align="center">$k_{3, 1}$</td>
+<td align="center">0</td>
+<td align="center">$k_{1, 1}$</td>
+<td align="center">0</td>
+<td align="left">$\frac{\partial L}{\partial x_{3, 1}} = \delta_{1, 1}k_{3, 1} + \delta_{2, 1}k_{1, 1}$</td>
+</tr>
+<tr>
+<td>$\partial x_{3, 2}$</td>
+<td align="center">$k_{3, 2}$</td>
+<td align="center">0</td>
+<td align="center">$k_{1, 2}$</td>
+<td align="center">0</td>
+<td align="left">$\frac{\partial L}{\partial x_{3, 2}} = \delta_{1, 1}k_{3, 2} + \delta_{2, 1}k_{1, 2}$</td>
+</tr>
+<tr>
+<td>$\partial x_{3, 3}$</td>
+<td align="center">$k_{3, 3}$</td>
+<td align="center">$k_{3, 1}$</td>
+<td align="center">$k_{1, 3}$</td>
+<td align="center">$k_{1, 1}$</td>
+<td align="left">$\frac{\partial L}{\partial x_{3, 3}} = \delta_{1, 1}k_{3, 3} + \delta_{1, 2}k_{3, 1} + \delta_{2, 1}k_{1, 3} + \delta_{2, 2}k_{1, 1}$</td>
+</tr>
+<tr>
+<td>$\partial x_{3, 4}$</td>
+<td align="center">0</td>
+<td align="center">$k_{3, 2}$</td>
+<td align="center">0</td>
+<td align="center">$k_{1, 2}$</td>
+<td align="left">$\frac{\partial L}{\partial x_{3, 4}} = \delta_{1, 2}k_{3, 2} + \delta_{2, 2}k_{1, 2}$</td>
+</tr>
+<tr>
+<td>$\partial x_{3, 5}$</td>
+<td align="center">0</td>
+<td align="center">$k_{3, 3}$</td>
+<td align="center">0</td>
+<td align="center">$k_{1, 3}$</td>
+<td align="left">$\frac{\partial L}{\partial x_{3, 5}} = \delta_{1, 2}k_{3, 3} + \delta_{2, 2}k_{1, 3}$</td>
+</tr>
+<tr>
+<td>$\partial x_{4, 1}$</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">$k_{2, 1}$</td>
+<td align="center">0</td>
+<td align="left">$\frac{\partial L}{\partial x_{4, 1}} = \delta_{2, 1}k_{2, 1}$</td>
+</tr>
+<tr>
+<td>$\partial x_{4, 2}$</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">$k_{2, 2}$</td>
+<td align="center">0</td>
+<td align="left">$\frac{\partial L}{\partial x_{4, 2}} = \delta_{2, 1}k_{2, 2}$</td>
+</tr>
+<tr>
+<td>$\partial x_{4, 3}$</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">$k_{2, 3}$</td>
+<td align="center">$k_{2, 1}$</td>
+<td align="left">$\frac{\partial L}{\partial x_{4, 3}} = \delta_{2, 1}k_{2, 3} +  \delta_{2, 2}k_{2, 1}$</td>
+</tr>
+<tr>
+<td>$\partial x_{4, 4}$</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">$k_{2, 2}$</td>
+<td align="left">$\frac{\partial L}{\partial x_{4, 4}} = \delta_{2, 2}k_{2, 2}$</td>
+</tr>
+<tr>
+<td>$\partial x_{4, 5}$</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">$k_{2, 3}$</td>
+<td align="left">$\frac{\partial L}{\partial x_{4, 5}} = \delta_{2, 2}k_{2, 3}$</td>
+</tr>
+<tr>
+<td>$\partial x_{5, 1}$</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">$k_{3, 1}$</td>
+<td align="center">0</td>
+<td align="left">$\frac{\partial L}{\partial x_{5, 1}} = \delta_{2, 1}k_{3, 1}$</td>
+</tr>
+<tr>
+<td>$\partial x_{5, 2}$</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">$k_{3, 2}$</td>
+<td align="center">0</td>
+<td align="left">$\frac{\partial L}{\partial x_{5, 2}} = \delta_{2, 1}k_{3, 2}$</td>
+</tr>
+<tr>
+<td>$\partial x_{5, 3}$</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">$k_{3, 3}$</td>
+<td align="center">$k_{3, 1}$</td>
+<td align="left">$\frac{\partial L}{\partial x_{5, 3}} = \delta_{2, 1}k_{3, 3} + \delta_{2, 2}k_{3, 1}$</td>
+</tr>
+<tr>
+<td>$\partial x_{5, 4}$</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">$k_{3, 2}$</td>
+<td align="left">$\frac{\partial L}{\partial x_{5, 4}} = \delta_{2, 2}k_{3, 2}$</td>
+</tr>
+<tr>
+<td>$\partial x_{5, 5}$</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">$k_{3, 3}$</td>
+<td align="left">$\frac{\partial L}{\partial x_{5, 5}} = \delta_{2, 2}k_{3, 3}$</td>
+</tr>
+</tbody></table>
+<p>&emsp;&emsp;可以看出，数据依然都是很规律的进行着重复。  </p>
+<p>&emsp;&emsp;我们假设后面传递过来的误差是 $\delta$ ，即：  </p>
+<p>$$<br>\delta =<br>\begin{bmatrix}<br>\delta_{1, 1} &amp; \delta_{1, 2} \<br>\delta_{2, 1} &amp; \delta_{2, 2} \<br>\end{bmatrix}<br>$$</p>
+<p>&emsp;&emsp;其中，$\delta_{i, j} = \frac{\partial L}{\partial u_{i, j}}$，误差分别对应于每一个输出项。这里的$L$表示的是最后的Loss损失。我们的目的就是希望这个损失尽可能小。那么，根据求导的链式法则，我们有：  </p>
+<p>&emsp;&emsp;根据求偏导数的链式法则，我们可以有：  </p>
+<p>$$<br>\frac{\partial L}{\partial x_{i, j}} = \sum_{p = 1} \sum_{k = 1} \frac{\partial L}{\partial u_{p, k}} \cdot \frac{\partial u_{p, k}}{\partial x_{i, j}} = \sum_{p = 1} \sum_{k = 1} \delta_{p, k} \cdot \frac{\partial u_{p, k}}{\partial x_{i, j}}<br>$$</p>
+<p>&emsp;&emsp;我们以$\frac{\partial L}{\partial x_{3, 3}}$为例，我们有：  </p>
+<p>$$<br>\begin{aligned}<br>\frac{\partial L}{\partial x_{3, 3}}<br>&amp;= \sum_{p = 1} \sum_{k = 1} \frac{\partial L}{\partial u_{p, k}} \cdot \frac{\partial u_{p, k}}{\partial x_{3, 3}} \<br>&amp;= \sum_{p = 1} \sum_{k = 1} \delta_{p, k} \cdot \frac{\partial u_{p, k}}{\partial x_{3, 3}} \<br>&amp;= \delta_{1, 1}\frac{\partial u_{1, 1}}{\partial x_{3, 3}} + \delta_{1, 2}\frac{\partial u_{1, 2}}{\partial x_{3, 3}} + \delta_{2, 1}\frac{\partial u_{2, 1}}{\partial x_{3, 3}} + \delta_{2, 2}\frac{\partial u_{2, 2}}{\partial x_{3, 3}} \<br>&amp;= \delta_{1, 1}k_{3, 3} + \delta_{1, 2}k_{3, 1} + \delta_{2, 1}k_{1, 3} + \delta_{2, 2}k_{1, 1}<br>\end{aligned}<br>$$</p>
+<p>&emsp;&emsp; 类似地，我们可以计算出所有的输入矩阵中的元素所对应的偏导数信息，所有的偏导数计算结果均在上表中列出。  </p>
+<p>&emsp;&emsp;和前面步长stride为1的卷积方式的误差传递类似，我们需要对传递来的误差矩阵和卷积核进行一定的处理，然后再进行卷积，得到应该传递到下一层的网络结构中，所以我们需要的解决问题的问题有三个，即：1.误差矩阵如何处理，2.卷积核如何处理，3.如何进行卷积。  </p>
+<p>&emsp;&emsp;同样，我们将$\frac{\partial L}{\partial x_{3, 3}}$单独拿出来进行考察，如果需要用到全部的卷积核的元素的话，并不能和传递来的误差矩阵相匹配，为了使得两者可以再维度上相匹配，我们再误差矩阵中添加若干0，和步长stride为1的卷积反向传播一样，我们也将卷积核进行180°翻转，于是，我们可以得到：  </p>
+<p>$$<br>\frac{\partial L}{\partial x_{3, 3}} = \begin{bmatrix}<br>\delta_{1, 1} &amp; 0 &amp; \delta_{1, 2} \<br>0 &amp; 0 &amp; 0 \<br>\delta_{2, 1} &amp; 0 &amp; \delta_{2, 2} \<br>\end{bmatrix}<br>; conv ;\begin{bmatrix}<br>k_{3, 3} &amp; k_{3, 2} &amp; k_{3, 1} \<br>k_{2, 3} &amp; k_{2, 2} &amp; k_{2, 1} \<br>k_{1, 3} &amp; k_{1, 2} &amp; k_{1, 1} \<br>\end{bmatrix}<br>$$</p>
+<p>&emsp;&emsp;由于padding策略一直默认为是VALID，而且上面的两个矩阵形状相同，所以此时的步长stride参数不会影响到最终的结果。  </p>
+<p>&emsp;&emsp;如果按照我们之前的策略，再在添加0之后的误差矩阵外面填补上合适数目的0的话，有：  </p>
+<p>$$<br>\begin{bmatrix}<br>0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \<br>0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \<br>0 &amp; 0 &amp; \delta_{1, 1} &amp; 0 &amp; \delta_{1, 2} &amp; 0 &amp; 0 \<br>0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \<br>0 &amp; 0 &amp; \delta_{2, 1} &amp; 0 &amp; \delta_{2, 2} &amp; 0 &amp; 0 \<br>0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \<br>0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \<br>\end{bmatrix}<br>; conv ;\begin{bmatrix}<br>k_{3, 3} &amp; k_{3, 2} &amp; k_{3, 1} \<br>k_{2, 3} &amp; k_{2, 2} &amp; k_{2, 1} \<br>k_{1, 3} &amp; k_{1, 2} &amp; k_{1, 1} \<br>\end{bmatrix}<br>$$</p>
+<p>&emsp;&emsp;同样，上面的卷积过程步长stride参数为1。  </p>
+<p>&emsp;&emsp;不妨将上面的卷积的结果记为$conv1$，然后，我们将$\frac{\partial L}{\partial x_{i, j}}$按照对应的顺序进行排列，我们将结果记作$conv2$，即：  </p>
+<p>$$<br>conv2 = \begin{bmatrix}<br>\frac{\partial L}{\partial x_{1, 1}} &amp; \frac{\partial L}{\partial x_{1, 2}} &amp; \frac{\partial L}{\partial x_{1, 3}}&amp; \frac{\partial L}{\partial x_{1, 4}} &amp; \frac{\partial L}{\partial x_{1, 5}} \<br>\frac{\partial L}{\partial x_{2, 1}} &amp; \frac{\partial L}{\partial x_{2, 2}} &amp; \frac{\partial L}{\partial x_{2, 3}}&amp; \frac{\partial L}{\partial x_{2, 4}} &amp; \frac{\partial L}{\partial x_{2, 5}} \<br>\frac{\partial L}{\partial x_{3, 1}} &amp; \frac{\partial L}{\partial x_{3, 2}} &amp; \frac{\partial L}{\partial x_{3, 3}}&amp; \frac{\partial L}{\partial x_{3, 4}} &amp; \frac{\partial L}{\partial x_{3, 5}} \<br>\frac{\partial L}{\partial x_{4, 1}} &amp; \frac{\partial L}{\partial x_{4, 2}} &amp; \frac{\partial L}{\partial x_{4, 3}}&amp; \frac{\partial L}{\partial x_{4, 4}} &amp; \frac{\partial L}{\partial x_{4, 5}} \<br>\frac{\partial L}{\partial x_{5, 1}} &amp; \frac{\partial L}{\partial x_{5, 2}} &amp; \frac{\partial L}{\partial x_{5, 3}}&amp; \frac{\partial L}{\partial x_{5, 4}} &amp; \frac{\partial L}{\partial x_{5, 5}} \<br>\end{bmatrix}<br>$$</p>
+<p>&emsp;&emsp;经过计算，我们发现$conv1$和$conv2$正好相等。即：  </p>
+<p>$$<br>\begin{bmatrix}<br>\frac{\partial L}{\partial x_{1, 1}} &amp; \frac{\partial L}{\partial x_{1, 2}} &amp; \frac{\partial L}{\partial x_{1, 3}}&amp; \frac{\partial L}{\partial x_{1, 4}} &amp; \frac{\partial L}{\partial x_{1, 5}} \<br>\frac{\partial L}{\partial x_{2, 1}} &amp; \frac{\partial L}{\partial x_{2, 2}} &amp; \frac{\partial L}{\partial x_{2, 3}}&amp; \frac{\partial L}{\partial x_{2, 4}} &amp; \frac{\partial L}{\partial x_{2, 5}} \<br>\frac{\partial L}{\partial x_{3, 1}} &amp; \frac{\partial L}{\partial x_{3, 2}} &amp; \frac{\partial L}{\partial x_{3, 3}}&amp; \frac{\partial L}{\partial x_{3, 4}} &amp; \frac{\partial L}{\partial x_{3, 5}} \<br>\frac{\partial L}{\partial x_{4, 1}} &amp; \frac{\partial L}{\partial x_{4, 2}} &amp; \frac{\partial L}{\partial x_{4, 3}}&amp; \frac{\partial L}{\partial x_{4, 4}} &amp; \frac{\partial L}{\partial x_{4, 5}} \<br>\frac{\partial L}{\partial x_{5, 1}} &amp; \frac{\partial L}{\partial x_{5, 2}} &amp; \frac{\partial L}{\partial x_{5, 3}}&amp; \frac{\partial L}{\partial x_{5, 4}} &amp; \frac{\partial L}{\partial x_{5, 5}} \<br>\end{bmatrix} =<br>\begin{bmatrix}<br>0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \<br>0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \<br>0 &amp; 0 &amp; \delta_{1, 1} &amp; 0 &amp; \delta_{1, 2} &amp; 0 &amp; 0 \<br>0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \<br>0 &amp; 0 &amp; \delta_{2, 1} &amp; 0 &amp; \delta_{2, 2} &amp; 0 &amp; 0 \<br>0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \<br>0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \<br>\end{bmatrix}<br>; conv ;\begin{bmatrix}<br>k_{3, 3} &amp; k_{3, 2} &amp; k_{3, 1} \<br>k_{2, 3} &amp; k_{2, 2} &amp; k_{2, 1} \<br>k_{1, 3} &amp; k_{1, 2} &amp; k_{1, 1} \<br>\end{bmatrix}<br>$$</p>
+<p>&emsp;&emsp;可以发现，在前面提出的三个问题中，有两个问题的答案是和步长stride为1的二维卷积相同的，唯一不同的是，我们需要在误差矩阵的相邻元素之间插入若干0来完成卷积误差的产生。  </p>
+<h6 id="误差矩阵插入0的方式"><a href="#误差矩阵插入0的方式" class="headerlink" title="误差矩阵插入0的方式"></a>误差矩阵插入0的方式</h6><p>&emsp;&emsp;很明显，我们唯一需要解决的问题就是如何在误差矩阵中插入0。在这里直接给出结论，那就是<strong>每个相邻的元素之间应该插入（步长stride - 1）个0，或者说每个元素之间的距离是卷积的步长。</strong>因为在这个模型中，唯一和前面的卷积方式不同的变量就是步长stride，那么需要满足的条件也必然和步长有关。  </p>
+<p>&emsp;&emsp;当我们在元素之间插入合适数目的0之后，接下来就是在误差矩阵周围填补上合适数目的0层，然后将卷积核旋转180°，最后按照步长为1的方式进行卷积，最后得到应该向前传递的误差矩阵。  这两步和步长stride为1的反向传播算法相同。  </p>
+<h5 id="三、参数更新"><a href="#三、参数更新" class="headerlink" title="三、参数更新"></a>三、参数更新</h5><p>&emsp;&emsp;当我们解决了误差的向前传递之后，下一步就是解决参数的更新的问题。和前面的定义一样，假设我们在这一阶段接收到的后方传递过来的误差为$\delta$， 即：  </p>
+<p>$$<br>\delta =<br>\begin{bmatrix}<br>\delta_{1, 1} &amp; \delta_{1, 2} &amp; \delta_{1, 3} \<br>\delta_{2, 1} &amp; \delta_{2, 2} &amp; \delta_{2, 3} \<br>\delta_{3, 1} &amp; \delta_{3, 2} &amp; \delta_{3, 3} \<br>\end{bmatrix}<br>$$</p>
+<p>&emsp;&emsp;那么根据偏导数求解的链式法则，我们可以有下面的式子：这里以求解$\frac{\partial L}{\partial k_{1, 1}}$ 为例：  </p>
+<p>$$<br>\begin{aligned}<br>\frac{\partial L}{\partial k_{1, 1}} =&amp;<br>\frac{\partial L}{\partial u_{1, 1}} \frac{\partial u_{1, 1}}{k_{1, 1}} + \frac{\partial L}{\partial u_{1, 2}} \frac{\partial u_{1, 2}}{k_{1, 1}} +<br>\frac{\partial L}{\partial u_{2, 1}} \frac{\partial u_{2, 1}}{k_{1, 1}} +<br>\frac{\partial L}{\partial u_{2, 2}} \frac{\partial u_{2, 2}}{k_{1, 1}} \<br>=&amp;<br>\delta_{1, 1} \frac{\partial u_{1, 1}}{k_{1, 1}} +<br>\delta_{1, 2} \frac{\partial u_{1, 2}}{k_{1, 1}} +<br>\delta_{2, 1} \frac{\partial u_{2, 1}}{k_{1, 1}} +<br>\delta_{2, 2} \frac{\partial u_{2, 2}}{k_{1, 1}} \<br>=&amp;<br>\delta_{1, 1} x_{1, 1} +<br>\delta_{1, 2} x_{1, 3} +<br>\delta_{2, 1} x_{3, 1} +<br>\delta_{2, 2} x_{3, 3}<br>\end{aligned}<br>$$</p>
+<p>&emsp;&emsp;类似地，我们将所有地偏导数信息都求出来，汇总如下：  </p>
+<p>$$<br>\frac{\partial L}{\partial k_{1, 1}} =<br>\delta_{1, 1} x_{1, 1} +<br>\delta_{1, 2} x_{1, 3} +<br>\delta_{2, 1} x_{3, 1} +<br>\delta_{2, 2} x_{3, 3}<br>$$<br>$$<br>\frac{\partial L}{\partial k_{1, 2}} =<br>\delta_{1, 1} x_{1, 2} +<br>\delta_{1, 2} x_{1, 4} +<br>\delta_{2, 1} x_{3, 2} +<br>\delta_{2, 2} x_{3, 4}<br>$$<br>$$<br>\frac{\partial L}{\partial k_{1, 3}} =<br>\delta_{1, 1} x_{1, 3} +<br>\delta_{1, 2} x_{1, 5} +<br>\delta_{2, 1} x_{3, 3} +<br>\delta_{2, 2} x_{3, 5}<br>$$<br>$$<br>\frac{\partial L}{\partial k_{2, 1}} =<br>\delta_{1, 1} x_{2, 1} +<br>\delta_{1, 2} x_{2, 3} +<br>\delta_{2, 1} x_{4, 1} +<br>\delta_{2, 2} x_{4, 3}<br>$$<br>$$<br>\frac{\partial L}{\partial k_{2, 2}} =<br>\delta_{1, 1} x_{2, 2} +<br>\delta_{1, 2} x_{2, 4} +<br>\delta_{2, 1} x_{4, 2} +<br>\delta_{2, 2} x_{4, 4}<br>$$<br>$$<br>\frac{\partial L}{\partial k_{2, 3}} =<br>\delta_{1, 1} x_{2, 3} +<br>\delta_{1, 2} x_{2, 5} +<br>\delta_{2, 1} x_{4, 3} +<br>\delta_{2, 2} x_{4, 5}<br>$$<br>$$<br>\frac{\partial L}{\partial k_{3, 1}} =<br>\delta_{1, 1} x_{3, 1} +<br>\delta_{1, 2} x_{3, 3} +<br>\delta_{2, 1} x_{5, 1} +<br>\delta_{2, 2} x_{5, 3}<br>$$<br>$$<br>\frac{\partial L}{\partial k_{3, 2}} =<br>\delta_{1, 1} x_{3, 2} +<br>\delta_{1, 2} x_{3, 4} +<br>\delta_{2, 1} x_{5, 2} +<br>\delta_{2, 2} x_{5, 4}<br>$$<br>$$<br>\frac{\partial L}{\partial k_{3, 3}} =<br>\delta_{1, 1} x_{3, 3} +<br>\delta_{1, 2} x_{3, 5} +<br>\delta_{2, 1} x_{5, 3} +<br>\delta_{2, 2} x_{5, 5}<br>$$</p>
+<p>$$<br>\frac{\partial L}{\partial b} = \delta_{1, 1} + \delta_{1, 2} + \delta_{2, 1} + \delta_{2, 2}<br>$$</p>
+<p>&emsp;&emsp;和前面地误差传递类似，我们发现可以在误差矩阵中插入若干个0来和输入矩阵$x$来保持维度上的匹配。即有：  </p>
+<p>$$<br>\frac{\partial L}{\partial k} = [\frac{\partial L}{\partial k_{i, j}}]<br>= \begin{bmatrix}<br>x_{1, 1} &amp; x_{1, 2} &amp; x_{1, 3} &amp;x_{1, 4} &amp;x_{1, 5} \<br>x_{2, 1} &amp; x_{2, 2} &amp; x_{2, 3} &amp;x_{2, 4} &amp;x_{2, 5} \<br>x_{3, 1} &amp; x_{3, 2} &amp; x_{3, 3} &amp;x_{3, 4} &amp;x_{3, 5} \<br>x_{4, 1} &amp; x_{4, 2} &amp; x_{4, 3} &amp;x_{4, 4} &amp;x_{4, 5} \<br>x_{5, 1} &amp; x_{5, 2} &amp; x_{5, 3} &amp;x_{5, 4} &amp;x_{5, 5} \<br>\end{bmatrix} ; conv ; \begin{bmatrix}<br>\delta_{1, 1} &amp; 0 &amp; \delta_{1, 2} \<br>0 &amp; 0 &amp; 0 \<br>\delta_{2, 1} &amp; 0 &amp; \delta_{2, 2} \<br>\end{bmatrix}<br>$$</p>
+<p>&emsp;&emsp;据此，我们可以发现，<strong>在卷积核参数更新的过程中，我们也需要对误差矩阵进行插入0的操作。而且插入0的方式和误差传递过程中的方式完全相同。</strong>所以，我们可以总结出步长为s的时候卷积反向传播的卷积核参数更新的方法，即：1.首先在接收到的误差矩阵中插入合适数目的0，2.在输入矩阵$x$上应用误差矩阵进行步长为1的卷积，从而得到卷积核的更新梯度。  </p>
+<p>&emsp;&emsp;同样，我们由上面的推导可以发现，无论是何种方式的卷积操作，偏置项$b$的更新梯度都是接收到的误差矩阵中的元素之和。  </p>
+<h5 id="四、总结"><a href="#四、总结" class="headerlink" title="四、总结"></a>四、总结</h5><p>&emsp;&emsp;我们将上面的求解过程总结如下有：  </p>
+<table>
+<thead>
+<tr>
 <th>参数</th>
 <th>设置</th>
 </tr>
 </thead>
-<tbody>
-<tr class="odd">
-<td>输入矩阵<span class="math inline">\(x\)</span></td>
+<tbody><tr>
+<td>输入矩阵$x$</td>
 <td>一个二维矩阵</td>
 </tr>
-<tr class="even">
-<td>输入卷积核<span class="math inline">\(k\)</span></td>
+<tr>
+<td>输入卷积核$k$</td>
 <td>一个二维矩阵</td>
 </tr>
-<tr class="odd">
-<td>步长<span class="math inline">\(stride\)</span></td>
+<tr>
+<td>步长$stride$</td>
 <td>一个正整数s</td>
 </tr>
-<tr class="even">
+<tr>
 <td>padding</td>
 <td>VALID</td>
 </tr>
-<tr class="odd">
-<td>偏置项<span class="math inline">\(b\)</span></td>
+<tr>
+<td>偏置项$b$</td>
 <td>一个浮点数</td>
 </tr>
-</tbody>
-</table>
-<p>  正向传播：</p>
+</tbody></table>
+<p>&emsp;&emsp;正向传播：  </p>
 <figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conv(x, kernel, bias, &quot;VALID&quot;)</span><br></pre></td></tr></table></figure>
-<p>  反向传播：</p>
+
+<p>&emsp;&emsp;反向传播：  </p>
 <figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">conv_backward(error, x, kernel, bias):</span><br><span class="line">	# 计算传递给下一层的误差</span><br><span class="line">	1.在接收到的error矩阵的矩阵中插入合适数目的0，使得每个元素之间的0的数目为(stride - 1)</span><br><span class="line">	2.在error周围填补上合适数目的0</span><br><span class="line">	3.将kernel旋转180°</span><br><span class="line">	4.将填补上0的误差和旋转之后的kernel进行步长为1的卷积，从而得到传递给下一层的误差new_error。</span><br><span class="line">	</span><br><span class="line">	# 更新参数</span><br><span class="line">	1.在接收到的error矩阵的矩阵中插入合适数目的0，使得每个元素之间的0的数目为(stride - 1)</span><br><span class="line">	2.将输入矩阵x和插入0之后的误差矩阵error进行步长为1的卷积，得到kernel的更新梯度</span><br><span class="line">	3.将上一层传递来的误差矩阵error所有元素求和，得到bias的更新梯度</span><br><span class="line">	4.kernel := kernel - 学习率 * kernel的更新梯度</span><br><span class="line">	5.bias := bias - 学习率 * bias的更新梯度</span><br><span class="line">	</span><br><span class="line">	# 返回误差，用以传递到下一层</span><br><span class="line">	return new_error</span><br></pre></td></tr></table></figure>
+
 
         </div>
         
             <ul class="post-copyright">
             <li><strong>本文标题：</strong><a href="http://huaxuan0720.github.io/2019/05/24/Note15-ConvBackProp-part2/">步长stride为s的二维卷积方法的反向传播算法</a></li>
-            <li><strong>本文作者：</strong><a href="http://huaxuan0720.github.io">华轩</a></li>
+            <li><strong>本文作者：</strong><a href="http://huaxuan0720.github.io">Da Vinci</a></li>
             <li><strong>本文链接：</strong><a href="http://huaxuan0720.github.io/2019/05/24/Note15-ConvBackProp-part2/">http://huaxuan0720.github.io/2019/05/24/Note15-ConvBackProp-part2/</a></li>
             <li><strong>发布时间：</strong>2019-05-24</li>
             <li><strong>版权声明：</strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
@@ -772,7 +546,7 @@ x_{5, 1} &amp; x_{5, 2} &amp; x_{5, 3} &amp;x_{5, 4} &amp;x_{5, 5} \\
 
 <div class="card">
     <div class="card-content">
-        <h3 class="menu-label has-text-centered">Suka dengan artikel ini? Bantu penulis dengan donasi melalui</h3>
+        <h3 class="menu-label has-text-centered">Like this article? Support the author with</h3>
         <div class="buttons is-centered">
             
                 
@@ -826,7 +600,7 @@ x_{5, 1} &amp; x_{5, 2} &amp; x_{5, 3} &amp;x_{5, 4} &amp;x_{5, 5} \\
 
 <div class="card">
     <div class="card-content">
-        <h3 class="title is-5 has-text-weight-normal">Commentaires</h3>
+        <h3 class="title is-5 has-text-weight-normal">Comentarios</h3>
         
 <div id="valine-thread" class="content"></div>
 <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
@@ -885,7 +659,7 @@ x_{5, 1} &amp; x_{5, 2} &amp; x_{5, 3} &amp;x_{5, 4} &amp;x_{5, 5} \\
             <div class="level-item has-text-centered is-marginless">
                 <a href="/archives/">
                     <p class="heading">
-                        Articles
+                        Entradas
                     </p>
                     <p class="title has-text-weight-normal">
                         25
@@ -895,7 +669,7 @@ x_{5, 1} &amp; x_{5, 2} &amp; x_{5, 3} &amp;x_{5, 4} &amp;x_{5, 5} \\
             <div class="level-item has-text-centered is-marginless">
                 <a href="/categories/">
                     <p class="heading">
-                        Catégories
+                        Categorias
                     </p>
                     <p class="title has-text-weight-normal">
                         3
@@ -905,7 +679,7 @@ x_{5, 1} &amp; x_{5, 2} &amp; x_{5, 3} &amp;x_{5, 4} &amp;x_{5, 5} \\
             <div class="level-item has-text-centered is-marginless">
                 <a href="/tags/">
                     <p class="heading">
-                        Tags
+                        Etiquetas
                     </p>
                     <p class="title has-text-weight-normal">
                         21
@@ -915,7 +689,7 @@ x_{5, 1} &amp; x_{5, 2} &amp; x_{5, 3} &amp;x_{5, 4} &amp;x_{5, 5} \\
         </nav>
         <div class="level">
             <a class="level-item button is-link is-rounded" href="https://github.com/huaxuan0720" target="_blank">
-                <i class="fab fa-github"></i>&nbsp;&nbsp;SUIVRE</a>
+                <i class="fab fa-github"></i>&nbsp;&nbsp;SEGUIR</a>
         </div>
         
         
@@ -956,18 +730,18 @@ x_{5, 1} &amp; x_{5, 2} &amp; x_{5, 3} &amp;x_{5, 4} &amp;x_{5, 5} \\
     <div class="card-content">
         <div class="menu">
             <h3 class="menu-label">
-                Catalogue
+                Catálogo
             </h3>
             <ul class="menu-list"><li>
         <a class="is-flex" href="#前言">
         <span class="has-mr-6">1</span>
         <span>前言</span>
         </a></li><li>
-        <a class="is-flex" href="#一参数设置">
+        <a class="is-flex" href="#一，参数设置">
         <span class="has-mr-6">2</span>
         <span>一，参数设置</span>
         </a></li><li>
-        <a class="is-flex" href="#二误差传递">
+        <a class="is-flex" href="#二、误差传递">
         <span class="has-mr-6">3</span>
         <span>二、误差传递</span>
         </a><ul class="menu-list"><li>
@@ -975,11 +749,11 @@ x_{5, 1} &amp; x_{5, 2} &amp; x_{5, 3} &amp;x_{5, 4} &amp;x_{5, 5} \\
         <span class="has-mr-6">3.1</span>
         <span>误差矩阵插入0的方式</span>
         </a></li></ul></li><li>
-        <a class="is-flex" href="#三参数更新">
+        <a class="is-flex" href="#三、参数更新">
         <span class="has-mr-6">4</span>
         <span>三、参数更新</span>
         </a></li><li>
-        <a class="is-flex" href="#四总结">
+        <a class="is-flex" href="#四、总结">
         <span class="has-mr-6">5</span>
         <span>四、总结</span>
         </a></li></ul>
@@ -1010,7 +784,7 @@ x_{5, 1} &amp; x_{5, 2} &amp; x_{5, 3} &amp;x_{5, 4} &amp;x_{5, 5} \\
                 
                 </a>
                 <p class="is-size-7">
-                &copy; 2019 华轩&nbsp;
+                &copy; 2019 Da Vinci&nbsp;
                 Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> & <a href="http://github.com/ppoffice/hexo-theme-icarus" target="_blank">Icarus</a>
                 
                 <br>
@@ -1116,7 +890,7 @@ document.addEventListener('DOMContentLoaded', function () {
     
     
 
-<a id="back-to-top" title="Kembali ke atas" href="javascript:;">
+<a id="back-to-top" title="Back to Top" href="javascript:;">
     <i class="fas fa-chevron-up"></i>
 </a>
 <script src="/js/back-to-top.js" defer></script>
@@ -1164,10 +938,10 @@ document.addEventListener('DOMContentLoaded', function () {
     (function (window) {
         var INSIGHT_CONFIG = {
             TRANSLATION: {
-                POSTS: 'Articles',
+                POSTS: 'Entradas',
                 PAGES: 'Pages',
-                CATEGORIES: 'Catégories',
-                TAGS: 'Tags',
+                CATEGORIES: 'Categorias',
+                TAGS: 'Etiquetas',
                 UNTITLED: '(Untitled)',
             },
             CONTENT_URL: '/content.json',

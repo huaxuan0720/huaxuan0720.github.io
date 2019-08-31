@@ -7,19 +7,19 @@
 
 
 
-    <meta name="description" content="一、支持向量机   支持向量机（support vector machines，简称SVM）是一种非常高效的分类器，在神经网络出现前，SVM被称为最强分类器。SVM的核心思想就是，对于两个类别的数据，每个数据点都可以抽象为多维空间中的一个坐标点，每一个点都对应于一个标签。那么我们已经知道这两个类别可以被一个超平面相隔开，即在超平面的一侧是一个类别，另一侧是另一个类别。很明显。在绝大多数情况下，这">
+    <meta name="description" content="一、支持向量机&amp;emsp;&amp;emsp;支持向量机（support vector machines，简称SVM）是一种非常高效的分类器，在神经网络出现前，SVM被称为最强分类器。SVM的核心思想就是，对于两个类别的数据，每个数据点都可以抽象为多维空间中的一个坐标点，每一个点都对应于一个标签。那么我们已经知道这两个类别可以被一个超平面相隔开，即在超平面的一侧是一个类别，另一侧是另一个类别。很明显。在绝">
 <meta name="keywords" content="机器学习,支持向量机,SVM">
 <meta property="og:type" content="article">
 <meta property="og:title" content="线性可分支持向量机">
 <meta property="og:url" content="http://huaxuan0720.github.io/2019/06/15/Note21-SVM-Hard-Margin/index.html">
 <meta property="og:site_name" content="Welcome to My Blogs">
-<meta property="og:description" content="一、支持向量机   支持向量机（support vector machines，简称SVM）是一种非常高效的分类器，在神经网络出现前，SVM被称为最强分类器。SVM的核心思想就是，对于两个类别的数据，每个数据点都可以抽象为多维空间中的一个坐标点，每一个点都对应于一个标签。那么我们已经知道这两个类别可以被一个超平面相隔开，即在超平面的一侧是一个类别，另一侧是另一个类别。很明显。在绝大多数情况下，这">
+<meta property="og:description" content="一、支持向量机&amp;emsp;&amp;emsp;支持向量机（support vector machines，简称SVM）是一种非常高效的分类器，在神经网络出现前，SVM被称为最强分类器。SVM的核心思想就是，对于两个类别的数据，每个数据点都可以抽象为多维空间中的一个坐标点，每一个点都对应于一个标签。那么我们已经知道这两个类别可以被一个超平面相隔开，即在超平面的一侧是一个类别，另一侧是另一个类别。很明显。在绝">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://huaxuan0720.github.io/gallery/MachineLearning.jpg">
 <meta property="og:updated_time" content="2019-06-17T04:17:03.530Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="线性可分支持向量机">
-<meta name="twitter:description" content="一、支持向量机   支持向量机（support vector machines，简称SVM）是一种非常高效的分类器，在神经网络出现前，SVM被称为最强分类器。SVM的核心思想就是，对于两个类别的数据，每个数据点都可以抽象为多维空间中的一个坐标点，每一个点都对应于一个标签。那么我们已经知道这两个类别可以被一个超平面相隔开，即在超平面的一侧是一个类别，另一侧是另一个类别。很明显。在绝大多数情况下，这">
+<meta name="twitter:description" content="一、支持向量机&amp;emsp;&amp;emsp;支持向量机（support vector machines，简称SVM）是一种非常高效的分类器，在神经网络出现前，SVM被称为最强分类器。SVM的核心思想就是，对于两个类别的数据，每个数据点都可以抽象为多维空间中的一个坐标点，每一个点都对应于一个标签。那么我们已经知道这两个类别可以被一个超平面相隔开，即在超平面的一侧是一个类别，另一侧是另一个类别。很明显。在绝">
 <meta name="twitter:image" content="http://huaxuan0720.github.io/gallery/MachineLearning.jpg">
 
 
@@ -130,7 +130,7 @@
                     
                 
                 
-                <a class="navbar-item is-hidden-tablet catalogue" title="Catalogue" href="javascript:;">
+                <a class="navbar-item is-hidden-tablet catalogue" title="Catálogo" href="javascript:;">
                     <i class="fas fa-list-ul"></i>
                 </a>
                 
@@ -192,134 +192,63 @@
         </div>
         
         <div class="content">
-            <h5 id="一支持向量机">一、支持向量机</h5>
-<p>  支持向量机（support vector machines，简称SVM）是一种非常高效的分类器，在神经网络出现前，SVM被称为最强分类器。SVM的核心思想就是，对于两个类别的数据，每个数据点都可以抽象为多维空间中的一个坐标点，每一个点都对应于一个标签。那么我们已经知道这两个类别可以被一个超平面相隔开，即在超平面的一侧是一个类别，另一侧是另一个类别。很明显。在绝大多数情况下，这样的超平面并不唯一。其中，将两个类别分开，并且距离两个类别中离超平面最近的若干个点距离之和最大的那一个超平面则最能满足我们的要求。因为有这样的一个超平面，所有当我们引入一个新的样本数据时，我们就有最高的把握可以将这个新的样本点分类正确。这就是SVM的核心思想。</p>
+            <h5 id="一、支持向量机"><a href="#一、支持向量机" class="headerlink" title="一、支持向量机"></a>一、支持向量机</h5><p>&emsp;&emsp;支持向量机（support vector machines，简称SVM）是一种非常高效的分类器，在神经网络出现前，SVM被称为最强分类器。SVM的核心思想就是，对于两个类别的数据，每个数据点都可以抽象为多维空间中的一个坐标点，每一个点都对应于一个标签。那么我们已经知道这两个类别可以被一个超平面相隔开，即在超平面的一侧是一个类别，另一侧是另一个类别。很明显。在绝大多数情况下，这样的超平面并不唯一。其中，将两个类别分开，并且距离两个类别中离超平面最近的若干个点距离之和最大的那一个超平面则最能满足我们的要求。因为有这样的一个超平面，所有当我们引入一个新的样本数据时，我们就有最高的把握可以将这个新的样本点分类正确。这就是SVM的核心思想。  </p>
 <a id="more"></a>
-<p>  在求解SVM之前，不妨思考一下这个超平面 <span class="math inline">\(S\)</span>应该满足怎样的条件。假设超平面 <span class="math inline">\(S\)</span>的方程是 <span class="math inline">\(\omega \cdot x + b = 0\)</span>，这里的超平面可以完美的将我们的样本数据分开。我们设样本数据集为 <span class="math inline">\(D\)</span>，一共包含 <span class="math inline">\(m\)</span>个样本数据，每个样本都有一个标签 <span class="math inline">\(y_i\)</span>，标签的值是1或者-1，即 <span class="math inline">\(D = \{(x_1, y_1),(x_2, y_2),...,(x_m, y_m)\}\)</span>，其中 <span class="math inline">\(y_i \in \{1, -1\}\)</span>。这里的1或者-1本质上是SVM结果的符号。根据SVM的定义，我们可以发现，超平面 <span class="math inline">\(S\)</span>到每一个类别的样本数据的最小值是相同的，因为只有这样才可以保证SVM对没一个类别都能公平地进行分类。</p>
-<h6 id="函数间隔">函数间隔</h6>
-<p>  首先，我么可以将上述地超平面 <span class="math inline">\(S\)</span>方程看作一个函数 <span class="math inline">\(f(x) = \omega \cdot x + b\)</span>。同时，我们引入一个新的定义，叫做函数间隔。当我们将上述的超平面方程看作是一个函数时，如果我们代入某些坐标点，这些坐标点位于超平面上，则<span class="math inline">\(f(x) = 0\)</span>。如果不在超平面上，则函数 <span class="math inline">\(f(x) \neq 0\)</span>。于是我们将代入某个坐标带你到函数中得到的函数值输出叫做函数间隔。</p>
-<p>  由上面，我们发现，如果等比例地改变 <span class="math inline">\(\omega, b\)</span>的值，该超平面并不会改变，但是得到的函数间隔会相应改变，这是因为在本质上，超平面的放长依赖于 <span class="math inline">\(\omega, b\)</span>之间的比值关系，和具体的数值无关，而函数间隔则会依赖于其具体数值。我们不妨取其中超平面其中一侧的类别中，所有该类别的样本数据距离超平面的函数间隔都是正数，其中最小的那个正数我们记作 <span class="math inline">\(a\)</span>。<strong>由于函数间隔依赖于 <span class="math inline">\(\omega, b\)</span>的具体数值，那么我们总是可以动态地等比例调整 <span class="math inline">\(\omega, b\)</span>的数值，让 <span class="math inline">\(a = 1\)</span></strong>。于是，我们将这样的一对 <span class="math inline">\(\omega, b\)</span>记作 <span class="math inline">\(\omega_0, b_0\)</span>，对应的超平面方程就是 <span class="math inline">\(\omega_0 \cdot x + b_0 = 0\)</span>。</p>
-<p>  同时，我们观察到，在函数距离为正的样本数据中，标签也可以设置为1，函数距离为负的样本数据中，标签可以被设置为-1。那么我们对所有的样本数据，都会满足下面的关系：</p>
-<p><span class="math display">\[
-y_i (\omega_0 \cdot x_i + b_0) \geq 1, \quad(1 \leq i \leq m) \tag{1}
-\]</span></p>
-<p>  之所以会大于等于1，是因为我们在之前已经等比例调整过 <span class="math inline">\(\omega,b\)</span>的数值，使之满足上面的关系。但是，函数距离并不能准确地刻画超平面到最近的样本距离之和最大这一条件，所以我们就必须用一个准确的距离表示方法来计算最近距离之和。根据空间中点线之间的距离计算公式，我们取函数距离分别为1和-1的两个点，分别记作 <span class="math inline">\((x_a, y_a),(x_b, y_b)\)</span>，我们的目标就是要求这两个点距离超平面的距离之和最大，故我们有：</p>
-<p><span class="math display">\[
-\max(\frac{|w_0 \cdot x_a + b_0|}{||w_0||} + \frac{|w_0 \cdot x_b + b_0|}{||w_0||}) \tag{2}
-\]</span></p>
-<p>  考虑到 <span class="math inline">\(w_0 \cdot x_a + b_0 = 1\)</span>和<span class="math inline">\(w_0 \cdot x_b + b_0 = -1\)</span>，代入公式，会有：</p>
-<p><span class="math display">\[
-\max(\frac{|w_0 \cdot x_a + b_0|}{||w_0||} + \frac{|w_0 \cdot x_b + b_0|}{||w_0||}) = \max(\frac{1}{||w_0||} + \frac{1}{||w_0||}) = \max(\frac{2}{||w_0||}) \tag{3}
-\]</span></p>
-<p>  于是，我么可以将SVM的求解问题改写成如下的形式：</p>
-<p><span class="math display">\[
-\begin{aligned}
-\max  \limits_{\omega_0, b_0} &amp;\quad \frac{2}{||w_0||} \\
-s.t.&amp;\quad y_i (\omega_0 \cdot x_i + b_0) \geq 1, \quad(1 \leq i \leq m)
-\end{aligned} \tag{4}
-\]</span></p>
-<p>  考虑到求解最大的 <span class="math inline">\(\frac{2}{||w_0||}\)</span>和求解最小的 <span class="math inline">\(\frac{1}{2}||w_0||^2\)</span>本质上是等价的，因此，可以将上面的式子改写如下：</p>
-<p><span class="math display">\[
-\begin{aligned}
-\min  \limits_{\omega_0, b_0} &amp;\quad \frac{1}{2}||w_0||^2 \\
-s.t.&amp;\quad y_i (\omega_0 \cdot x_i + b_0) \geq 1, \quad(1 \leq i \leq m)
-\end{aligned} \tag{5}
-\]</span></p>
-<p>  于是我们就得到了线性可分支持向量机的学习的最优化问题。</p>
-<h5 id="二学习的对偶问题">二、学习的对偶问题</h5>
-<p>  有时候原始问题并不是很好求解，那么我们可以使用拉格朗日对偶性来求解问题，通过求解原始问题的对偶问题来获取原问题的最优解。</p>
-<p>  我们首先对上面的公式(5)进行一个小小的改动，并用 <span class="math inline">\(\omega, b\)</span>替代式子中的 <span class="math inline">\(\omega_0, b_0\)</span>。如下：</p>
-<p><span class="math display">\[
-\begin{aligned}
-\min  \limits_{\omega, b} &amp;\quad \frac{1}{2}||w||^2 \\
-s.t.&amp;\quad y_i (\omega \cdot x_i + b) - 1\geq 0, \quad(1 \leq i \leq m)
-\end{aligned} \tag{6}
-\]</span></p>
-<p>  由于公式中有 <span class="math inline">\(m\)</span>个约束条件，那么我们必须要使用 <span class="math inline">\(m\)</span>个拉格朗日乘子进行约束，我们对每一个约束条件都使用一个 <span class="math inline">\(\alpha_i\)</span>参数进行约束，有 <span class="math inline">\(\alpha = (\alpha_1, \alpha_2,...,\alpha_m), \alpha_i \geq 0, 1 \leq i \leq m\)</span>。所以我们可以将拉格朗日函数定义如下：</p>
-<p><span class="math display">\[
-\begin{aligned}
-L(\omega, b, \alpha) &amp;= \frac{1}{2}||\omega||^2 - \sum_{i= 1}^{m} \alpha_i(y_i (\omega \cdot x_i + b) - 1) \\
-&amp;= \frac{1}{2}||\omega||^2 - \sum_{i= 1}^{m} (\alpha_i y_i (\omega \cdot x_i + b) - \alpha_i) \\
-&amp;= \frac{1}{2}||\omega||^2 - \sum_{i= 1}^{m} \alpha_i y_i (\omega \cdot x_i + b) + \sum_{i= 1}^{m} \alpha_i  \\
-&amp;= \frac{1}{2}||\omega||^2 - \sum_{i= 1}^{m} \alpha_i y_i \omega \cdot x_i - \sum_{i= 1}^{m} \alpha_i y_i b + \sum_{i= 1}^{m} \alpha_i \\
-&amp;= \frac{1}{2}||\omega||^2 - \omega \cdot \sum_{i= 1}^{m} \alpha_i y_i x_i - b \sum_{i= 1}^{m} \alpha_i y_i + \sum_{i= 1}^{m} \alpha_i
-\end{aligned} \tag{7}
-\]</span></p>
-<p>  根据拉格朗日对偶性，原始问题所对应的对偶问题就是和 <span class="math inline">\(L(\omega, b, \alpha)\)</span> 有关的极大极小值问题，即：</p>
-<p><span class="math display">\[
-\max \limits_{\alpha} \min \limits_{\omega, b} L(\omega, b, \alpha) \tag{8}
-\]</span></p>
-<p>  对于上面的公式，我们必须先求得 <span class="math inline">\(L(\omega, b, \alpha)\)</span>对于 <span class="math inline">\(\omega, b\)</span>的极小值，再求 <span class="math inline">\(L(\omega, b, \alpha)\)</span> 对于 <span class="math inline">\(\alpha\)</span> 的极大值。</p>
-<h6 id="求-lomega-b-alpha-对于-omega-b-的极小值">求 <span class="math inline">\(L(\omega, b, \alpha)\)</span> 对于 <span class="math inline">\(\omega, b\)</span> 的极小值</h6>
-<p>  我们对上面的 <span class="math inline">\(L(\omega, b, \alpha)\)</span> 分别求相对于 <span class="math inline">\(\omega, b\)</span> 的偏导数，如下：</p>
-<p><span class="math display">\[
-\frac{\partial}{\partial \omega} L(\omega, b, \alpha)= \omega - \sum_{i= 1}^{m} \alpha_i y_i x_i \tag{9}
-\]</span></p>
-<p><span class="math display">\[
-\frac{\partial}{\partial b} L(\omega, b, \alpha) = - \sum_{i= 1}^{m} \alpha_i y_i \tag{10}
-\]</span></p>
-<p>  分别令公式(8)，(9)的偏导数为0，于是我们有：</p>
-<p><span class="math display">\[
-\omega = \sum_{i= 1}^{m} \alpha_i y_i x_i \tag{11}
-\]</span></p>
-<p><span class="math display">\[
-\sum_{i= 1}^{m} \alpha_i y_i = 0 \tag{12}
-\]</span></p>
-<p>  将公式(11)，(12)代入公式(7)，可以得到：</p>
-<p><span class="math display">\[
-\begin{aligned}
-L(\omega, b, \alpha) &amp;= \frac{1}{2}||\omega||^2 - \omega \cdot \sum_{i= 1}^{m} \alpha_i y_i x_i - b \sum_{i= 1}^{m} \alpha_i y_i + \sum_{i= 1}^{m} \alpha_i \\
-&amp;= \frac{1}{2} \omega \cdot \omega - \omega \cdot \omega + \sum_{i= 1}^{m} \alpha_i \\
-&amp;= -\frac{1}{2} \omega \cdot \omega + \sum_{i= 1}^{m} \alpha_i \\
-&amp;= -\frac{1}{2} (\sum_{i= 1}^{m} \alpha_i y_i x_i)(\sum_{j= 1}^{m} \alpha_j y_j x_j) + \sum_{i= 1}^{m} \alpha_i \\
-&amp;= -\frac{1}{2} \sum_{i= 1}^{m}\sum_{j= 1}^{m} \alpha_i \alpha_j y_i y_j (x_i \cdot x_j) + \sum_{i= 1}^{m} \alpha_i
-\end{aligned} \tag{13}
-\]</span></p>
-<p>  所以问题就变成了求解下面式子的极大值：</p>
-<p><span class="math display">\[
-\max \limits_{\alpha} \quad -\frac{1}{2} \sum_{i= 1}^{m}\sum_{j= 1}^{m} \alpha_i \alpha_j y_i y_j (x_i \cdot x_j) + \sum_{i= 1}^{m} \alpha_i
-\]</span></p>
-<p>  反转一下正负号，就会有：</p>
-<p><span class="math display">\[
-\min \limits_{\alpha} \quad \frac{1}{2} \sum_{i= 1}^{m}\sum_{j= 1}^{m} \alpha_i \alpha_j y_i y_j (x_i \cdot x_j) - \sum_{i= 1}^{m} \alpha_i \tag{14}
-\]</span></p>
-<p>  所以原问题的对偶问题就变成了如下的形式：</p>
-<p><span class="math display">\[
-\begin{aligned}
-\min \limits_{\alpha} &amp; \quad \frac{1}{2} \sum_{i= 1}^{m}\sum_{j= 1}^{m} \alpha_i \alpha_j y_i y_j (x_i \cdot x_j) - \sum_{i= 1}^{m} \alpha_i \\
-s.t. &amp; \quad \sum_{i= 1}^{m} \alpha_i y_i = 0 \\
-&amp; \quad \alpha_i \geq 0,\quad1 \leq i \leq m
-\end{aligned} \tag{15}
-\]</span></p>
-<p>  以上就是我们需要求出的SVM原问题的对偶形式。</p>
-<h6 id="求解-omega-和-b-参数">求解 <span class="math inline">\(\omega\)</span> 和 <span class="math inline">\(b\)</span> 参数</h6>
-<p>  我们求出最后满足公式(15)所设定的条件的最优解的 <span class="math inline">\(\alpha\)</span>的数值之后，接下来就需要计算超平面的 <span class="math inline">\(\omega\)</span> 和 <span class="math inline">\(b\)</span> 参数了。根据公式(11)，再结合我们计算出的 <span class="math inline">\(\alpha\)</span>的最优解，就可以计算出超平面的 <span class="math inline">\(\omega\)</span>参数，即：</p>
-<p><span class="math display">\[
-\omega^* = \sum_{i= 1}^{m} \alpha_i y_i x_i \tag{16}
-\]</span></p>
-<p>  由于超平面方程只和某些特定的数据样本有关，和很多数据样本无关，这些无关的样本点对应的 <span class="math inline">\(\alpha\)</span> 参数为0。因此，我们可以选择某一个 <span class="math inline">\(\alpha\)</span>的大于0的分量 <span class="math inline">\(\alpha_i\)</span>，就可以求得超平面的 <span class="math inline">\(b\)</span> 参数。因为对于这类样本数据，我们可以知道它的函数间隔是1（或者-1），于是有：</p>
-<p><span class="math display">\[
-y_i (\omega^* \cdot x_i + b^*) = 1 \tag{17}
-\]</span></p>
-<p>  由上可以计算出 <span class="math inline">\(b^*\)</span> 的数值为：</p>
-<p><span class="math display">\[
-b^* = y_i - \omega^* \cdot x_i \\
-b^* = y_i -  x_i \cdot \sum_{j = 1}^{m} \alpha_j y_j x_j \tag{18}
-\]</span></p>
-<h5 id="三支持向量和决策函数">三、支持向量和决策函数</h5>
-<p>  当我们根据上面的对偶问题求解出了需要的 <span class="math inline">\(\omega^*\)</span> 和 <span class="math inline">\(b^*\)</span> 参数后，我们就可以知道该分类模型的决策函数如下：</p>
-<p><span class="math display">\[
-f(x) = sign(\omega^* \cdot x + b^*) \tag{19}
-\]</span></p>
-<p>  其中， <span class="math inline">\(sign()\)</span> 函数表示的是取数值的符号，如果数值是正数，返回1，如果数值是负数，返回-1。</p>
-<p>  在求解 <span class="math inline">\(\alpha\)</span> 参数的过程中，我们发现 <span class="math inline">\(\alpha\)</span> 的很多分量是0，这表明它在SVM中不贡献求解信息，那些 <span class="math inline">\(\alpha\)</span> 的分量不是0的样本才是提供了计算超平面的数据，因此，我们将这一类数据称为<strong>支持向量</strong>。</p>
-<p>  以上就是线性可分SVM的全部求解过程。</p>
+
+<p>&emsp;&emsp;在求解SVM之前，不妨思考一下这个超平面 $S$应该满足怎样的条件。假设超平面 $S$的方程是 $\omega \cdot x + b = 0$，这里的超平面可以完美的将我们的样本数据分开。我们设样本数据集为 $D$，一共包含 $m$个样本数据，每个样本都有一个标签 $y_i$，标签的值是1或者-1，即 $D = {(x_1, y_1),(x_2, y_2),…,(x_m, y_m)}$，其中 $y_i \in {1, -1}$。这里的1或者-1本质上是SVM结果的符号。根据SVM的定义，我们可以发现，超平面 $S$到每一个类别的样本数据的最小值是相同的，因为只有这样才可以保证SVM对没一个类别都能公平地进行分类。</p>
+<h6 id="函数间隔"><a href="#函数间隔" class="headerlink" title="函数间隔"></a>函数间隔</h6><p>&emsp;&emsp;首先，我么可以将上述地超平面 $S$方程看作一个函数 $f(x) = \omega \cdot x + b$。同时，我们引入一个新的定义，叫做函数间隔。当我们将上述的超平面方程看作是一个函数时，如果我们代入某些坐标点，这些坐标点位于超平面上，则$f(x) = 0$。如果不在超平面上，则函数 $f(x) \neq 0$。于是我们将代入某个坐标带你到函数中得到的函数值输出叫做函数间隔。</p>
+<p>&emsp;&emsp;由上面，我们发现，如果等比例地改变 $\omega, b$的值，该超平面并不会改变，但是得到的函数间隔会相应改变，这是因为在本质上，超平面的放长依赖于 $\omega, b$之间的比值关系，和具体的数值无关，而函数间隔则会依赖于其具体数值。我们不妨取其中超平面其中一侧的类别中，所有该类别的样本数据距离超平面的函数间隔都是正数，其中最小的那个正数我们记作 $a$。<strong>由于函数间隔依赖于 $\omega, b$的具体数值，那么我们总是可以动态地等比例调整 $\omega, b$的数值，让 $a = 1$</strong>。于是，我们将这样的一对 $\omega, b$记作 $\omega_0, b_0$，对应的超平面方程就是 $\omega_0 \cdot x + b_0 = 0$。</p>
+<p>&emsp;&emsp;同时，我们观察到，在函数距离为正的样本数据中，标签也可以设置为1，函数距离为负的样本数据中，标签可以被设置为-1。那么我们对所有的样本数据，都会满足下面的关系：  </p>
+<p>$$<br>y_i (\omega_0 \cdot x_i + b_0) \geq 1, \quad(1 \leq i \leq m) \tag{1}<br>$$</p>
+<p>&emsp;&emsp;之所以会大于等于1，是因为我们在之前已经等比例调整过 $\omega,b$的数值，使之满足上面的关系。但是，函数距离并不能准确地刻画超平面到最近的样本距离之和最大这一条件，所以我们就必须用一个准确的距离表示方法来计算最近距离之和。根据空间中点线之间的距离计算公式，我们取函数距离分别为1和-1的两个点，分别记作 $(x_a, y_a),(x_b, y_b)$，我们的目标就是要求这两个点距离超平面的距离之和最大，故我们有：  </p>
+<p>$$<br>\max(\frac{|w_0 \cdot x_a + b_0|}{||w_0||} + \frac{|w_0 \cdot x_b + b_0|}{||w_0||}) \tag{2}<br>$$</p>
+<p>&emsp;&emsp;考虑到 $w_0 \cdot x_a + b_0 = 1$和$w_0 \cdot x_b + b_0 = -1$，代入公式，会有：  </p>
+<p>$$<br>\max(\frac{|w_0 \cdot x_a + b_0|}{||w_0||} + \frac{|w_0 \cdot x_b + b_0|}{||w_0||}) = \max(\frac{1}{||w_0||} + \frac{1}{||w_0||}) = \max(\frac{2}{||w_0||}) \tag{3}<br>$$</p>
+<p>&emsp;&emsp;于是，我么可以将SVM的求解问题改写成如下的形式：  </p>
+<p>$$<br>\begin{aligned}<br>\max  \limits_{\omega_0, b_0} &amp;\quad \frac{2}{||w_0||} \<br>s.t.&amp;\quad y_i (\omega_0 \cdot x_i + b_0) \geq 1, \quad(1 \leq i \leq m)<br>\end{aligned} \tag{4}<br>$$</p>
+<p>&emsp;&emsp;考虑到求解最大的 $\frac{2}{||w_0||}$和求解最小的 $\frac{1}{2}||w_0||^2$本质上是等价的，因此，可以将上面的式子改写如下：  </p>
+<p>$$<br>\begin{aligned}<br>\min  \limits_{\omega_0, b_0} &amp;\quad \frac{1}{2}||w_0||^2 \<br>s.t.&amp;\quad y_i (\omega_0 \cdot x_i + b_0) \geq 1, \quad(1 \leq i \leq m)<br>\end{aligned} \tag{5}<br>$$</p>
+<p>&emsp;&emsp;于是我们就得到了线性可分支持向量机的学习的最优化问题。  </p>
+<h5 id="二、学习的对偶问题"><a href="#二、学习的对偶问题" class="headerlink" title="二、学习的对偶问题"></a>二、学习的对偶问题</h5><p>&emsp;&emsp;有时候原始问题并不是很好求解，那么我们可以使用拉格朗日对偶性来求解问题，通过求解原始问题的对偶问题来获取原问题的最优解。  </p>
+<p>&emsp;&emsp;我们首先对上面的公式(5)进行一个小小的改动，并用 $\omega, b$替代式子中的 $\omega_0, b_0$。如下：  </p>
+<p>$$<br>\begin{aligned}<br>\min  \limits_{\omega, b} &amp;\quad \frac{1}{2}||w||^2 \<br>s.t.&amp;\quad y_i (\omega \cdot x_i + b) - 1\geq 0, \quad(1 \leq i \leq m)<br>\end{aligned} \tag{6}<br>$$</p>
+<p>&emsp;&emsp;由于公式中有 $m$个约束条件，那么我们必须要使用 $m$个拉格朗日乘子进行约束，我们对每一个约束条件都使用一个 $\alpha_i$参数进行约束，有 $\alpha = (\alpha_1, \alpha_2,…,\alpha_m), \alpha_i \geq 0, 1 \leq i \leq m$。所以我们可以将拉格朗日函数定义如下：  </p>
+<p>$$<br>\begin{aligned}<br>L(\omega, b, \alpha) &amp;= \frac{1}{2}||\omega||^2 - \sum_{i= 1}^{m} \alpha_i(y_i (\omega \cdot x_i + b) - 1) \<br>&amp;= \frac{1}{2}||\omega||^2 - \sum_{i= 1}^{m} (\alpha_i y_i (\omega \cdot x_i + b) - \alpha_i) \<br>&amp;= \frac{1}{2}||\omega||^2 - \sum_{i= 1}^{m} \alpha_i y_i (\omega \cdot x_i + b) + \sum_{i= 1}^{m} \alpha_i  \<br>&amp;= \frac{1}{2}||\omega||^2 - \sum_{i= 1}^{m} \alpha_i y_i \omega \cdot x_i - \sum_{i= 1}^{m} \alpha_i y_i b + \sum_{i= 1}^{m} \alpha_i \<br>&amp;= \frac{1}{2}||\omega||^2 - \omega \cdot \sum_{i= 1}^{m} \alpha_i y_i x_i - b \sum_{i= 1}^{m} \alpha_i y_i + \sum_{i= 1}^{m} \alpha_i<br>\end{aligned} \tag{7}<br>$$</p>
+<p>&emsp;&emsp;根据拉格朗日对偶性，原始问题所对应的对偶问题就是和 $L(\omega, b, \alpha)$ 有关的极大极小值问题，即：  </p>
+<p>$$<br>\max \limits_{\alpha} \min \limits_{\omega, b} L(\omega, b, \alpha) \tag{8}<br>$$</p>
+<p>&emsp;&emsp;对于上面的公式，我们必须先求得 $L(\omega, b, \alpha)$对于 $\omega, b$的极小值，再求 $L(\omega, b, \alpha)$ 对于 $\alpha$ 的极大值。  </p>
+<h6 id="求-L-omega-b-alpha-对于-omega-b-的极小值"><a href="#求-L-omega-b-alpha-对于-omega-b-的极小值" class="headerlink" title="求 $L(\omega, b, \alpha)$ 对于 $\omega, b$ 的极小值"></a>求 $L(\omega, b, \alpha)$ 对于 $\omega, b$ 的极小值</h6><p>&emsp;&emsp;我们对上面的 $L(\omega, b, \alpha)$ 分别求相对于 $\omega, b$ 的偏导数，如下：  </p>
+<p>$$<br>\frac{\partial}{\partial \omega} L(\omega, b, \alpha)= \omega - \sum_{i= 1}^{m} \alpha_i y_i x_i \tag{9}<br>$$</p>
+<p>$$<br>\frac{\partial}{\partial b} L(\omega, b, \alpha) = - \sum_{i= 1}^{m} \alpha_i y_i \tag{10}<br>$$</p>
+<p>&emsp;&emsp;分别令公式(8)，(9)的偏导数为0，于是我们有：  </p>
+<p>$$<br>\omega = \sum_{i= 1}^{m} \alpha_i y_i x_i \tag{11}<br>$$</p>
+<p>$$<br>\sum_{i= 1}^{m} \alpha_i y_i = 0 \tag{12}<br>$$</p>
+<p>&emsp;&emsp;将公式(11)，(12)代入公式(7)，可以得到：  </p>
+<p>$$<br>\begin{aligned}<br>L(\omega, b, \alpha) &amp;= \frac{1}{2}||\omega||^2 - \omega \cdot \sum_{i= 1}^{m} \alpha_i y_i x_i - b \sum_{i= 1}^{m} \alpha_i y_i + \sum_{i= 1}^{m} \alpha_i \<br>&amp;= \frac{1}{2} \omega \cdot \omega - \omega \cdot \omega + \sum_{i= 1}^{m} \alpha_i \<br>&amp;= -\frac{1}{2} \omega \cdot \omega + \sum_{i= 1}^{m} \alpha_i \<br>&amp;= -\frac{1}{2} (\sum_{i= 1}^{m} \alpha_i y_i x_i)(\sum_{j= 1}^{m} \alpha_j y_j x_j) + \sum_{i= 1}^{m} \alpha_i \<br>&amp;= -\frac{1}{2} \sum_{i= 1}^{m}\sum_{j= 1}^{m} \alpha_i \alpha_j y_i y_j (x_i \cdot x_j) + \sum_{i= 1}^{m} \alpha_i<br>\end{aligned} \tag{13}<br>$$</p>
+<p>&emsp;&emsp;所以问题就变成了求解下面式子的极大值：  </p>
+<p>$$<br>\max \limits_{\alpha} \quad -\frac{1}{2} \sum_{i= 1}^{m}\sum_{j= 1}^{m} \alpha_i \alpha_j y_i y_j (x_i \cdot x_j) + \sum_{i= 1}^{m} \alpha_i<br>$$</p>
+<p>&emsp;&emsp;反转一下正负号，就会有：  </p>
+<p>$$<br>\min \limits_{\alpha} \quad \frac{1}{2} \sum_{i= 1}^{m}\sum_{j= 1}^{m} \alpha_i \alpha_j y_i y_j (x_i \cdot x_j) - \sum_{i= 1}^{m} \alpha_i \tag{14}<br>$$</p>
+<p>&emsp;&emsp;所以原问题的对偶问题就变成了如下的形式：  </p>
+<p>$$<br>\begin{aligned}<br>\min \limits_{\alpha} &amp; \quad \frac{1}{2} \sum_{i= 1}^{m}\sum_{j= 1}^{m} \alpha_i \alpha_j y_i y_j (x_i \cdot x_j) - \sum_{i= 1}^{m} \alpha_i \<br>s.t. &amp; \quad \sum_{i= 1}^{m} \alpha_i y_i = 0 \<br>&amp; \quad \alpha_i \geq 0,\quad1 \leq i \leq m<br>\end{aligned} \tag{15}<br>$$</p>
+<p>&emsp;&emsp;以上就是我们需要求出的SVM原问题的对偶形式。  </p>
+<h6 id="求解-omega-和-b-参数"><a href="#求解-omega-和-b-参数" class="headerlink" title="求解 $\omega$ 和 $b$ 参数"></a>求解 $\omega$ 和 $b$ 参数</h6><p>&emsp;&emsp;我们求出最后满足公式(15)所设定的条件的最优解的 $\alpha$的数值之后，接下来就需要计算超平面的 $\omega$ 和 $b$ 参数了。根据公式(11)，再结合我们计算出的 $\alpha$的最优解，就可以计算出超平面的 $\omega$参数，即：  </p>
+<p>$$<br>\omega^* = \sum_{i= 1}^{m} \alpha_i y_i x_i \tag{16}<br>$$</p>
+<p>&emsp;&emsp;由于超平面方程只和某些特定的数据样本有关，和很多数据样本无关，这些无关的样本点对应的 $\alpha$ 参数为0。因此，我们可以选择某一个 $\alpha$的大于0的分量 $\alpha_i$，就可以求得超平面的 $b$ 参数。因为对于这类样本数据，我们可以知道它的函数间隔是1（或者-1），于是有：  </p>
+<p>$$<br>y_i (\omega^* \cdot x_i + b^*) = 1 \tag{17}<br>$$</p>
+<p>&emsp;&emsp;由上可以计算出 $b^*$ 的数值为：  </p>
+<p>$$<br>b^* = y_i - \omega^* \cdot x_i \<br>b^* = y_i -  x_i \cdot \sum_{j = 1}^{m} \alpha_j y_j x_j \tag{18}<br>$$</p>
+<h5 id="三、支持向量和决策函数"><a href="#三、支持向量和决策函数" class="headerlink" title="三、支持向量和决策函数"></a>三、支持向量和决策函数</h5><p>&emsp;&emsp;当我们根据上面的对偶问题求解出了需要的 $\omega^<em>$ 和 $b^</em>$ 参数后，我们就可以知道该分类模型的决策函数如下：  </p>
+<p>$$<br>f(x) = sign(\omega^* \cdot x + b^*) \tag{19}<br>$$</p>
+<p>&emsp;&emsp;其中， $sign()$ 函数表示的是取数值的符号，如果数值是正数，返回1，如果数值是负数，返回-1。  </p>
+<p>&emsp;&emsp;在求解 $\alpha$ 参数的过程中，我们发现 $\alpha$ 的很多分量是0，这表明它在SVM中不贡献求解信息，那些 $\alpha$ 的分量不是0的样本才是提供了计算超平面的数据，因此，我们将这一类数据称为<strong>支持向量</strong>。  </p>
+<p>&emsp;&emsp;以上就是线性可分SVM的全部求解过程。  </p>
 
         </div>
         
             <ul class="post-copyright">
             <li><strong>本文标题：</strong><a href="http://huaxuan0720.github.io/2019/06/15/Note21-SVM-Hard-Margin/">线性可分支持向量机</a></li>
-            <li><strong>本文作者：</strong><a href="http://huaxuan0720.github.io">华轩</a></li>
+            <li><strong>本文作者：</strong><a href="http://huaxuan0720.github.io">Da Vinci</a></li>
             <li><strong>本文链接：</strong><a href="http://huaxuan0720.github.io/2019/06/15/Note21-SVM-Hard-Margin/">http://huaxuan0720.github.io/2019/06/15/Note21-SVM-Hard-Margin/</a></li>
             <li><strong>发布时间：</strong>2019-06-15</li>
             <li><strong>版权声明：</strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
@@ -346,7 +275,7 @@ f(x) = sign(\omega^* \cdot x + b^*) \tag{19}
 
 <div class="card">
     <div class="card-content">
-        <h3 class="menu-label has-text-centered">Suka dengan artikel ini? Bantu penulis dengan donasi melalui</h3>
+        <h3 class="menu-label has-text-centered">Like this article? Support the author with</h3>
         <div class="buttons is-centered">
             
                 
@@ -400,7 +329,7 @@ f(x) = sign(\omega^* \cdot x + b^*) \tag{19}
 
 <div class="card">
     <div class="card-content">
-        <h3 class="title is-5 has-text-weight-normal">Commentaires</h3>
+        <h3 class="title is-5 has-text-weight-normal">Comentarios</h3>
         
 <div id="valine-thread" class="content"></div>
 <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
@@ -459,7 +388,7 @@ f(x) = sign(\omega^* \cdot x + b^*) \tag{19}
             <div class="level-item has-text-centered is-marginless">
                 <a href="/archives/">
                     <p class="heading">
-                        Articles
+                        Entradas
                     </p>
                     <p class="title has-text-weight-normal">
                         25
@@ -469,7 +398,7 @@ f(x) = sign(\omega^* \cdot x + b^*) \tag{19}
             <div class="level-item has-text-centered is-marginless">
                 <a href="/categories/">
                     <p class="heading">
-                        Catégories
+                        Categorias
                     </p>
                     <p class="title has-text-weight-normal">
                         3
@@ -479,7 +408,7 @@ f(x) = sign(\omega^* \cdot x + b^*) \tag{19}
             <div class="level-item has-text-centered is-marginless">
                 <a href="/tags/">
                     <p class="heading">
-                        Tags
+                        Etiquetas
                     </p>
                     <p class="title has-text-weight-normal">
                         21
@@ -489,7 +418,7 @@ f(x) = sign(\omega^* \cdot x + b^*) \tag{19}
         </nav>
         <div class="level">
             <a class="level-item button is-link is-rounded" href="https://github.com/huaxuan0720" target="_blank">
-                <i class="fab fa-github"></i>&nbsp;&nbsp;SUIVRE</a>
+                <i class="fab fa-github"></i>&nbsp;&nbsp;SEGUIR</a>
         </div>
         
         
@@ -530,10 +459,10 @@ f(x) = sign(\omega^* \cdot x + b^*) \tag{19}
     <div class="card-content">
         <div class="menu">
             <h3 class="menu-label">
-                Catalogue
+                Catálogo
             </h3>
             <ul class="menu-list"><li>
-        <a class="is-flex" href="#一支持向量机">
+        <a class="is-flex" href="#一、支持向量机">
         <span class="has-mr-6">1</span>
         <span>一、支持向量机</span>
         </a><ul class="menu-list"><li>
@@ -541,19 +470,19 @@ f(x) = sign(\omega^* \cdot x + b^*) \tag{19}
         <span class="has-mr-6">1.1</span>
         <span>函数间隔</span>
         </a></li></ul></li><li>
-        <a class="is-flex" href="#二学习的对偶问题">
+        <a class="is-flex" href="#二、学习的对偶问题">
         <span class="has-mr-6">2</span>
         <span>二、学习的对偶问题</span>
         </a><ul class="menu-list"><li>
-        <a class="is-flex" href="#求-lomega-b-alpha-对于-omega-b-的极小值">
+        <a class="is-flex" href="#求-L-omega-b-alpha-对于-omega-b-的极小值">
         <span class="has-mr-6">2.1</span>
-        <span>求 \(L(\omega, b, \alpha)\) 对于 \(\omega, b\) 的极小值</span>
+        <span>求 $L(\omega, b, \alpha)$ 对于 $\omega, b$ 的极小值</span>
         </a></li><li>
         <a class="is-flex" href="#求解-omega-和-b-参数">
         <span class="has-mr-6">2.2</span>
-        <span>求解 \(\omega\) 和 \(b\) 参数</span>
+        <span>求解 $\omega$ 和 $b$ 参数</span>
         </a></li></ul></li><li>
-        <a class="is-flex" href="#三支持向量和决策函数">
+        <a class="is-flex" href="#三、支持向量和决策函数">
         <span class="has-mr-6">3</span>
         <span>三、支持向量和决策函数</span>
         </a></li></ul>
@@ -584,7 +513,7 @@ f(x) = sign(\omega^* \cdot x + b^*) \tag{19}
                 
                 </a>
                 <p class="is-size-7">
-                &copy; 2019 华轩&nbsp;
+                &copy; 2019 Da Vinci&nbsp;
                 Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> & <a href="http://github.com/ppoffice/hexo-theme-icarus" target="_blank">Icarus</a>
                 
                 <br>
@@ -690,7 +619,7 @@ document.addEventListener('DOMContentLoaded', function () {
     
     
 
-<a id="back-to-top" title="Kembali ke atas" href="javascript:;">
+<a id="back-to-top" title="Back to Top" href="javascript:;">
     <i class="fas fa-chevron-up"></i>
 </a>
 <script src="/js/back-to-top.js" defer></script>
@@ -738,10 +667,10 @@ document.addEventListener('DOMContentLoaded', function () {
     (function (window) {
         var INSIGHT_CONFIG = {
             TRANSLATION: {
-                POSTS: 'Articles',
+                POSTS: 'Entradas',
                 PAGES: 'Pages',
-                CATEGORIES: 'Catégories',
-                TAGS: 'Tags',
+                CATEGORIES: 'Categorias',
+                TAGS: 'Etiquetas',
                 UNTITLED: '(Untitled)',
             },
             CONTENT_URL: '/content.json',

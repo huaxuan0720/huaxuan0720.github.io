@@ -7,19 +7,19 @@
 
 
 
-    <meta name="description" content="前言   在之前都是在讨论SVM，即支持向量机在分类中的使用，但是有很多的问题是回归问题，给出的标签值是一个连续值，能不能使用SVM或者其他的关于SVM的技术来处理分类问题呢，实际上是可以的，这个就是使用支持向量回归模型（Support Vector Regression， SVR）。">
+    <meta name="description" content="前言&amp;emsp;&amp;emsp;在之前都是在讨论SVM，即支持向量机在分类中的使用，但是有很多的问题是回归问题，给出的标签值是一个连续值，能不能使用SVM或者其他的关于SVM的技术来处理分类问题呢，实际上是可以的，这个就是使用支持向量回归模型（Support Vector Regression， SVR）。">
 <meta name="keywords" content="支持向量回归,SVR,Support Vector Regression">
 <meta property="og:type" content="article">
 <meta property="og:title" content="支持向量回归SVR">
 <meta property="og:url" content="http://huaxuan0720.github.io/2019/06/15/Note24-SVR/index.html">
 <meta property="og:site_name" content="Welcome to My Blogs">
-<meta property="og:description" content="前言   在之前都是在讨论SVM，即支持向量机在分类中的使用，但是有很多的问题是回归问题，给出的标签值是一个连续值，能不能使用SVM或者其他的关于SVM的技术来处理分类问题呢，实际上是可以的，这个就是使用支持向量回归模型（Support Vector Regression， SVR）。">
+<meta property="og:description" content="前言&amp;emsp;&amp;emsp;在之前都是在讨论SVM，即支持向量机在分类中的使用，但是有很多的问题是回归问题，给出的标签值是一个连续值，能不能使用SVM或者其他的关于SVM的技术来处理分类问题呢，实际上是可以的，这个就是使用支持向量回归模型（Support Vector Regression， SVR）。">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://huaxuan0720.github.io/gallery/MachineLearning.jpg">
 <meta property="og:updated_time" content="2019-06-25T12:34:31.513Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="支持向量回归SVR">
-<meta name="twitter:description" content="前言   在之前都是在讨论SVM，即支持向量机在分类中的使用，但是有很多的问题是回归问题，给出的标签值是一个连续值，能不能使用SVM或者其他的关于SVM的技术来处理分类问题呢，实际上是可以的，这个就是使用支持向量回归模型（Support Vector Regression， SVR）。">
+<meta name="twitter:description" content="前言&amp;emsp;&amp;emsp;在之前都是在讨论SVM，即支持向量机在分类中的使用，但是有很多的问题是回归问题，给出的标签值是一个连续值，能不能使用SVM或者其他的关于SVM的技术来处理分类问题呢，实际上是可以的，这个就是使用支持向量回归模型（Support Vector Regression， SVR）。">
 <meta name="twitter:image" content="http://huaxuan0720.github.io/gallery/MachineLearning.jpg">
 
 
@@ -130,7 +130,7 @@
                     
                 
                 
-                <a class="navbar-item is-hidden-tablet catalogue" title="Catalogue" href="javascript:;">
+                <a class="navbar-item is-hidden-tablet catalogue" title="Catálogo" href="javascript:;">
                     <i class="fas fa-list-ul"></i>
                 </a>
                 
@@ -192,17 +192,16 @@
         </div>
         
         <div class="content">
-            <h5 id="前言">前言</h5>
-<p>  在之前都是在讨论SVM，即支持向量机在分类中的使用，但是有很多的问题是回归问题，给出的标签值是一个连续值，能不能使用SVM或者其他的关于SVM的技术来处理分类问题呢，实际上是可以的，这个就是使用支持向量回归模型（Support Vector Regression， SVR）。</p>
+            <h5 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h5><p>&emsp;&emsp;在之前都是在讨论SVM，即支持向量机在分类中的使用，但是有很多的问题是回归问题，给出的标签值是一个连续值，能不能使用SVM或者其他的关于SVM的技术来处理分类问题呢，实际上是可以的，这个就是使用支持向量回归模型（Support Vector Regression， SVR）。</p>
 <a id="more"></a>
-<h5 id="一svr的模型定义">一、SVR的模型定义</h5>
-<p>  在很多情况下，回归问题采用的损失函数是</p>
+
+<h5 id="一、SVR的模型定义"><a href="#一、SVR的模型定义" class="headerlink" title="一、SVR的模型定义"></a>一、SVR的模型定义</h5><p>&emsp;&emsp;在很多情况下，回归问题采用的损失函数是</p>
 
         </div>
         
             <ul class="post-copyright">
             <li><strong>本文标题：</strong><a href="http://huaxuan0720.github.io/2019/06/15/Note24-SVR/">支持向量回归SVR</a></li>
-            <li><strong>本文作者：</strong><a href="http://huaxuan0720.github.io">华轩</a></li>
+            <li><strong>本文作者：</strong><a href="http://huaxuan0720.github.io">Da Vinci</a></li>
             <li><strong>本文链接：</strong><a href="http://huaxuan0720.github.io/2019/06/15/Note24-SVR/">http://huaxuan0720.github.io/2019/06/15/Note24-SVR/</a></li>
             <li><strong>发布时间：</strong>2019-06-15</li>
             <li><strong>版权声明：</strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
@@ -229,7 +228,7 @@
 
 <div class="card">
     <div class="card-content">
-        <h3 class="menu-label has-text-centered">Suka dengan artikel ini? Bantu penulis dengan donasi melalui</h3>
+        <h3 class="menu-label has-text-centered">Like this article? Support the author with</h3>
         <div class="buttons is-centered">
             
                 
@@ -283,7 +282,7 @@
 
 <div class="card">
     <div class="card-content">
-        <h3 class="title is-5 has-text-weight-normal">Commentaires</h3>
+        <h3 class="title is-5 has-text-weight-normal">Comentarios</h3>
         
 <div id="valine-thread" class="content"></div>
 <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
@@ -342,7 +341,7 @@
             <div class="level-item has-text-centered is-marginless">
                 <a href="/archives/">
                     <p class="heading">
-                        Articles
+                        Entradas
                     </p>
                     <p class="title has-text-weight-normal">
                         25
@@ -352,7 +351,7 @@
             <div class="level-item has-text-centered is-marginless">
                 <a href="/categories/">
                     <p class="heading">
-                        Catégories
+                        Categorias
                     </p>
                     <p class="title has-text-weight-normal">
                         3
@@ -362,7 +361,7 @@
             <div class="level-item has-text-centered is-marginless">
                 <a href="/tags/">
                     <p class="heading">
-                        Tags
+                        Etiquetas
                     </p>
                     <p class="title has-text-weight-normal">
                         21
@@ -372,7 +371,7 @@
         </nav>
         <div class="level">
             <a class="level-item button is-link is-rounded" href="https://github.com/huaxuan0720" target="_blank">
-                <i class="fab fa-github"></i>&nbsp;&nbsp;SUIVRE</a>
+                <i class="fab fa-github"></i>&nbsp;&nbsp;SEGUIR</a>
         </div>
         
         
@@ -413,14 +412,14 @@
     <div class="card-content">
         <div class="menu">
             <h3 class="menu-label">
-                Catalogue
+                Catálogo
             </h3>
             <ul class="menu-list"><li>
         <a class="is-flex" href="#前言">
         <span class="has-mr-6">1</span>
         <span>前言</span>
         </a></li><li>
-        <a class="is-flex" href="#一svr的模型定义">
+        <a class="is-flex" href="#一、SVR的模型定义">
         <span class="has-mr-6">2</span>
         <span>一、SVR的模型定义</span>
         </a></li></ul>
@@ -451,7 +450,7 @@
                 
                 </a>
                 <p class="is-size-7">
-                &copy; 2019 华轩&nbsp;
+                &copy; 2019 Da Vinci&nbsp;
                 Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> & <a href="http://github.com/ppoffice/hexo-theme-icarus" target="_blank">Icarus</a>
                 
                 <br>
@@ -557,7 +556,7 @@ document.addEventListener('DOMContentLoaded', function () {
     
     
 
-<a id="back-to-top" title="Kembali ke atas" href="javascript:;">
+<a id="back-to-top" title="Back to Top" href="javascript:;">
     <i class="fas fa-chevron-up"></i>
 </a>
 <script src="/js/back-to-top.js" defer></script>
@@ -605,10 +604,10 @@ document.addEventListener('DOMContentLoaded', function () {
     (function (window) {
         var INSIGHT_CONFIG = {
             TRANSLATION: {
-                POSTS: 'Articles',
+                POSTS: 'Entradas',
                 PAGES: 'Pages',
-                CATEGORIES: 'Catégories',
-                TAGS: 'Tags',
+                CATEGORIES: 'Categorias',
+                TAGS: 'Etiquetas',
                 UNTITLED: '(Untitled)',
             },
             CONTENT_URL: '/content.json',
