@@ -2,24 +2,24 @@
 <html>
 <head><meta name="generator" content="Hexo 3.8.0">
     <meta charset="utf-8">
-<title>YOLOv3：test_single_image.py - Welcome to My Blogs</title>
+<title>YOLOv3源码阅读：layer_utils.py - Welcome to My Blogs</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
 
 
-    <meta name="description" content="一、YOLO简介   YOLO（You Only Look Once）是一个高效的目标检测算法，属于One-Stage大家族，   本文参考的源码地址为：https://github.com/wizyoung/YOLOv3_TensorFlow">
+    <meta name="description" content="一、YOLO简介   YOLO（You Only Look Once）是一个高效的目标检测算法，属于One-Stage大家族，针对于Two-Stage目标检测算法普遍存在的运算速度慢的缺点，YOLO创造性的提出了One-Stage。也就是将物体分类和物体定位在一个步骤中完成。YOLO直接在输出层回归bounding box的位置和bounding box所属类别，从而实现one-stage。">
 <meta name="keywords" content="深度学习,目标检测,YOLOv3">
 <meta property="og:type" content="article">
-<meta property="og:title" content="YOLOv3：test_single_image.py">
+<meta property="og:title" content="YOLOv3源码阅读：layer_utils.py">
 <meta property="og:url" content="http://huaxuan0720.github.io/2019/05/22/Note12-YOLOv3-part04/index.html">
 <meta property="og:site_name" content="Welcome to My Blogs">
-<meta property="og:description" content="一、YOLO简介   YOLO（You Only Look Once）是一个高效的目标检测算法，属于One-Stage大家族，   本文参考的源码地址为：https://github.com/wizyoung/YOLOv3_TensorFlow">
+<meta property="og:description" content="一、YOLO简介   YOLO（You Only Look Once）是一个高效的目标检测算法，属于One-Stage大家族，针对于Two-Stage目标检测算法普遍存在的运算速度慢的缺点，YOLO创造性的提出了One-Stage。也就是将物体分类和物体定位在一个步骤中完成。YOLO直接在输出层回归bounding box的位置和bounding box所属类别，从而实现one-stage。">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://huaxuan0720.github.io/gallery/DeepLearning.jpg">
-<meta property="og:updated_time" content="2019-05-22T09:00:36.369Z">
+<meta property="og:updated_time" content="2019-09-03T05:26:12.581Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="YOLOv3：test_single_image.py">
-<meta name="twitter:description" content="一、YOLO简介   YOLO（You Only Look Once）是一个高效的目标检测算法，属于One-Stage大家族，   本文参考的源码地址为：https://github.com/wizyoung/YOLOv3_TensorFlow">
+<meta name="twitter:title" content="YOLOv3源码阅读：layer_utils.py">
+<meta name="twitter:description" content="一、YOLO简介   YOLO（You Only Look Once）是一个高效的目标检测算法，属于One-Stage大家族，针对于Two-Stage目标检测算法普遍存在的运算速度慢的缺点，YOLO创造性的提出了One-Stage。也就是将物体分类和物体定位在一个步骤中完成。YOLO直接在输出层回归bounding box的位置和bounding box所属类别，从而实现one-stage。">
 <meta name="twitter:image" content="http://huaxuan0720.github.io/gallery/DeepLearning.jpg">
 
 
@@ -98,7 +98,7 @@
         <div class="navbar-brand is-flex-center">
             <a class="navbar-item navbar-logo" href="/">
             
-                <img src="/images/favicon.svg" alt="YOLOv3：test_single_image.py" height="28">
+                <img src="/images/favicon.svg" alt="YOLOv3源码阅读：layer_utils.py" height="28">
             
             </a>
         </div>
@@ -151,14 +151,14 @@
     
     <div class="card-image">
         <span class="image is-7by1">
-            <img class="thumbnail" src="/gallery/DeepLearning.jpg" alt="YOLOv3：test_single_image.py">
+            <img class="thumbnail" src="/gallery/DeepLearning.jpg" alt="YOLOv3源码阅读：layer_utils.py">
         </span>
     </div>
     
     <div class="card-content article ">
         <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
             
-                <i class="fas fa-angle-double-right"></i>YOLOv3：test_single_image.py
+                <i class="fas fa-angle-double-right"></i>YOLOv3源码阅读：layer_utils.py
             
         </h1>
         
@@ -166,7 +166,7 @@
             <div class="level-left">
                 <time class="level-item has-text-grey" datetime="2019-05-22T08:55:42.000Z"><i class="far fa-calendar-alt">&nbsp;</i>2019-05-22</time>
                 
-                <time class="level-item has-text-grey is-hidden-mobile" datetime="2019-05-22T09:00:36.369Z"><i class="far fa-calendar-check">&nbsp;</i>2019-05-22</time>
+                <time class="level-item has-text-grey is-hidden-mobile" datetime="2019-09-03T05:26:12.581Z"><i class="far fa-calendar-check">&nbsp;</i>2019-09-03</time>
                 
                 
                 <div class="level-item">
@@ -179,7 +179,7 @@
                     <i class="far fa-clock"></i>&nbsp;
                     
                     
-                    a few seconds read (About 62 words)
+                    5 minutes read (About 783 words)
                 </span>
                 
                 
@@ -193,16 +193,26 @@
         
         <div class="content">
             <h5 id="一yolo简介">一、YOLO简介</h5>
-<p>  YOLO（You Only Look Once）是一个高效的目标检测算法，属于One-Stage大家族，</p>
-<p>  本文参考的源码地址为：<a href="https://github.com/wizyoung/YOLOv3_TensorFlow" class="uri" target="_blank" rel="noopener">https://github.com/wizyoung/YOLOv3_TensorFlow</a></p>
+<p>  YOLO（You Only Look Once）是一个高效的目标检测算法，属于One-Stage大家族，针对于Two-Stage目标检测算法普遍存在的运算速度慢的缺点，YOLO创造性的提出了One-Stage。也就是将物体分类和物体定位在一个步骤中完成。YOLO直接在输出层回归bounding box的位置和bounding box所属类别，从而实现one-stage。</p>
+<p>  经过两次迭代，YOLO目前的最新版本为<a href="https://pjreddie.com/media/files/papers/YOLOv3.pdf" target="_blank" rel="noopener">YOLOv3</a>，在前两版的基础上，YOLOv3进行了一些比较细节的改动，效果有所提升。</p>
+<p>  本文正是希望可以将源码加以注释，方便自己学习，同时也愿意分享出来和大家一起学习。由于本人还是一学生，如果有错还请大家不吝指出。</p>
 <a id="more"></a>
-<h2 id="二代码和注释">##### 二、代码和注释</h2>
-<p>title: Article12YOLOv3-part04 date: tags: ---</p>
+<p>  本文参考的源码地址为：<a href="https://github.com/wizyoung/YOLOv3_TensorFlow" class="uri" target="_blank" rel="noopener">https://github.com/wizyoung/YOLOv3_TensorFlow</a></p>
+<h5 id="二代码和注释">二、代码和注释</h5>
+<p>  文件目录：YOUR_PATH\YOLOv3_TensorFlow-master_utils.py</p>
+<p>  这里函数的主要作用是对卷积等操作做出一定的个性化封装，方便代码的编写。主要包括：</p>
+<ul>
+<li>卷积的封装</li>
+<li>darknet网络结构的定义</li>
+<li>resize的定义，默认是最近邻方法</li>
+<li>在主体网络的基础上做的YOLO的附加的卷积操作，为后面的特征融合做准备</li>
+</ul>
+<figure class="highlight python hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># coding: utf-8</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">from</span> __future__ <span class="hljs-keyword">import</span> division, print_function</span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np</span><br><span class="line"><span class="hljs-keyword">import</span> tensorflow <span class="hljs-keyword">as</span> tf</span><br><span class="line"></span><br><span class="line">slim = tf.contrib.slim</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">conv2d</span><span class="hljs-params">(inputs, filters, kernel_size, strides=<span class="hljs-number">1</span>)</span>:</span></span><br><span class="line">    <span class="hljs-comment"># 对conv2d做一定的个性化封装，方便代码的编写和阅读</span></span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">_fixed_padding</span><span class="hljs-params">(inputs, kernel_size)</span>:</span></span><br><span class="line">        pad_total = kernel_size - <span class="hljs-number">1</span></span><br><span class="line">        pad_beg = pad_total // <span class="hljs-number">2</span></span><br><span class="line">        pad_end = pad_total - pad_beg</span><br><span class="line"></span><br><span class="line">        padded_inputs = tf.pad(inputs, [[<span class="hljs-number">0</span>, <span class="hljs-number">0</span>], [pad_beg, pad_end],</span><br><span class="line">                                        [pad_beg, pad_end], [<span class="hljs-number">0</span>, <span class="hljs-number">0</span>]], mode=<span class="hljs-string">'CONSTANT'</span>)</span><br><span class="line">        <span class="hljs-keyword">return</span> padded_inputs</span><br><span class="line"></span><br><span class="line">    <span class="hljs-keyword">if</span> strides &gt; <span class="hljs-number">1</span>:</span><br><span class="line">        inputs = _fixed_padding(inputs, kernel_size)</span><br><span class="line">    inputs = slim.conv2d(inputs, filters, kernel_size, stride=strides,</span><br><span class="line">                         padding=(<span class="hljs-string">'SAME'</span> <span class="hljs-keyword">if</span> strides == <span class="hljs-number">1</span> <span class="hljs-keyword">else</span> <span class="hljs-string">'VALID'</span>))</span><br><span class="line">    <span class="hljs-keyword">return</span> inputs</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">darknet53_body</span><span class="hljs-params">(inputs)</span>:</span></span><br><span class="line">    <span class="hljs-string">"""</span></span><br><span class="line"><span class="hljs-string">    darknet的主体网络框架</span></span><br><span class="line"><span class="hljs-string">    :param inputs: </span></span><br><span class="line"><span class="hljs-string">    :return: 三张不同尺度的特征图</span></span><br><span class="line"><span class="hljs-string">    """</span></span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">res_block</span><span class="hljs-params">(inputs, filters)</span>:</span></span><br><span class="line">        shortcut = inputs</span><br><span class="line">        net = conv2d(inputs, filters * <span class="hljs-number">1</span>, <span class="hljs-number">1</span>)</span><br><span class="line">        net = conv2d(net, filters * <span class="hljs-number">2</span>, <span class="hljs-number">3</span>)</span><br><span class="line"></span><br><span class="line">        net = net + shortcut</span><br><span class="line"></span><br><span class="line">        <span class="hljs-keyword">return</span> net</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment"># first two conv2d layers</span></span><br><span class="line">    net = conv2d(inputs, <span class="hljs-number">32</span>, <span class="hljs-number">3</span>, strides=<span class="hljs-number">1</span>)</span><br><span class="line">    net = conv2d(net, <span class="hljs-number">64</span>, <span class="hljs-number">3</span>, strides=<span class="hljs-number">2</span>)</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment"># res_block * 1</span></span><br><span class="line">    net = res_block(net, <span class="hljs-number">32</span>)</span><br><span class="line"></span><br><span class="line">    net = conv2d(net, <span class="hljs-number">128</span>, <span class="hljs-number">3</span>, strides=<span class="hljs-number">2</span>)</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment"># res_block * 2</span></span><br><span class="line">    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(<span class="hljs-number">2</span>):</span><br><span class="line">        net = res_block(net, <span class="hljs-number">64</span>)</span><br><span class="line"></span><br><span class="line">    net = conv2d(net, <span class="hljs-number">256</span>, <span class="hljs-number">3</span>, strides=<span class="hljs-number">2</span>)</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment"># res_block * 8</span></span><br><span class="line">    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(<span class="hljs-number">8</span>):</span><br><span class="line">        net = res_block(net, <span class="hljs-number">128</span>)</span><br><span class="line"></span><br><span class="line">    route_1 = net</span><br><span class="line">    net = conv2d(net, <span class="hljs-number">512</span>, <span class="hljs-number">3</span>, strides=<span class="hljs-number">2</span>)</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment"># res_block * 8</span></span><br><span class="line">    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(<span class="hljs-number">8</span>):</span><br><span class="line">        net = res_block(net, <span class="hljs-number">256</span>)</span><br><span class="line"></span><br><span class="line">    route_2 = net</span><br><span class="line">    net = conv2d(net, <span class="hljs-number">1024</span>, <span class="hljs-number">3</span>, strides=<span class="hljs-number">2</span>)</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment"># res_block * 4</span></span><br><span class="line">    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(<span class="hljs-number">4</span>):</span><br><span class="line">        net = res_block(net, <span class="hljs-number">512</span>)</span><br><span class="line">    route_3 = net</span><br><span class="line"></span><br><span class="line">    <span class="hljs-keyword">return</span> route_1, route_2, route_3</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">yolo_block</span><span class="hljs-params">(inputs, filters)</span>:</span></span><br><span class="line">    <span class="hljs-string">"""</span></span><br><span class="line"><span class="hljs-string">    在darknet主体网络提取特征的基础上增加的若干卷积层，为了后面的特征融合做准备</span></span><br><span class="line"><span class="hljs-string">    :param inputs: </span></span><br><span class="line"><span class="hljs-string">    :param filters: </span></span><br><span class="line"><span class="hljs-string">    :return: </span></span><br><span class="line"><span class="hljs-string">    """</span></span><br><span class="line">    net = conv2d(inputs, filters * <span class="hljs-number">1</span>, <span class="hljs-number">1</span>)</span><br><span class="line">    net = conv2d(net, filters * <span class="hljs-number">2</span>, <span class="hljs-number">3</span>)</span><br><span class="line">    net = conv2d(net, filters * <span class="hljs-number">1</span>, <span class="hljs-number">1</span>)</span><br><span class="line">    net = conv2d(net, filters * <span class="hljs-number">2</span>, <span class="hljs-number">3</span>)</span><br><span class="line">    net = conv2d(net, filters * <span class="hljs-number">1</span>, <span class="hljs-number">1</span>)</span><br><span class="line">    route = net</span><br><span class="line">    net = conv2d(net, filters * <span class="hljs-number">2</span>, <span class="hljs-number">3</span>)</span><br><span class="line">    <span class="hljs-keyword">return</span> route, net</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">upsample_layer</span><span class="hljs-params">(inputs, out_shape)</span>:</span></span><br><span class="line">    <span class="hljs-string">"""</span></span><br><span class="line"><span class="hljs-string">    这一部分主要是对特征图进行resize，默认使用最近邻方法</span></span><br><span class="line"><span class="hljs-string">    :param inputs: </span></span><br><span class="line"><span class="hljs-string">    :param out_shape: </span></span><br><span class="line"><span class="hljs-string">    :return: </span></span><br><span class="line"><span class="hljs-string">    """</span></span><br><span class="line">    new_height, new_width = out_shape[<span class="hljs-number">1</span>], out_shape[<span class="hljs-number">2</span>]</span><br><span class="line">    <span class="hljs-comment"># <span class="hljs-doctag">NOTE:</span> here height is the first</span></span><br><span class="line">    <span class="hljs-comment"># <span class="hljs-doctag">TODO:</span> Do we need to set `align_corners` as True?</span></span><br><span class="line">    inputs = tf.image.resize_nearest_neighbor(inputs, (new_height, new_width), name=<span class="hljs-string">'upsampled'</span>)</span><br><span class="line">    <span class="hljs-keyword">return</span> inputs</span><br></pre></td></tr></table></figure>
 
         </div>
         
             <ul class="post-copyright">
-            <li><strong>本文标题：</strong><a href="http://huaxuan0720.github.io/2019/05/22/Note12-YOLOv3-part04/">YOLOv3：test_single_image.py</a></li>
+            <li><strong>本文标题：</strong><a href="http://huaxuan0720.github.io/2019/05/22/Note12-YOLOv3-part04/">YOLOv3源码阅读：layer_utils.py</a></li>
             <li><strong>本文作者：</strong><a href="http://huaxuan0720.github.io">Da Vinci</a></li>
             <li><strong>本文链接：</strong><a href="http://huaxuan0720.github.io/2019/05/22/Note12-YOLOv3-part04/">http://huaxuan0720.github.io/2019/05/22/Note12-YOLOv3-part04/</a></li>
             <li><strong>发布时间：</strong>2019-05-22</li>
@@ -265,7 +275,7 @@
         <div class="level-start">
             <a class="level level-item has-link-grey  article-nav-prev" href="/2019/05/22/Note13-YOLOv3-part05/">
                 <i class="level-item fas fa-chevron-left"></i>
-                <span class="level-item">YOLOv3：test_single_image.py</span>
+                <span class="level-item">YOLOv3源码阅读：nms_utils.py</span>
             </a>
         </div>
         
@@ -416,14 +426,14 @@
             <h3 class="menu-label">
                 Catalogue
             </h3>
-            <ul class="menu-list"><ul class="menu-list"><li>
+            <ul class="menu-list"><li>
         <a class="is-flex" href="#一yolo简介">
-        <span class="has-mr-6">1.1</span>
+        <span class="has-mr-6">1</span>
         <span>一、YOLO简介</span>
-        </a></li></ul><li>
+        </a></li><li>
         <a class="is-flex" href="#二代码和注释">
         <span class="has-mr-6">2</span>
-        <span>##### 二、代码和注释</span>
+        <span>二、代码和注释</span>
         </a></li></ul>
         </div>
     </div>
@@ -448,7 +458,7 @@
             <div class="level-start has-text-centered-mobile">
                 <a class="footer-logo is-block has-mb-6" href="/">
                 
-                    <img src="/images/favicon.svg" alt="YOLOv3：test_single_image.py" height="28">
+                    <img src="/images/favicon.svg" alt="YOLOv3源码阅读：layer_utils.py" height="28">
                 
                 </a>
                 <p class="is-size-7">

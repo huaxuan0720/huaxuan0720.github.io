@@ -156,14 +156,14 @@
     
     <div class="card-image">
         <a href="/2019/05/22/Note13-YOLOv3-part05/" class="image is-7by1">
-            <img class="thumbnail" src="/gallery/DeepLearning.jpg" alt="YOLOv3：test_single_image.py">
+            <img class="thumbnail" src="/gallery/DeepLearning.jpg" alt="YOLOv3源码阅读：nms_utils.py">
         </a>
     </div>
     
     <div class="card-content article ">
         <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
             
-                <a class="has-link-black-ter" href="/2019/05/22/Note13-YOLOv3-part05/"><i class="fas fa-angle-double-right"></i>YOLOv3：test_single_image.py</a>
+                <a class="has-link-black-ter" href="/2019/05/22/Note13-YOLOv3-part05/"><i class="fas fa-angle-double-right"></i>YOLOv3源码阅读：nms_utils.py</a>
             
         </h1>
         
@@ -171,7 +171,7 @@
             <div class="level-left">
                 <time class="level-item has-text-grey" datetime="2019-05-22T08:56:00.000Z"><i class="far fa-calendar-alt">&nbsp;</i>2019-05-22</time>
                 
-                <time class="level-item has-text-grey is-hidden-mobile" datetime="2019-05-22T09:01:02.414Z"><i class="far fa-calendar-check">&nbsp;</i>2019-05-22</time>
+                <time class="level-item has-text-grey is-hidden-mobile" datetime="2019-09-03T05:39:03.864Z"><i class="far fa-calendar-check">&nbsp;</i>2019-09-03</time>
                 
                 
                 <div class="level-item">
@@ -184,7 +184,7 @@
                     <i class="far fa-clock"></i>&nbsp;
                     
                     
-                    a few seconds read (About 62 words)
+                    9 minutes read (About 1340 words)
                 </span>
                 
                 
@@ -193,8 +193,9 @@
         
         <div class="content">
             <h5 id="一yolo简介">一、YOLO简介</h5>
-<p>  YOLO（You Only Look Once）是一个高效的目标检测算法，属于One-Stage大家族，</p>
-<p>  本文参考的源码地址为：<a href="https://github.com/wizyoung/YOLOv3_TensorFlow" class="uri" target="_blank" rel="noopener">https://github.com/wizyoung/YOLOv3_TensorFlow</a></p>
+<p>  YOLO（You Only Look Once）是一个高效的目标检测算法，属于One-Stage大家族，针对于Two-Stage目标检测算法普遍存在的运算速度慢的缺点，YOLO创造性的提出了One-Stage。也就是将物体分类和物体定位在一个步骤中完成。YOLO直接在输出层回归bounding box的位置和bounding box所属类别，从而实现one-stage。</p>
+<p>  经过两次迭代，YOLO目前的最新版本为<a href="https://pjreddie.com/media/files/papers/YOLOv3.pdf" target="_blank" rel="noopener">YOLOv3</a>，在前两版的基础上，YOLOv3进行了一些比较细节的改动，效果有所提升。</p>
+<p>  本文正是希望可以将源码加以注释，方便自己学习，同时也愿意分享出来和大家一起学习。由于本人还是一学生，如果有错还请大家不吝指出。</p>
         </div>
         
         
@@ -232,14 +233,14 @@
     
     <div class="card-image">
         <a href="/2019/05/22/Note12-YOLOv3-part04/" class="image is-7by1">
-            <img class="thumbnail" src="/gallery/DeepLearning.jpg" alt="YOLOv3：test_single_image.py">
+            <img class="thumbnail" src="/gallery/DeepLearning.jpg" alt="YOLOv3源码阅读：layer_utils.py">
         </a>
     </div>
     
     <div class="card-content article ">
         <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
             
-                <a class="has-link-black-ter" href="/2019/05/22/Note12-YOLOv3-part04/"><i class="fas fa-angle-double-right"></i>YOLOv3：test_single_image.py</a>
+                <a class="has-link-black-ter" href="/2019/05/22/Note12-YOLOv3-part04/"><i class="fas fa-angle-double-right"></i>YOLOv3源码阅读：layer_utils.py</a>
             
         </h1>
         
@@ -247,7 +248,7 @@
             <div class="level-left">
                 <time class="level-item has-text-grey" datetime="2019-05-22T08:55:42.000Z"><i class="far fa-calendar-alt">&nbsp;</i>2019-05-22</time>
                 
-                <time class="level-item has-text-grey is-hidden-mobile" datetime="2019-05-22T09:00:36.369Z"><i class="far fa-calendar-check">&nbsp;</i>2019-05-22</time>
+                <time class="level-item has-text-grey is-hidden-mobile" datetime="2019-09-03T05:26:12.581Z"><i class="far fa-calendar-check">&nbsp;</i>2019-09-03</time>
                 
                 
                 <div class="level-item">
@@ -260,7 +261,7 @@
                     <i class="far fa-clock"></i>&nbsp;
                     
                     
-                    a few seconds read (About 62 words)
+                    5 minutes read (About 783 words)
                 </span>
                 
                 
@@ -269,8 +270,9 @@
         
         <div class="content">
             <h5 id="一yolo简介">一、YOLO简介</h5>
-<p>  YOLO（You Only Look Once）是一个高效的目标检测算法，属于One-Stage大家族，</p>
-<p>  本文参考的源码地址为：<a href="https://github.com/wizyoung/YOLOv3_TensorFlow" class="uri" target="_blank" rel="noopener">https://github.com/wizyoung/YOLOv3_TensorFlow</a></p>
+<p>  YOLO（You Only Look Once）是一个高效的目标检测算法，属于One-Stage大家族，针对于Two-Stage目标检测算法普遍存在的运算速度慢的缺点，YOLO创造性的提出了One-Stage。也就是将物体分类和物体定位在一个步骤中完成。YOLO直接在输出层回归bounding box的位置和bounding box所属类别，从而实现one-stage。</p>
+<p>  经过两次迭代，YOLO目前的最新版本为<a href="https://pjreddie.com/media/files/papers/YOLOv3.pdf" target="_blank" rel="noopener">YOLOv3</a>，在前两版的基础上，YOLOv3进行了一些比较细节的改动，效果有所提升。</p>
+<p>  本文正是希望可以将源码加以注释，方便自己学习，同时也愿意分享出来和大家一起学习。由于本人还是一学生，如果有错还请大家不吝指出。</p>
         </div>
         
         
@@ -323,7 +325,7 @@
             <div class="level-left">
                 <time class="level-item has-text-grey" datetime="2019-05-22T08:55:25.000Z"><i class="far fa-calendar-alt">&nbsp;</i>2019-05-22</time>
                 
-                <time class="level-item has-text-grey is-hidden-mobile" datetime="2019-08-31T08:14:17.618Z"><i class="far fa-calendar-check">&nbsp;</i>2019-08-31</time>
+                <time class="level-item has-text-grey is-hidden-mobile" datetime="2019-09-03T05:17:06.328Z"><i class="far fa-calendar-check">&nbsp;</i>2019-09-03</time>
                 
                 
                 <div class="level-item">
@@ -336,7 +338,7 @@
                     <i class="far fa-clock"></i>&nbsp;
                     
                     
-                    24 minutes read (About 3595 words)
+                    33 minutes read (About 4966 words)
                 </span>
                 
                 
