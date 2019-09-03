@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+<title>YOLOv3源码阅读：train.py - Welcome to My Blogs</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+    <meta name="description" content="一、YOLO简介   YOLO（You Only Look Once）是一个高效的目标检测算法，属于One-Stage大家族，针对于Two-Stage目标检测算法普遍存在的运算速度慢的缺点，YOLO创造性的提出了One-Stage。也就是将物体分类和物体定位在一个步骤中完成。YOLO直接在输出层回归bounding box的位置和bounding box所属类别，从而实现one-stage。">
+<meta name="keywords" content="深度学习,目标检测,YOLOv3">
+<meta property="og:type" content="article">
+<meta property="og:title" content="YOLOv3源码阅读：train.py">
+<meta property="og:url" content="http://huaxuan0720.github.io/2019/05/22/Note13-YOLOv3-part06/index.html">
+<meta property="og:site_name" content="Welcome to My Blogs">
+<meta property="og:description" content="一、YOLO简介   YOLO（You Only Look Once）是一个高效的目标检测算法，属于One-Stage大家族，针对于Two-Stage目标检测算法普遍存在的运算速度慢的缺点，YOLO创造性的提出了One-Stage。也就是将物体分类和物体定位在一个步骤中完成。YOLO直接在输出层回归bounding box的位置和bounding box所属类别，从而实现one-stage。">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://huaxuan0720.github.io/gallery/DeepLearning.jpg">
+<meta property="og:updated_time" content="2019-09-03T06:28:01.040Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="YOLOv3源码阅读：train.py">
+<meta name="twitter:description" content="一、YOLO简介   YOLO（You Only Look Once）是一个高效的目标检测算法，属于One-Stage大家族，针对于Two-Stage目标检测算法普遍存在的运算速度慢的缺点，YOLO创造性的提出了One-Stage。也就是将物体分类和物体定位在一个步骤中完成。YOLO直接在输出层回归bounding box的位置和bounding box所属类别，从而实现one-stage。">
+<meta name="twitter:image" content="http://huaxuan0720.github.io/gallery/DeepLearning.jpg">
+
+
+
+
+
+
+
+<link rel="icon" href="/images/favicon.svg">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/github-gist.css">
+
+
+    
+    
+    
+    <style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
+    
+
+    
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css">
+    
+
+    
+    
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css">
+
+
+    
+    
+    
+    
+
+<link rel="stylesheet" href="/css/back-to-top.css">
+
+
+    
+    
+
+    
+    
+    
+    
+
+    
+    
+<link rel="stylesheet" href="/css/progressbar.css">
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+
+    
+    
+    
+
+    
+    
+    
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="is-3-column">
+    <nav class="navbar navbar-main">
+    <div class="container">
+        <div class="navbar-brand is-flex-center">
+            <a class="navbar-item navbar-logo" href="/">
+            
+                <img src="/images/favicon.svg" alt="YOLOv3源码阅读：train.py" height="28">
+            
+            </a>
+        </div>
+        <div class="navbar-menu">
+            
+            <div class="navbar-start">
+                
+                <a class="navbar-item" href="/">主页</a>
+                
+                <a class="navbar-item" href="/archives/">归档</a>
+                
+                <a class="navbar-item" href="/categories/">类别</a>
+                
+                <a class="navbar-item" href="/tags/">标签</a>
+                
+                <a class="navbar-item" href="/about/">关于</a>
+                
+            </div>
+            
+            <div class="navbar-end">
+                
+                    
+                    
+                    <a class="navbar-item" target="_blank" title="Xuan Hua&#39;s GitHub" href="https://www.github.com/huaxuan0720">
+                        
+                        <i class="fab fa-github"></i>
+                        
+                    </a>
+                    
+                
+                
+                <a class="navbar-item is-hidden-tablet catalogue" title="Catalogue" href="javascript:;">
+                    <i class="fas fa-list-ul"></i>
+                </a>
+                
+                
+                <a class="navbar-item search" title="Search" href="javascript:;">
+                    <i class="fas fa-search"></i>
+                </a>
+                
+            </div>
+        </div>
+    </div>
+</nav>
+    
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-8-tablet is-8-desktop is-9-widescreen has-order-2 column-main"><div class="card">
+    
+    <div class="card-image">
+        <span class="image is-7by1">
+            <img class="thumbnail" src="/gallery/DeepLearning.jpg" alt="YOLOv3源码阅读：train.py">
+        </span>
+    </div>
+    
+    <div class="card-content article ">
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                <i class="fas fa-angle-double-right"></i>YOLOv3源码阅读：train.py
+            
+        </h1>
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2019-05-22T08:56:01.000Z"><i class="far fa-calendar-alt">&nbsp;</i>2019-05-22</time>
+                
+                <time class="level-item has-text-grey is-hidden-mobile" datetime="2019-09-03T06:28:01.040Z"><i class="far fa-calendar-check">&nbsp;</i>2019-09-03</time>
+                
+                
+                <div class="level-item">
+                <i class="far fa-folder-open has-text-grey"></i>&nbsp;
+                <a class="has-link-grey -link" href="/categories/目标检测/">目标检测</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    <i class="far fa-clock"></i>&nbsp;
+                    
+                    
+                    16 minutes read (About 2361 words)
+                </span>
+                
+                
+                <span class="level-item has-text-grey" id="busuanzi_container_page_pv">
+                    <i class="far fa-eye"></i>
+                    <span id="busuanzi_value_page_pv">0</span> visits
+                </span>
+                
+            </div>
+        </div>
+        
+        <div class="content">
+            <h5 id="一yolo简介">一、YOLO简介</h5>
+<p>  YOLO（You Only Look Once）是一个高效的目标检测算法，属于One-Stage大家族，针对于Two-Stage目标检测算法普遍存在的运算速度慢的缺点，YOLO创造性的提出了One-Stage。也就是将物体分类和物体定位在一个步骤中完成。YOLO直接在输出层回归bounding box的位置和bounding box所属类别，从而实现one-stage。</p>
+<p>  经过两次迭代，YOLO目前的最新版本为<a href="https://pjreddie.com/media/files/papers/YOLOv3.pdf" target="_blank" rel="noopener">YOLOv3</a>，在前两版的基础上，YOLOv3进行了一些比较细节的改动，效果有所提升。</p>
+<p>  本文正是希望可以将源码加以注释，方便自己学习，同时也愿意分享出来和大家一起学习。由于本人还是一学生，如果有错还请大家不吝指出。</p>
+<a id="more"></a>
+<p>  本文参考的源码地址为：<a href="https://github.com/wizyoung/YOLOv3_TensorFlow" class="uri" target="_blank" rel="noopener">https://github.com/wizyoung/YOLOv3_TensorFlow</a></p>
+<h5 id="二代码和注释">二、代码和注释</h5>
+<p>  文件目录：YOUR_PATH\YOLOv3_TensorFlow-master.py</p>
+<p>  这一部分代码主要是训练模型的入口，按照要求准备号训练数据之后，就可以从这里开始训练了。 <figure class="highlight python hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># coding: utf-8</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">from</span> __future__ <span class="hljs-keyword">import</span> division, print_function</span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">import</span> tensorflow <span class="hljs-keyword">as</span> tf</span><br><span class="line"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np</span><br><span class="line"><span class="hljs-keyword">import</span> logging</span><br><span class="line"><span class="hljs-keyword">from</span> tqdm <span class="hljs-keyword">import</span> trange</span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">import</span> args</span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">from</span> utils.data_utils <span class="hljs-keyword">import</span> get_batch_data</span><br><span class="line"><span class="hljs-keyword">from</span> utils.misc_utils <span class="hljs-keyword">import</span> shuffle_and_overwrite, make_summary, config_learning_rate, config_optimizer, AverageMeter</span><br><span class="line"><span class="hljs-keyword">from</span> utils.eval_utils <span class="hljs-keyword">import</span> evaluate_on_cpu, evaluate_on_gpu, get_preds_gpu, voc_eval, parse_gt_rec</span><br><span class="line"><span class="hljs-keyword">from</span> utils.nms_utils <span class="hljs-keyword">import</span> gpu_nms</span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">from</span> model <span class="hljs-keyword">import</span> yolov3</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># setting loggers</span></span><br><span class="line"><span class="hljs-comment"># 设置日志记录</span></span><br><span class="line">logging.basicConfig(level=logging.DEBUG, format=<span class="hljs-string">'%(asctime)s %(levelname)s %(message)s'</span>,</span><br><span class="line">                    datefmt=<span class="hljs-string">'%a, %d %b %Y %H:%M:%S'</span>, filename=args.progress_log_path, filemode=<span class="hljs-string">'w'</span>)</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># setting placeholders</span></span><br><span class="line"><span class="hljs-comment"># 整个网络的数据输入入口</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># 是否是训练阶段，针对BN等操作有用</span></span><br><span class="line">is_training = tf.placeholder(tf.bool, name=<span class="hljs-string">"phase_train"</span>)</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># 这个数据输入入口未被使用，原因不明</span></span><br><span class="line">handle_flag = tf.placeholder(tf.string, [], name=<span class="hljs-string">'iterator_handle_flag'</span>)</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># register the gpu nms operation here for the following evaluation scheme</span></span><br><span class="line"><span class="hljs-comment"># 为了后面的模型评估的计算，这里首先定义好在gpu上的nms操作</span></span><br><span class="line">pred_boxes_flag = tf.placeholder(tf.float32, [<span class="hljs-number">1</span>, <span class="hljs-literal">None</span>, <span class="hljs-literal">None</span>])</span><br><span class="line">pred_scores_flag = tf.placeholder(tf.float32, [<span class="hljs-number">1</span>, <span class="hljs-literal">None</span>, <span class="hljs-literal">None</span>])</span><br><span class="line">gpu_nms_op = gpu_nms(pred_boxes_flag, pred_scores_flag, args.class_num, args.nms_topk, args.score_threshold, args.nms_threshold)</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">##################</span></span><br><span class="line"><span class="hljs-comment"># tf.data pipeline</span></span><br><span class="line"><span class="hljs-comment">##################</span></span><br><span class="line"><span class="hljs-comment"># 输入输入流，我们是从一个文本文件读入数据，因此，可以使用TextLineDataset类来帮助数据读入</span></span><br><span class="line">train_dataset = tf.data.TextLineDataset(args.train_file)</span><br><span class="line"><span class="hljs-comment"># 随机打乱</span></span><br><span class="line">train_dataset = train_dataset.shuffle(args.train_img_cnt)</span><br><span class="line"><span class="hljs-comment"># 设定batch size</span></span><br><span class="line">train_dataset = train_dataset.batch(args.batch_size)</span><br><span class="line"><span class="hljs-comment"># 自定义输入的返回格式，因为文本文件中的数据不一定就是正式的使用数据，可以自定义真正的数据读取操作</span></span><br><span class="line">train_dataset = train_dataset.map(</span><br><span class="line">    <span class="hljs-keyword">lambda</span> x: tf.py_func(get_batch_data,</span><br><span class="line">                         inp=[x, args.class_num, args.img_size, args.anchors, <span class="hljs-string">'train'</span>, args.multi_scale_train, args.use_mix_up],</span><br><span class="line">                         Tout=[tf.int64, tf.float32, tf.float32, tf.float32, tf.float32]),</span><br><span class="line">    num_parallel_calls=args.num_threads</span><br><span class="line">)</span><br><span class="line"><span class="hljs-comment"># 预先读取</span></span><br><span class="line">train_dataset = train_dataset.prefetch(args.prefetech_buffer)</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># 和训练数据的读取类似,这里读取的是验证集的数据</span></span><br><span class="line">val_dataset = tf.data.TextLineDataset(args.val_file)</span><br><span class="line">val_dataset = val_dataset.batch(<span class="hljs-number">1</span>)</span><br><span class="line">val_dataset = val_dataset.map(</span><br><span class="line">    <span class="hljs-keyword">lambda</span> x: tf.py_func(get_batch_data,</span><br><span class="line">                         inp=[x, args.class_num, args.img_size, args.anchors, <span class="hljs-string">'val'</span>, <span class="hljs-literal">False</span>, <span class="hljs-literal">False</span>],</span><br><span class="line">                         Tout=[tf.int64, tf.float32, tf.float32, tf.float32, tf.float32]),</span><br><span class="line">    num_parallel_calls=args.num_threads</span><br><span class="line">)</span><br><span class="line">val_dataset.prefetch(args.prefetech_buffer)</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># 定义迭代器</span></span><br><span class="line">iterator = tf.data.Iterator.from_structure(train_dataset.output_types, train_dataset.output_shapes)</span><br><span class="line">train_init_op = iterator.make_initializer(train_dataset)</span><br><span class="line">val_init_op = iterator.make_initializer(val_dataset)</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># get an element from the chosen dataset iterator</span></span><br><span class="line"><span class="hljs-comment"># 利用迭代器获取数据.由于之前我们自定义了数据的读取方式,这里返回的正是我们希望的数据</span></span><br><span class="line">image_ids, image, y_true_13, y_true_26, y_true_52 = iterator.get_next()</span><br><span class="line">y_true = [y_true_13, y_true_26, y_true_52]</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># tf.data pipeline will lose the data `static` shape, so we need to set it manually</span></span><br><span class="line"><span class="hljs-comment"># 手动设置shape</span></span><br><span class="line">image_ids.set_shape([<span class="hljs-literal">None</span>])</span><br><span class="line">image.set_shape([<span class="hljs-literal">None</span>, <span class="hljs-literal">None</span>, <span class="hljs-literal">None</span>, <span class="hljs-number">3</span>])</span><br><span class="line"><span class="hljs-keyword">for</span> y <span class="hljs-keyword">in</span> y_true:</span><br><span class="line">    y.set_shape([<span class="hljs-literal">None</span>, <span class="hljs-literal">None</span>, <span class="hljs-literal">None</span>, <span class="hljs-literal">None</span>, <span class="hljs-literal">None</span>])</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">##################</span></span><br><span class="line"><span class="hljs-comment"># Model definition</span></span><br><span class="line"><span class="hljs-comment">##################</span></span><br><span class="line"><span class="hljs-comment"># 模型定义,这一部分和预测时的一致.</span></span><br><span class="line">yolo_model = yolov3(args.class_num, args.anchors, args.use_label_smooth, args.use_focal_loss, args.batch_norm_decay, args.weight_decay)</span><br><span class="line"><span class="hljs-keyword">with</span> tf.variable_scope(<span class="hljs-string">'yolov3'</span>):</span><br><span class="line">    pred_feature_maps = yolo_model.forward(image, is_training=is_training)</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># 计算损失</span></span><br><span class="line">loss = yolo_model.compute_loss(pred_feature_maps, y_true)</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># 计算预测的结果</span></span><br><span class="line">y_pred = yolo_model.predict(pred_feature_maps)</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># 正则化的损失</span></span><br><span class="line">l2_loss = tf.losses.get_regularization_loss()</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># setting restore parts and vars to update</span></span><br><span class="line"><span class="hljs-comment"># 定义Saver,</span></span><br><span class="line">saver_to_restore = tf.train.Saver(var_list=tf.contrib.framework.get_variables_to_restore(include=args.restore_part))</span><br><span class="line">update_vars = tf.contrib.framework.get_variables_to_restore(include=args.update_part)</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># 这一部分是为了tensor board可视化做的准备,主要是一些曲线,反映loss的变化</span></span><br><span class="line">tf.summary.scalar(<span class="hljs-string">'train_batch_statistics/total_loss'</span>, loss[<span class="hljs-number">0</span>])</span><br><span class="line">tf.summary.scalar(<span class="hljs-string">'train_batch_statistics/loss_xy'</span>, loss[<span class="hljs-number">1</span>])</span><br><span class="line">tf.summary.scalar(<span class="hljs-string">'train_batch_statistics/loss_wh'</span>, loss[<span class="hljs-number">2</span>])</span><br><span class="line">tf.summary.scalar(<span class="hljs-string">'train_batch_statistics/loss_conf'</span>, loss[<span class="hljs-number">3</span>])</span><br><span class="line">tf.summary.scalar(<span class="hljs-string">'train_batch_statistics/loss_class'</span>, loss[<span class="hljs-number">4</span>])</span><br><span class="line">tf.summary.scalar(<span class="hljs-string">'train_batch_statistics/loss_l2'</span>, l2_loss)</span><br><span class="line">tf.summary.scalar(<span class="hljs-string">'train_batch_statistics/loss_ratio'</span>, l2_loss / loss[<span class="hljs-number">0</span>])</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># global step</span></span><br><span class="line">global_step = tf.Variable(float(args.global_step), trainable=<span class="hljs-literal">False</span>, collections=[tf.GraphKeys.LOCAL_VARIABLES])</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># 是否使用warm up,默认是True,主要是定义学习率的方法上有些区别</span></span><br><span class="line"><span class="hljs-keyword">if</span> args.use_warm_up:</span><br><span class="line">    learning_rate = tf.cond(tf.less(global_step, args.train_batch_num * args.warm_up_epoch), </span><br><span class="line">                            <span class="hljs-keyword">lambda</span>: args.learning_rate_init * global_step / (args.train_batch_num * args.warm_up_epoch),</span><br><span class="line">                            <span class="hljs-keyword">lambda</span>: config_learning_rate(args, global_step - args.train_batch_num * args.warm_up_epoch))</span><br><span class="line"><span class="hljs-keyword">else</span>:</span><br><span class="line">    learning_rate = config_learning_rate(args, global_step)</span><br><span class="line">tf.summary.scalar(<span class="hljs-string">'learning_rate'</span>, learning_rate)</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">#</span></span><br><span class="line"><span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> args.save_optimizer:</span><br><span class="line">    saver_to_save = tf.train.Saver()</span><br><span class="line">    saver_best = tf.train.Saver()</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># 优化器</span></span><br><span class="line">optimizer = config_optimizer(args.optimizer_name, learning_rate)</span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">if</span> args.save_optimizer:</span><br><span class="line">    saver_to_save = tf.train.Saver()</span><br><span class="line">    saver_best = tf.train.Saver()</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># set dependencies for BN ops</span></span><br><span class="line"><span class="hljs-comment"># 为BN操作设置依赖</span></span><br><span class="line">update_ops = tf.get_collection(tf.GraphKeys.UPDATE_OPS)</span><br><span class="line"><span class="hljs-keyword">with</span> tf.control_dependencies(update_ops):</span><br><span class="line">    train_op = optimizer.minimize(loss[<span class="hljs-number">0</span>] + l2_loss, var_list=update_vars, global_step=global_step)</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># 设置会话Session</span></span><br><span class="line"><span class="hljs-keyword">with</span> tf.Session() <span class="hljs-keyword">as</span> sess:</span><br><span class="line">    <span class="hljs-comment"># 初始化全局的variable</span></span><br><span class="line">    sess.run([tf.global_variables_initializer(), tf.local_variables_initializer()])</span><br><span class="line"></span><br><span class="line">    saver_to_restore.restore(sess, args.restore_path)</span><br><span class="line">    merged = tf.summary.merge_all()</span><br><span class="line">    writer = tf.summary.FileWriter(args.log_dir, sess.graph)</span><br><span class="line"></span><br><span class="line">    print(<span class="hljs-string">'\n----------- start to train -----------\n'</span>)</span><br><span class="line"></span><br><span class="line">    best_mAP = -np.Inf</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment"># 开始循环训练</span></span><br><span class="line">    <span class="hljs-keyword">for</span> epoch <span class="hljs-keyword">in</span> range(args.total_epoches):</span><br><span class="line"></span><br><span class="line">        sess.run(train_init_op)</span><br><span class="line"></span><br><span class="line">        <span class="hljs-comment"># 定义记录数据的类，主要是保存当前为止的所有数据的均值</span></span><br><span class="line">        loss_total, loss_xy, loss_wh, loss_conf, loss_class = AverageMeter(), AverageMeter(), AverageMeter(), AverageMeter(), AverageMeter()</span><br><span class="line"></span><br><span class="line">        <span class="hljs-comment"># 对每一个bacth size</span></span><br><span class="line">        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> trange(args.train_batch_num):</span><br><span class="line">            _, summary, __y_pred, __y_true, __loss, __global_step, __lr = sess.run(</span><br><span class="line">                [train_op, merged, y_pred, y_true, loss, global_step, learning_rate],</span><br><span class="line">                feed_dict=&#123;is_training: <span class="hljs-literal">True</span>&#125;)</span><br><span class="line"></span><br><span class="line">            writer.add_summary(summary, global_step=__global_step)</span><br><span class="line"></span><br><span class="line">            <span class="hljs-comment"># 更新均值</span></span><br><span class="line">            loss_total.update(__loss[<span class="hljs-number">0</span>], len(__y_pred[<span class="hljs-number">0</span>]))</span><br><span class="line">            loss_xy.update(__loss[<span class="hljs-number">1</span>], len(__y_pred[<span class="hljs-number">0</span>]))</span><br><span class="line">            loss_wh.update(__loss[<span class="hljs-number">2</span>], len(__y_pred[<span class="hljs-number">0</span>]))</span><br><span class="line">            loss_conf.update(__loss[<span class="hljs-number">3</span>], len(__y_pred[<span class="hljs-number">0</span>]))</span><br><span class="line">            loss_class.update(__loss[<span class="hljs-number">4</span>], len(__y_pred[<span class="hljs-number">0</span>]))</span><br><span class="line"></span><br><span class="line">            <span class="hljs-comment"># 每隔一段时间进行模型的评估，这里主要计算的是recall和precision</span></span><br><span class="line">            <span class="hljs-comment"># 这里计算的是训练集上的评估结果</span></span><br><span class="line">            <span class="hljs-keyword">if</span> __global_step % args.train_evaluation_step == <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> __global_step &gt; <span class="hljs-number">0</span>:</span><br><span class="line">                <span class="hljs-comment"># recall, precision = evaluate_on_cpu(__y_pred, __y_true, args.class_num, args.nms_topk, args.score_threshold, args.eval_threshold)</span></span><br><span class="line">                recall, precision = evaluate_on_gpu(sess, gpu_nms_op, pred_boxes_flag, pred_scores_flag, __y_pred, __y_true, args.class_num, args.eval_threshold)</span><br><span class="line"></span><br><span class="line">                info = <span class="hljs-string">"Epoch: &#123;&#125;, global_step: &#123;&#125; | loss: total: &#123;:.2f&#125;, xy: &#123;:.2f&#125;, wh: &#123;:.2f&#125;, conf: &#123;:.2f&#125;, class: &#123;:.2f&#125; | "</span>.format(</span><br><span class="line">                        epoch, int(__global_step), loss_total.average, loss_xy.average, loss_wh.average, loss_conf.average, loss_class.average)</span><br><span class="line">                info += <span class="hljs-string">'Last batch: rec: &#123;:.3f&#125;, prec: &#123;:.3f&#125; | lr: &#123;:.5g&#125;'</span>.format(recall, precision, __lr)</span><br><span class="line">                print(info)</span><br><span class="line">                logging.info(info)</span><br><span class="line"></span><br><span class="line">                writer.add_summary(make_summary(<span class="hljs-string">'evaluation/train_batch_recall'</span>, recall), global_step=__global_step)</span><br><span class="line">                writer.add_summary(make_summary(<span class="hljs-string">'evaluation/train_batch_precision'</span>, precision), global_step=__global_step)</span><br><span class="line"></span><br><span class="line">                <span class="hljs-keyword">if</span> np.isnan(loss_total.average):</span><br><span class="line">                    print(<span class="hljs-string">'****'</span> * <span class="hljs-number">10</span>)</span><br><span class="line">                    <span class="hljs-keyword">raise</span> ArithmeticError(</span><br><span class="line">                        <span class="hljs-string">'Gradient exploded! Please train again and you may need modify some parameters.'</span>)</span><br><span class="line"></span><br><span class="line">        <span class="hljs-comment"># 重置相关的均值记录类</span></span><br><span class="line">        tmp_total_loss = loss_total.average</span><br><span class="line">        loss_total.reset()</span><br><span class="line">        loss_xy.reset()</span><br><span class="line">        loss_wh.reset()</span><br><span class="line">        loss_conf.reset()</span><br><span class="line">        loss_class.reset()</span><br><span class="line"></span><br><span class="line">        <span class="hljs-comment"># 保存模型</span></span><br><span class="line">        <span class="hljs-comment"># <span class="hljs-doctag">NOTE:</span> this is just demo. You can set the conditions when to save the weights.</span></span><br><span class="line">        <span class="hljs-keyword">if</span> epoch % args.save_epoch == <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> epoch &gt; <span class="hljs-number">0</span>:</span><br><span class="line">            <span class="hljs-keyword">if</span> tmp_total_loss &lt;= <span class="hljs-number">2.</span>:</span><br><span class="line">                saver_to_save.save(sess, args.save_dir + <span class="hljs-string">'model-epoch_&#123;&#125;_step_&#123;&#125;_loss_&#123;:.4f&#125;_lr_&#123;:.5g&#125;'</span>.format(epoch, int(__global_step), loss_total.last_avg, __lr))</span><br><span class="line"></span><br><span class="line">        <span class="hljs-comment"># 验证集用以评估模型，这一部分和前面类似</span></span><br><span class="line">        <span class="hljs-comment"># switch to validation dataset for evaluation</span></span><br><span class="line">        <span class="hljs-keyword">if</span> epoch % args.val_evaluation_epoch == <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> epoch &gt; <span class="hljs-number">0</span>:</span><br><span class="line">            sess.run(val_init_op)</span><br><span class="line"></span><br><span class="line">            val_loss_total, val_loss_xy, val_loss_wh, val_loss_conf, val_loss_class = \</span><br><span class="line">                AverageMeter(), AverageMeter(), AverageMeter(), AverageMeter(), AverageMeter()</span><br><span class="line"></span><br><span class="line">            val_preds = []</span><br><span class="line"></span><br><span class="line">            <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> trange(args.val_img_cnt):</span><br><span class="line">                __image_ids, __y_pred, __loss = sess.run([image_ids, y_pred, loss],</span><br><span class="line">                                                         feed_dict=&#123;is_training: <span class="hljs-literal">False</span>&#125;)</span><br><span class="line">                pred_content = get_preds_gpu(sess, gpu_nms_op, pred_boxes_flag, pred_scores_flag, __image_ids, __y_pred)</span><br><span class="line">                val_preds.extend(pred_content)</span><br><span class="line">                val_loss_total.update(__loss[<span class="hljs-number">0</span>])</span><br><span class="line">                val_loss_xy.update(__loss[<span class="hljs-number">1</span>])</span><br><span class="line">                val_loss_wh.update(__loss[<span class="hljs-number">2</span>])</span><br><span class="line">                val_loss_conf.update(__loss[<span class="hljs-number">3</span>])</span><br><span class="line">                val_loss_class.update(__loss[<span class="hljs-number">4</span>])</span><br><span class="line"></span><br><span class="line">            <span class="hljs-comment"># calc mAP</span></span><br><span class="line">            <span class="hljs-comment"># 计算mAP</span></span><br><span class="line">            rec_total, prec_total, ap_total = AverageMeter(), AverageMeter(), AverageMeter()</span><br><span class="line">            gt_dict = parse_gt_rec(args.val_file, args.img_size)</span><br><span class="line"></span><br><span class="line">            info = <span class="hljs-string">'======&gt; Epoch: &#123;&#125;, global_step: &#123;&#125;, lr: &#123;:.6g&#125; &lt;======\n'</span>.format(epoch, __global_step, __lr)</span><br><span class="line"></span><br><span class="line">            <span class="hljs-keyword">for</span> ii <span class="hljs-keyword">in</span> range(args.class_num):</span><br><span class="line">                npos, nd, rec, prec, ap = voc_eval(gt_dict, val_preds, ii, iou_thres=args.eval_threshold, use_07_metric=<span class="hljs-literal">False</span>)</span><br><span class="line">                info += <span class="hljs-string">'EVAL: Class &#123;&#125;: Recall: &#123;:.4f&#125;, Precision: &#123;:.4f&#125;, AP: &#123;:.4f&#125;\n'</span>.format(ii, rec, prec, ap)</span><br><span class="line">                rec_total.update(rec, npos)</span><br><span class="line">                prec_total.update(prec, nd)</span><br><span class="line">                ap_total.update(ap, <span class="hljs-number">1</span>)</span><br><span class="line"></span><br><span class="line">            mAP = ap_total.avg</span><br><span class="line">            info += <span class="hljs-string">'EVAL: Recall: &#123;:.4f&#125;, Precison: &#123;:.4f&#125;, mAP: &#123;:.4f&#125;\n'</span>.format(rec_total.avg, prec_total.avg, mAP)</span><br><span class="line">            info += <span class="hljs-string">'EVAL: loss: total: &#123;:.2f&#125;, xy: &#123;:.2f&#125;, wh: &#123;:.2f&#125;, conf: &#123;:.2f&#125;, class: &#123;:.2f&#125;\n'</span>.format(</span><br><span class="line">                val_loss_total.avg, val_loss_xy.avg, val_loss_wh.avg, val_loss_conf.avg, val_loss_class.avg)</span><br><span class="line">            print(info)</span><br><span class="line">            logging.info(info)</span><br><span class="line"></span><br><span class="line">            <span class="hljs-keyword">if</span> mAP &gt; best_mAP:</span><br><span class="line">                best_mAP = mAP</span><br><span class="line">                saver_best.save(sess, args.save_dir + <span class="hljs-string">'best_model_Epoch_&#123;&#125;_step_&#123;&#125;_mAP_&#123;:.4f&#125;_loss_&#123;:.4f&#125;_lr_&#123;:.7g&#125;'</span>.format(</span><br><span class="line">                                   epoch, __global_step, best_mAP, val_loss_total.last_avg, __lr))</span><br><span class="line">            </span><br><span class="line">            writer.add_summary(make_summary(<span class="hljs-string">'evaluation/val_mAP'</span>, mAP), global_step=epoch)</span><br><span class="line">            writer.add_summary(make_summary(<span class="hljs-string">'evaluation/val_recall'</span>, rec_total.last_avg), global_step=epoch)</span><br><span class="line">            writer.add_summary(make_summary(<span class="hljs-string">'evaluation/val_precision'</span>, prec_total.last_avg), global_step=epoch)</span><br><span class="line">            writer.add_summary(make_summary(<span class="hljs-string">'validation_statistics/total_loss'</span>, val_loss_total.last_avg), global_step=epoch)</span><br><span class="line">            writer.add_summary(make_summary(<span class="hljs-string">'validation_statistics/loss_xy'</span>, val_loss_xy.last_avg), global_step=epoch)</span><br><span class="line">            writer.add_summary(make_summary(<span class="hljs-string">'validation_statistics/loss_wh'</span>, val_loss_wh.last_avg), global_step=epoch)</span><br><span class="line">            writer.add_summary(make_summary(<span class="hljs-string">'validation_statistics/loss_conf'</span>, val_loss_conf.last_avg), global_step=epoch)</span><br><span class="line">            writer.add_summary(make_summary(<span class="hljs-string">'validation_statistics/loss_class'</span>, val_loss_class.last_avg), global_step=epoch)</span><br></pre></td></tr></table></figure></p>
+
+        </div>
+        
+            <ul class="post-copyright">
+            <li><strong>本文标题：</strong><a href="http://huaxuan0720.github.io/2019/05/22/Note13-YOLOv3-part06/">YOLOv3源码阅读：train.py</a></li>
+            <li><strong>本文作者：</strong><a href="http://huaxuan0720.github.io">Da Vinci</a></li>
+            <li><strong>本文链接：</strong><a href="http://huaxuan0720.github.io/2019/05/22/Note13-YOLOv3-part06/">http://huaxuan0720.github.io/2019/05/22/Note13-YOLOv3-part06/</a></li>
+            <li><strong>发布时间：</strong>2019-05-22</li>
+            <li><strong>版权声明：</strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
+            </li>
+            </ul>
+        
+        
+        <hr style="height:1px;margin:1rem 0">
+        <div class="level is-size-7 is-uppercase">
+            <div class="level-start">
+                <div class="level-item">
+                    <i class="fas fa-tags has-text-grey"></i>&nbsp;
+                    <a class="has-link-grey -link" href="/tags/YOLOv3/">YOLOv3</a>,&nbsp;<a class="has-link-grey -link" href="/tags/深度学习/">深度学习</a>,&nbsp;<a class="has-link-grey -link" href="/tags/目标检测/">目标检测</a>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+    </div>
+</div>
+
+
+
+<div class="card">
+    <div class="card-content">
+        <h3 class="menu-label has-text-centered">Like this article? Support the author with</h3>
+        <div class="buttons is-centered">
+            
+                
+<a class="button is-info donate">
+    <span class="icon is-small">
+        <i class="fab fa-alipay"></i>
+    </span>
+    <span>Alipay</span>
+    <div class="qrcode"><img src="/images/alipay.jpg" alt="Alipay"></div>
+</a>
+
+                
+                
+<a class="button is-success donate">
+    <span class="icon is-small">
+        <i class="fab fa-weixin"></i>
+    </span>
+    <span>Wechat</span>
+    <div class="qrcode"><img src="/images/wechat.jpg" alt="Wechat"></div>
+</a>
+
+                
+        </div>
+    </div>
+</div>
+
+
+
+<div class="card card-transparent">
+    <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        <div class="level-start">
+            <a class="level level-item has-link-grey  article-nav-prev" href="/2019/05/24/Note14-ConvBackProp-part1/">
+                <i class="level-item fas fa-chevron-left"></i>
+                <span class="level-item">步长stride为1的二维卷积方法的反向传播算法</span>
+            </a>
+        </div>
+        
+        
+        <div class="level-end">
+            <a class="level level-item has-link-grey  article-nav-next" href="/2019/05/22/Note13-YOLOv3-part05/">
+                <span class="level-item">YOLOv3源码阅读：nms_utils.py</span>
+                <i class="level-item fas fa-chevron-right"></i>
+            </a>
+        </div>
+        
+    </div>
+</div>
+
+
+
+<div class="card">
+    <div class="card-content">
+        <h3 class="title is-5 has-text-weight-normal">Comments</h3>
+        
+<div id="valine-thread" class="content"></div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+<script>
+    new Valine({
+        el: '#valine-thread' ,
+        notify: true,
+        verify: false,
+        app_id: 'iccwxYBr9y70NgcI4taslyB9-gzGzoHsz',
+        app_key: 'ksGgGN0AeLXQQ1HfOy0mCrM0',
+        placeholder: 'xxxxxxxx'
+    });
+</script>
+
+    </div>
+</div>
+
+</div>
+                
+
+
+
+
+<div class="column is-4-tablet is-4-desktop is-3-widescreen  has-order-1 column-left ">
+    
+        
+<div class="card widget">
+    <div class="card-content">
+        <nav class="level" style="margin-bottom:1rem">
+            <div class="level-item has-text-centered">
+                <div>
+                    
+                        <img class="image is-96x96 has-mb-6" src="/images/icon.jpg" alt="Da Vinci">
+                    
+                    
+                    <p class="is-size-4 is-block">
+                        Da Vinci
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-block">
+                        A Student
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-flex is-flex-center has-text-grey">
+                        <i class="fas fa-map-marker-alt has-mr-7"></i>
+                        <span>Hangzhou Zhejiang, China</span>
+                    </p>
+                    
+                </div>
+            </div>
+        </nav>
+        <nav class="level menu-list is-mobile" style="margin-bottom:1rem">
+            <div class="level-item has-text-centered is-marginless">
+                <a href="/archives/">
+                    <p class="heading">
+                        Posts
+                    </p>
+                    <p class="title has-text-weight-normal">
+                        26
+                    </p>
+                </a>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <a href="/categories/">
+                    <p class="heading">
+                        Categories
+                    </p>
+                    <p class="title has-text-weight-normal">
+                        3
+                    </p>
+                </a>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <a href="/tags/">
+                    <p class="heading">
+                        Tags
+                    </p>
+                    <p class="title has-text-weight-normal">
+                        21
+                    </p>
+                </a>
+            </div>
+        </nav>
+        <div class="level">
+            <a class="level-item button is-link is-rounded" href="https://github.com/huaxuan0720" target="_blank">
+                <i class="fab fa-github"></i>&nbsp;&nbsp;Follow</a>
+        </div>
+        
+        
+        <div class="level is-mobile">
+            
+            <a class="level-item button is-white is-marginless" target="_blank" title="Github" href="https://github.com/huaxuan0720">
+                
+                <i class="fab fa-github"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" title="Facebook" href="/">
+                
+                <i class="fab fa-facebook"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" title="Twitter" href="/">
+                
+                <i class="fab fa-twitter"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" title="RSS" href="/">
+                
+                <i class="fas fa-rss"></i>
+                
+            </a>
+            
+        </div>
+        
+    </div>
+</div>
+
+    
+        
+<div class="card widget column-left is-sticky" id="toc">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                Catalogue
+            </h3>
+            <ul class="menu-list"><li>
+        <a class="is-flex" href="#一yolo简介">
+        <span class="has-mr-6">1</span>
+        <span>一、YOLO简介</span>
+        </a></li><li>
+        <a class="is-flex" href="#二代码和注释">
+        <span class="has-mr-6">2</span>
+        <span>二、代码和注释</span>
+        </a></li></ul>
+        </div>
+    </div>
+</div>
+
+
+    
+    
+        <div class="column-right-shadow is-hidden-widescreen ">
+        
+        </div>
+    
+</div>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
+    <div class="container">
+        <div class="level">
+            <div class="level-start has-text-centered-mobile">
+                <a class="footer-logo is-block has-mb-6" href="/">
+                
+                    <img src="/images/favicon.svg" alt="YOLOv3源码阅读：train.py" height="28">
+                
+                </a>
+                <p class="is-size-7">
+                &copy; 2019 Da Vinci&nbsp;
+                Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> & <a href="http://github.com/ppoffice/hexo-theme-icarus" target="_blank">Icarus</a>
+                
+                <br>
+                <span id="busuanzi_container_site_uv">
+                Visited by <span id="busuanzi_value_site_uv">0</span> users
+                </span>
+                
+                </p>
+            </div>
+            <div class="level-end">
+            
+                <div class="field has-addons is-flex-center-mobile has-mt-5-mobile is-flex-wrap is-flex-middle">
+                
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" title="CC BY-NC-SA 4.0" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                        
+                        <i class="fab fa-creative-commons"></i>&nbsp;<i class="fab fa-creative-commons-by"></i>&nbsp;<i class="fab fa-creative-commons-nc"></i>&nbsp;<i class="fab fa-creative-commons-sa"></i>&nbsp;
+                        
+                    </a>
+                </p>
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" title="Xuan Hua&#39;s GitHub" href="https://www.github.com/huaxuan0720">
+                        
+                        <i class="fab fa-github"></i>&nbsp;
+                        
+                    </a>
+                </p>
+                
+                </div>
+            
+            </div>
+        </div>
+    </div>
+</footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
+<script>moment.locale("en");</script>
+
+
+    
+    
+    
+    <script src="/js/animation.js"></script>
+    
+
+    
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
+    <script src="/js/gallery.js" defer></script>
+    
+
+    
+    
+
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
+            my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        });
+    });
+</script>
+
+
+    
+    
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    MathJax.Hub.Config({
+        'HTML-CSS': {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+});
+</script>
+
+    
+    
+
+<a id="back-to-top" title="Back to Top" href="javascript:;">
+    <i class="fas fa-chevron-up"></i>
+</a>
+<script src="/js/back-to-top.js" defer></script>
+
+
+    
+    
+
+    
+    
+    
+    
+
+    
+    
+    
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
+    <script src="/js/clipboard.js" defer></script>
+    
+
+    
+    
+    
+
+    
+
+
+<script src="/js/main.js" defer></script>
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="Type something...">
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: 'Posts',
+                PAGES: 'Pages',
+                CATEGORIES: 'Categories',
+                TAGS: 'Tags',
+                UNTITLED: '(Untitled)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script src="/js/insight.js" defer></script>
+<link rel="stylesheet" href="/css/search.css">
+<link rel="stylesheet" href="/css/insight.css">
+    
+</body>
+</html>
