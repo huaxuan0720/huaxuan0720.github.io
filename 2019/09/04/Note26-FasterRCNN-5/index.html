@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+<title>Faster R-CNN源码阅读之五：Faster R-CNN/lib/rpn_msr/proposal_layer_tf.py - Welcome to My Blogs</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+    <meta name="description" content="一、介绍    本demo由Faster R-CNN官方提供，我只是在官方的代码上增加了注释，一方面方便我自己学习，另一方面贴出来和大家一起交流。    该文件中的函数的主要目的是通过将估计的边界框变换应用于一组常规框（称为“anchors”）来输出目标检测proposals。">
+<meta name="keywords" content="深度学习,目标检测,FasterRCNN">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Faster R-CNN源码阅读之五：Faster R-CNN&#x2F;lib&#x2F;rpn_msr&#x2F;proposal_layer_tf.py">
+<meta property="og:url" content="http://huaxuan0720.github.io/2019/09/04/Note26-FasterRCNN-5/index.html">
+<meta property="og:site_name" content="Welcome to My Blogs">
+<meta property="og:description" content="一、介绍    本demo由Faster R-CNN官方提供，我只是在官方的代码上增加了注释，一方面方便我自己学习，另一方面贴出来和大家一起交流。    该文件中的函数的主要目的是通过将估计的边界框变换应用于一组常规框（称为“anchors”）来输出目标检测proposals。">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://huaxuan0720.github.io/gallery/DeepLearning.jpg">
+<meta property="og:updated_time" content="2019-09-04T05:10:00.411Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Faster R-CNN源码阅读之五：Faster R-CNN&#x2F;lib&#x2F;rpn_msr&#x2F;proposal_layer_tf.py">
+<meta name="twitter:description" content="一、介绍    本demo由Faster R-CNN官方提供，我只是在官方的代码上增加了注释，一方面方便我自己学习，另一方面贴出来和大家一起交流。    该文件中的函数的主要目的是通过将估计的边界框变换应用于一组常规框（称为“anchors”）来输出目标检测proposals。">
+<meta name="twitter:image" content="http://huaxuan0720.github.io/gallery/DeepLearning.jpg">
+
+
+
+
+
+
+
+<link rel="icon" href="/images/favicon.svg">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/github-gist.css">
+
+
+    
+    
+    
+    <style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
+    
+
+    
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css">
+    
+
+    
+    
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css">
+
+
+    
+    
+    
+    
+
+<link rel="stylesheet" href="/css/back-to-top.css">
+
+
+    
+    
+
+    
+    
+    
+    
+
+    
+    
+<link rel="stylesheet" href="/css/progressbar.css">
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+
+    
+    
+    
+
+    
+    
+    
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="is-3-column">
+    <nav class="navbar navbar-main">
+    <div class="container">
+        <div class="navbar-brand is-flex-center">
+            <a class="navbar-item navbar-logo" href="/">
+            
+                <img src="/images/favicon.svg" alt="Faster R-CNN源码阅读之五：Faster R-CNN/lib/rpn_msr/proposal_layer_tf.py" height="28">
+            
+            </a>
+        </div>
+        <div class="navbar-menu">
+            
+            <div class="navbar-start">
+                
+                <a class="navbar-item" href="/">主页</a>
+                
+                <a class="navbar-item" href="/archives/">归档</a>
+                
+                <a class="navbar-item" href="/categories/">类别</a>
+                
+                <a class="navbar-item" href="/tags/">标签</a>
+                
+                <a class="navbar-item" href="/about/">关于</a>
+                
+            </div>
+            
+            <div class="navbar-end">
+                
+                    
+                    
+                    <a class="navbar-item" target="_blank" title="Xuan Hua&#39;s GitHub" href="https://www.github.com/huaxuan0720">
+                        
+                        <i class="fab fa-github"></i>
+                        
+                    </a>
+                    
+                
+                
+                <a class="navbar-item is-hidden-tablet catalogue" title="Catalogue" href="javascript:;">
+                    <i class="fas fa-list-ul"></i>
+                </a>
+                
+                
+                <a class="navbar-item search" title="Search" href="javascript:;">
+                    <i class="fas fa-search"></i>
+                </a>
+                
+            </div>
+        </div>
+    </div>
+</nav>
+    
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-8-tablet is-8-desktop is-9-widescreen has-order-2 column-main"><div class="card">
+    
+    <div class="card-image">
+        <span class="image is-7by1">
+            <img class="thumbnail" src="/gallery/DeepLearning.jpg" alt="Faster R-CNN源码阅读之五：Faster R-CNN/lib/rpn_msr/proposal_layer_tf.py">
+        </span>
+    </div>
+    
+    <div class="card-content article ">
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                <i class="fas fa-angle-double-right"></i>Faster R-CNN源码阅读之五：Faster R-CNN/lib/rpn_msr/proposal_layer_tf.py
+            
+        </h1>
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2019-09-04T08:27:40.000Z"><i class="far fa-calendar-alt">&nbsp;</i>2019-09-04</time>
+                
+                
+                <div class="level-item">
+                <i class="far fa-folder-open has-text-grey"></i>&nbsp;
+                <a class="has-link-grey -link" href="/categories/目标检测/">目标检测</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    <i class="far fa-clock"></i>&nbsp;
+                    
+                    
+                    12 minutes read (About 1779 words)
+                </span>
+                
+                
+                <span class="level-item has-text-grey" id="busuanzi_container_page_pv">
+                    <i class="far fa-eye"></i>
+                    <span id="busuanzi_value_page_pv">0</span> visits
+                </span>
+                
+            </div>
+        </div>
+        
+        <div class="content">
+            <h5 id="一介绍">一、介绍</h5>
+<p>   本demo由Faster R-CNN官方提供，我只是在官方的代码上增加了注释，一方面方便我自己学习，另一方面贴出来和大家一起交流。<br>
+   该文件中的函数的主要目的是通过将估计的边界框变换应用于一组常规框（称为“anchors”）来输出目标检测proposals。</p>
+<a id="more"></a>
+<h5 id="二代码以及注释">二、代码以及注释</h5>
+<figure class="highlight python hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># -*- coding:utf-8 -*-</span></span><br><span class="line"><span class="hljs-comment"># --------------------------------------------------------</span></span><br><span class="line"><span class="hljs-comment"># Faster R-CNN</span></span><br><span class="line"><span class="hljs-comment"># Copyright (c) 2015 Microsoft</span></span><br><span class="line"><span class="hljs-comment"># Licensed under The MIT License [see LICENSE for details]</span></span><br><span class="line"><span class="hljs-comment"># Written by Ross Girshick and Sean Bell</span></span><br><span class="line"><span class="hljs-comment"># --------------------------------------------------------</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np</span><br><span class="line"><span class="hljs-keyword">import</span> yaml</span><br><span class="line"><span class="hljs-keyword">from</span> fast_rcnn.config <span class="hljs-keyword">import</span> cfg</span><br><span class="line"><span class="hljs-keyword">from</span> generate_anchors <span class="hljs-keyword">import</span> generate_anchors</span><br><span class="line"><span class="hljs-keyword">from</span> fast_rcnn.bbox_transform <span class="hljs-keyword">import</span> bbox_transform_inv, clip_boxes</span><br><span class="line"><span class="hljs-keyword">from</span> fast_rcnn.nms_wrapper <span class="hljs-keyword">import</span> nms</span><br><span class="line"><span class="hljs-keyword">import</span> pdb</span><br><span class="line"></span><br><span class="line">DEBUG = <span class="hljs-literal">False</span></span><br><span class="line"><span class="hljs-string">"""</span></span><br><span class="line"><span class="hljs-string">Outputs object detection proposals by applying estimated bounding-box</span></span><br><span class="line"><span class="hljs-string">transformations to a set of regular boxes (called "anchors").</span></span><br><span class="line"><span class="hljs-string">"""</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">proposal_layer</span><span class="hljs-params">(rpn_cls_prob_reshape, rpn_bbox_pred, im_info, cfg_key, _feat_stride=[<span class="hljs-number">16</span>, ],</span></span></span><br><span class="line"><span class="hljs-function"><span class="hljs-params">                   anchor_scales=[<span class="hljs-number">8</span>, <span class="hljs-number">16</span>, <span class="hljs-number">32</span>])</span>:</span></span><br><span class="line">    <span class="hljs-comment"># Algorithm:</span></span><br><span class="line">    <span class="hljs-comment">#</span></span><br><span class="line">    <span class="hljs-comment"># for each (H, W) location i</span></span><br><span class="line">    <span class="hljs-comment">#   generate A anchor boxes centered on cell i</span></span><br><span class="line">    <span class="hljs-comment">#   apply predicted bbox deltas at cell i to each of the A anchors</span></span><br><span class="line">    <span class="hljs-comment"># clip predicted boxes to image</span></span><br><span class="line">    <span class="hljs-comment"># remove predicted boxes with either height or width &lt; threshold</span></span><br><span class="line">    <span class="hljs-comment"># sort all (proposal, score) pairs by score from highest to lowest</span></span><br><span class="line">    <span class="hljs-comment"># take top pre_nms_topN proposals before NMS</span></span><br><span class="line">    <span class="hljs-comment"># apply NMS with threshold 0.7 to remaining proposals</span></span><br><span class="line">    <span class="hljs-comment"># take after_nms_topN proposals after NMS</span></span><br><span class="line">    <span class="hljs-comment"># return the top proposals (-&gt; RoIs top, scores top)</span></span><br><span class="line">    <span class="hljs-comment"># layer_params = yaml.load(self.param_str_)</span></span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment"># 算法</span></span><br><span class="line">    <span class="hljs-comment"># 对(H, W)的每个位置i：</span></span><br><span class="line">    <span class="hljs-comment">#    在i的位置生成A个anchor boxes</span></span><br><span class="line">    <span class="hljs-comment">#    对位置i的每个anchor使用预测的bboxdeltas</span></span><br><span class="line">    <span class="hljs-comment"># 裁剪预测框</span></span><br><span class="line">    <span class="hljs-comment"># 移除宽度或者高度小于某一阈值的预测框</span></span><br><span class="line">    <span class="hljs-comment"># 按从最高到最低的分数对所有（提案，分数）对进行排序</span></span><br><span class="line">    <span class="hljs-comment"># 在NMS之前获取top pre_nms_topN个proposals</span></span><br><span class="line">    <span class="hljs-comment"># 对其余proposals应用阈值为0.7的NMS</span></span><br><span class="line">    <span class="hljs-comment"># NMS之后取出after_nms_topN个proposals</span></span><br><span class="line">    <span class="hljs-comment"># 取出最前面的proposals  (-&gt; RoIs top, scores top)</span></span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment"># 获取若干anchors，这些anchors并没有加上偏移量，shape：[n, 4](此处n为anchors的个数)</span></span><br><span class="line">    _anchors = generate_anchors(scales=np.array(anchor_scales))</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment"># 获取前面生成anchors的个数</span></span><br><span class="line">    _num_anchors = _anchors.shape[<span class="hljs-number">0</span>]</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment"># [N, H, W, C]通道顺序更改为[N, C, H, W]</span></span><br><span class="line">    rpn_cls_prob_reshape = np.transpose(rpn_cls_prob_reshape, [<span class="hljs-number">0</span>, <span class="hljs-number">3</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>])</span><br><span class="line">    rpn_bbox_pred = np.transpose(rpn_bbox_pred, [<span class="hljs-number">0</span>, <span class="hljs-number">3</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>])</span><br><span class="line">    <span class="hljs-comment"># rpn_cls_prob_reshape = np.transpose(np.reshape(rpn_cls_prob_reshape,[1,rpn_cls_prob_reshape.shape[0],rpn_cls_prob_reshape.shape[1],rpn_cls_prob_reshape.shape[2]]),[0,3,2,1])</span></span><br><span class="line">    <span class="hljs-comment"># rpn_bbox_pred = np.transpose(rpn_bbox_pred,[0,3,2,1])</span></span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment"># 获取第一张图片的尺寸等信息</span></span><br><span class="line">    im_info = im_info[<span class="hljs-number">0</span>]</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment"># batch size必须为1，因为每次只能feed一张图片进入网络</span></span><br><span class="line">    <span class="hljs-keyword">assert</span> rpn_cls_prob_reshape.shape[<span class="hljs-number">0</span>] == <span class="hljs-number">1</span>, \</span><br><span class="line">        <span class="hljs-string">'Only single item batches are supported'</span></span><br><span class="line">    <span class="hljs-comment"># cfg_key = str(self.phase) # either 'TRAIN' or 'TEST'</span></span><br><span class="line">    <span class="hljs-comment"># cfg_key = 'TEST'</span></span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment"># 以下代码获取配置信息， 包括nms的信息</span></span><br><span class="line">    pre_nms_topN = cfg[cfg_key].RPN_PRE_NMS_TOP_N</span><br><span class="line">    post_nms_topN = cfg[cfg_key].RPN_POST_NMS_TOP_N</span><br><span class="line">    nms_thresh = cfg[cfg_key].RPN_NMS_THRESH</span><br><span class="line">    min_size = cfg[cfg_key].RPN_MIN_SIZE</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment"># the first set of _num_anchors channels are bg probs</span></span><br><span class="line">    <span class="hljs-comment"># the second set are the fg probs, which we want</span></span><br><span class="line">    <span class="hljs-comment"># 按照channel通道取出RPN预测的框属于前景的分数</span></span><br><span class="line">    <span class="hljs-comment"># 请注意，在18个channel中，前9个是框属于背景的概率，后9个才是属于前景的概率（即是一个物体目标的概率）</span></span><br><span class="line">    scores = rpn_cls_prob_reshape[:, _num_anchors:, :, :]</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment"># 重新取个变量名，bbox_deltas代表了RPN网络输出的各个框的变换信息</span></span><br><span class="line">    bbox_deltas = rpn_bbox_pred</span><br><span class="line">    <span class="hljs-comment"># im_info = bottom[2].data[0, :]</span></span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment"># 调试时的信息输出，下同</span></span><br><span class="line">    <span class="hljs-keyword">if</span> DEBUG:</span><br><span class="line">        <span class="hljs-keyword">print</span> <span class="hljs-string">'im_size: (&#123;&#125;, &#123;&#125;)'</span>.format(im_info[<span class="hljs-number">0</span>], im_info[<span class="hljs-number">1</span>])</span><br><span class="line">        <span class="hljs-keyword">print</span> <span class="hljs-string">'scale: &#123;&#125;'</span>.format(im_info[<span class="hljs-number">2</span>])</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment"># 1. Generate proposals from bbox deltas and shifted anchors</span></span><br><span class="line">    <span class="hljs-comment"># 1. 从bbox deltas和平移之后的anchors上生成proposals</span></span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment"># 由于之前将通道顺序改为了[N, C, H, W]，因此直接获取最后的两个值对应于height和width</span></span><br><span class="line">    height, width = scores.shape[<span class="hljs-number">-2</span>:]</span><br><span class="line"></span><br><span class="line">    <span class="hljs-keyword">if</span> DEBUG:</span><br><span class="line">        <span class="hljs-keyword">print</span> <span class="hljs-string">'score map size: &#123;&#125;'</span>.format(scores.shape)</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment"># Enumerate all shifts</span></span><br><span class="line">    <span class="hljs-comment"># 枚举所有的平移量</span></span><br><span class="line">    <span class="hljs-comment"># 产生所有的x的集合</span></span><br><span class="line">    shift_x = np.arange(<span class="hljs-number">0</span>, width) * _feat_stride</span><br><span class="line">    <span class="hljs-comment"># 产生所有的y的集合</span></span><br><span class="line">    shift_y = np.arange(<span class="hljs-number">0</span>, height) * _feat_stride</span><br><span class="line">    <span class="hljs-comment"># 生成网格</span></span><br><span class="line">    shift_x, shift_y = np.meshgrid(shift_x, shift_y)</span><br><span class="line">    <span class="hljs-comment"># 产生所有偏移量</span></span><br><span class="line">    shifts = np.vstack((shift_x.ravel(), shift_y.ravel(),</span><br><span class="line">                        shift_x.ravel(), shift_y.ravel())).transpose()</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment"># Enumerate all shifted anchors:</span></span><br><span class="line">    <span class="hljs-comment">#</span></span><br><span class="line">    <span class="hljs-comment"># add A anchors (1, A, 4) to</span></span><br><span class="line">    <span class="hljs-comment"># cell K shifts (K, 1, 4) to get</span></span><br><span class="line">    <span class="hljs-comment"># shift anchors (K, A, 4)</span></span><br><span class="line">    <span class="hljs-comment"># reshape to (K*A, 4) shifted anchors</span></span><br><span class="line">    <span class="hljs-comment"># 枚举所有加上偏移量之后的anchors的坐标</span></span><br><span class="line">    <span class="hljs-comment"># 因为生成的anchors包含左上角和右下角的两个坐标（相对于坐标原点0）</span></span><br><span class="line">    <span class="hljs-comment"># 因此上述的所有偏移量第三列和第一列相同，第四列和第二列相同</span></span><br><span class="line">    <span class="hljs-comment"># 加上anchors之后就获得了所有的偏移之后的初始proposals</span></span><br><span class="line">    A = _num_anchors</span><br><span class="line">    K = shifts.shape[<span class="hljs-number">0</span>]</span><br><span class="line">    anchors = _anchors.reshape((<span class="hljs-number">1</span>, A, <span class="hljs-number">4</span>)) + \</span><br><span class="line">              shifts.reshape((<span class="hljs-number">1</span>, K, <span class="hljs-number">4</span>)).transpose((<span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">2</span>))</span><br><span class="line">    anchors = anchors.reshape((K * A, <span class="hljs-number">4</span>))</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment"># Transpose and reshape predicted bbox transformations to get them</span></span><br><span class="line">    <span class="hljs-comment"># into the same order as the anchors:</span></span><br><span class="line">    <span class="hljs-comment">#</span></span><br><span class="line">    <span class="hljs-comment"># bbox deltas will be (1, 4 * A, H, W) format</span></span><br><span class="line">    <span class="hljs-comment"># transpose to (1, H, W, 4 * A)</span></span><br><span class="line">    <span class="hljs-comment"># reshape to (1 * H * W * A, 4) where rows are ordered by (h, w, a)</span></span><br><span class="line">    <span class="hljs-comment"># in slowest to fastest order</span></span><br><span class="line">    <span class="hljs-comment">#</span></span><br><span class="line">    <span class="hljs-comment"># （上面的a表示通道数目，也常常使用c表示通道数目）</span></span><br><span class="line">    <span class="hljs-comment"># 转置并重新整理（reshape）预测的bbox变换，以便将其和anchors保持统一顺序</span></span><br><span class="line">    bbox_deltas = bbox_deltas.transpose((<span class="hljs-number">0</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">1</span>)).reshape((<span class="hljs-number">-1</span>, <span class="hljs-number">4</span>))</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment"># Same story for the scores:</span></span><br><span class="line">    <span class="hljs-comment">#</span></span><br><span class="line">    <span class="hljs-comment"># scores are (1, A, H, W) format</span></span><br><span class="line">    <span class="hljs-comment"># transpose to (1, H, W, A)</span></span><br><span class="line">    <span class="hljs-comment"># reshape to (1 * H * W * A, 1) where rows are ordered by (h, w, a)</span></span><br><span class="line">    <span class="hljs-comment"># 和上面的bbox deltas同理</span></span><br><span class="line">    scores = scores.transpose((<span class="hljs-number">0</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">1</span>)).reshape((<span class="hljs-number">-1</span>, <span class="hljs-number">1</span>))</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment"># Convert anchors into proposals via bbox transformations</span></span><br><span class="line">    <span class="hljs-comment"># 在这里结合RPN的输出变换初始框的坐标，得到第一次变换坐标后的proposals</span></span><br><span class="line">    proposals = bbox_transform_inv(anchors, bbox_deltas)</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment"># 2. clip predicted boxes to image</span></span><br><span class="line">    <span class="hljs-comment"># 2. 在这里将超出图像边界的proposals进行边界裁剪，使之在图像边界之内</span></span><br><span class="line">    proposals = clip_boxes(proposals, im_info[:<span class="hljs-number">2</span>])</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment"># 3. remove predicted boxes with either height or width &lt; threshold</span></span><br><span class="line">    <span class="hljs-comment"># (<span class="hljs-doctag">NOTE:</span> convert min_size to input image scale stored in im_info[2])</span></span><br><span class="line">    <span class="hljs-comment"># 3. 去除那些宽度或者高度小于一定阈值的预测框，并返回符合条件的预测框的索引</span></span><br><span class="line">    <span class="hljs-comment"># （注：将min_size转换为存储在im_info [2]中的输入图像比例）</span></span><br><span class="line">    keep = _filter_boxes(proposals, min_size * im_info[<span class="hljs-number">2</span>])</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment"># 保留符合条件的proposals和scores</span></span><br><span class="line">    proposals = proposals[keep, :]</span><br><span class="line">    scores = scores[keep]</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment"># 4. sort all (proposal, score) pairs by score from highest to lowest</span></span><br><span class="line">    <span class="hljs-comment"># 4. 按照score从大到小的顺序给（proposals，score）对进行排序</span></span><br><span class="line">    <span class="hljs-comment"># 5. take top pre_nms_topN (e.g. 6000)</span></span><br><span class="line">    <span class="hljs-comment"># 5. 取出score最高的pre_nms_topN个（proposals，score）对</span></span><br><span class="line">    order = scores.ravel().argsort()[::<span class="hljs-number">-1</span>]</span><br><span class="line">    <span class="hljs-keyword">if</span> pre_nms_topN &gt; <span class="hljs-number">0</span>:</span><br><span class="line">        order = order[:pre_nms_topN]</span><br><span class="line">    proposals = proposals[order, :]</span><br><span class="line">    scores = scores[order]</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment"># 6. apply nms (e.g. threshold = 0.7)</span></span><br><span class="line">    <span class="hljs-comment"># 6. 对（proposals，score）对应用nms</span></span><br><span class="line">    <span class="hljs-comment"># 7. take after_nms_topN (e.g. 300)</span></span><br><span class="line">    <span class="hljs-comment"># 7. 取出后after_nms_topN个（proposals，score）对</span></span><br><span class="line">    <span class="hljs-comment"># 8. return the top proposals (-&gt; RoIs top)</span></span><br><span class="line">    <span class="hljs-comment"># 8. 返回最上面的N个proposals</span></span><br><span class="line">    keep = nms(np.hstack((proposals, scores)), nms_thresh)</span><br><span class="line">    <span class="hljs-keyword">if</span> post_nms_topN &gt; <span class="hljs-number">0</span>:</span><br><span class="line">        keep = keep[:post_nms_topN]</span><br><span class="line">    proposals = proposals[keep, :]</span><br><span class="line">    scores = scores[keep]</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment"># Output rois blob</span></span><br><span class="line">    <span class="hljs-comment"># Our RPN implementation only supports a single input image, so all</span></span><br><span class="line">    <span class="hljs-comment"># batch inds are 0</span></span><br><span class="line">    <span class="hljs-comment"># 返回rois blob。由于batch size为1，因此所有的batch inds均为0</span></span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment"># batch inds，全为0的仅为1列的numpy数组</span></span><br><span class="line">    batch_inds = np.zeros((proposals.shape[<span class="hljs-number">0</span>], <span class="hljs-number">1</span>), dtype=np.float32)</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment"># 横向连接batch inds和proposals</span></span><br><span class="line">    blob = np.hstack((batch_inds, proposals.astype(np.float32, copy=<span class="hljs-literal">False</span>)))</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment"># 返回</span></span><br><span class="line">    <span class="hljs-keyword">return</span> blob</span><br><span class="line">    <span class="hljs-comment"># top[0].reshape(*(blob.shape))</span></span><br><span class="line">    <span class="hljs-comment"># top[0].data[...] = blob</span></span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment"># [Optional] output scores blob</span></span><br><span class="line">    <span class="hljs-comment"># if len(top) &gt; 1:</span></span><br><span class="line">    <span class="hljs-comment">#    top[1].reshape(*(scores.shape))</span></span><br><span class="line">    <span class="hljs-comment">#    top[1].data[...] = scores</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">_filter_boxes</span><span class="hljs-params">(boxes, min_size)</span>:</span></span><br><span class="line">    <span class="hljs-string">"""Remove all boxes with any side smaller than min_size."""</span></span><br><span class="line">    <span class="hljs-comment"># 去除高度或者宽度小于某一特定值的boxes</span></span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment"># 计算高度和宽度</span></span><br><span class="line">    ws = boxes[:, <span class="hljs-number">2</span>] - boxes[:, <span class="hljs-number">0</span>] + <span class="hljs-number">1</span></span><br><span class="line">    hs = boxes[:, <span class="hljs-number">3</span>] - boxes[:, <span class="hljs-number">1</span>] + <span class="hljs-number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment"># 计算高度和宽度均高于某一值的boxes的索引</span></span><br><span class="line">    keep = np.where((ws &gt;= min_size) &amp; (hs &gt;= min_size))[<span class="hljs-number">0</span>]</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment"># 返回索引数组</span></span><br><span class="line">    <span class="hljs-keyword">return</span> keep</span><br></pre></td></tr></table></figure>
+
+        </div>
+        
+            <ul class="post-copyright">
+            <li><strong>本文标题：</strong><a href="http://huaxuan0720.github.io/2019/09/04/Note26-FasterRCNN-5/">Faster R-CNN源码阅读之五：Faster R-CNN/lib/rpn_msr/proposal_layer_tf.py</a></li>
+            <li><strong>本文作者：</strong><a href="http://huaxuan0720.github.io">Da Vinci</a></li>
+            <li><strong>本文链接：</strong><a href="http://huaxuan0720.github.io/2019/09/04/Note26-FasterRCNN-5/">http://huaxuan0720.github.io/2019/09/04/Note26-FasterRCNN-5/</a></li>
+            <li><strong>发布时间：</strong>2019-09-04</li>
+            <li><strong>版权声明：</strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
+            </li>
+            </ul>
+        
+        
+        <hr style="height:1px;margin:1rem 0">
+        <div class="level is-size-7 is-uppercase">
+            <div class="level-start">
+                <div class="level-item">
+                    <i class="fas fa-tags has-text-grey"></i>&nbsp;
+                    <a class="has-link-grey -link" href="/tags/FasterRCNN/">FasterRCNN</a>,&nbsp;<a class="has-link-grey -link" href="/tags/深度学习/">深度学习</a>,&nbsp;<a class="has-link-grey -link" href="/tags/目标检测/">目标检测</a>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+    </div>
+</div>
+
+
+
+<div class="card">
+    <div class="card-content">
+        <h3 class="menu-label has-text-centered">Like this article? Support the author with</h3>
+        <div class="buttons is-centered">
+            
+                
+<a class="button is-info donate">
+    <span class="icon is-small">
+        <i class="fab fa-alipay"></i>
+    </span>
+    <span>Alipay</span>
+    <div class="qrcode"><img src="/images/alipay.jpg" alt="Alipay"></div>
+</a>
+
+                
+                
+<a class="button is-success donate">
+    <span class="icon is-small">
+        <i class="fab fa-weixin"></i>
+    </span>
+    <span>Wechat</span>
+    <div class="qrcode"><img src="/images/wechat.jpg" alt="Wechat"></div>
+</a>
+
+                
+        </div>
+    </div>
+</div>
+
+
+
+<div class="card card-transparent">
+    <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        <div class="level-start">
+            <a class="level level-item has-link-grey  article-nav-prev" href="/2019/09/04/Note26-FasterRCNN-6/">
+                <i class="level-item fas fa-chevron-left"></i>
+                <span class="level-item">Faster R-CNN源码阅读之六：Faster R-CNN/lib/fast_rcnn/bbox_transform.py</span>
+            </a>
+        </div>
+        
+        
+        <div class="level-end">
+            <a class="level level-item has-link-grey  article-nav-next" href="/2019/09/04/Note26-FasterRCNN-4/">
+                <span class="level-item">Faster R-CNN源码阅读之四：Faster R-CNN/lib/rpn_msr/generate_anchors.py</span>
+                <i class="level-item fas fa-chevron-right"></i>
+            </a>
+        </div>
+        
+    </div>
+</div>
+
+
+
+<div class="card">
+    <div class="card-content">
+        <h3 class="title is-5 has-text-weight-normal">Comments</h3>
+        
+<div id="valine-thread" class="content"></div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+<script>
+    new Valine({
+        el: '#valine-thread' ,
+        notify: true,
+        verify: false,
+        app_id: 'iccwxYBr9y70NgcI4taslyB9-gzGzoHsz',
+        app_key: 'ksGgGN0AeLXQQ1HfOy0mCrM0',
+        placeholder: 'xxxxxxxx'
+    });
+</script>
+
+    </div>
+</div>
+
+</div>
+                
+
+
+
+
+<div class="column is-4-tablet is-4-desktop is-3-widescreen  has-order-1 column-left ">
+    
+        
+<div class="card widget">
+    <div class="card-content">
+        <nav class="level" style="margin-bottom:1rem">
+            <div class="level-item has-text-centered">
+                <div>
+                    
+                        <img class="image is-96x96 has-mb-6" src="/images/icon.jpg" alt="Da Vinci">
+                    
+                    
+                    <p class="is-size-4 is-block">
+                        Da Vinci
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-block">
+                        A Student
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-flex is-flex-center has-text-grey">
+                        <i class="fas fa-map-marker-alt has-mr-7"></i>
+                        <span>Hangzhou Zhejiang, China</span>
+                    </p>
+                    
+                </div>
+            </div>
+        </nav>
+        <nav class="level menu-list is-mobile" style="margin-bottom:1rem">
+            <div class="level-item has-text-centered is-marginless">
+                <a href="/archives/">
+                    <p class="heading">
+                        Posts
+                    </p>
+                    <p class="title has-text-weight-normal">
+                        40
+                    </p>
+                </a>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <a href="/categories/">
+                    <p class="heading">
+                        Categories
+                    </p>
+                    <p class="title has-text-weight-normal">
+                        3
+                    </p>
+                </a>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <a href="/tags/">
+                    <p class="heading">
+                        Tags
+                    </p>
+                    <p class="title has-text-weight-normal">
+                        22
+                    </p>
+                </a>
+            </div>
+        </nav>
+        <div class="level">
+            <a class="level-item button is-link is-rounded" href="https://github.com/huaxuan0720" target="_blank">
+                <i class="fab fa-github"></i>&nbsp;&nbsp;Follow</a>
+        </div>
+        
+        
+        <div class="level is-mobile">
+            
+            <a class="level-item button is-white is-marginless" target="_blank" title="Github" href="https://github.com/huaxuan0720">
+                
+                <i class="fab fa-github"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" title="Facebook" href="/">
+                
+                <i class="fab fa-facebook"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" title="Twitter" href="/">
+                
+                <i class="fab fa-twitter"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" title="RSS" href="/">
+                
+                <i class="fas fa-rss"></i>
+                
+            </a>
+            
+        </div>
+        
+    </div>
+</div>
+
+    
+        
+<div class="card widget column-left is-sticky" id="toc">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                Catalogue
+            </h3>
+            <ul class="menu-list"><li>
+        <a class="is-flex" href="#一介绍">
+        <span class="has-mr-6">1</span>
+        <span>一、介绍</span>
+        </a></li><li>
+        <a class="is-flex" href="#二代码以及注释">
+        <span class="has-mr-6">2</span>
+        <span>二、代码以及注释</span>
+        </a></li></ul>
+        </div>
+    </div>
+</div>
+
+
+    
+    
+        <div class="column-right-shadow is-hidden-widescreen ">
+        
+        </div>
+    
+</div>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
+    <div class="container">
+        <div class="level">
+            <div class="level-start has-text-centered-mobile">
+                <a class="footer-logo is-block has-mb-6" href="/">
+                
+                    <img src="/images/favicon.svg" alt="Faster R-CNN源码阅读之五：Faster R-CNN/lib/rpn_msr/proposal_layer_tf.py" height="28">
+                
+                </a>
+                <p class="is-size-7">
+                &copy; 2019 Da Vinci&nbsp;
+                Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> & <a href="http://github.com/ppoffice/hexo-theme-icarus" target="_blank">Icarus</a>
+                
+                <br>
+                <span id="busuanzi_container_site_uv">
+                Visited by <span id="busuanzi_value_site_uv">0</span> users
+                </span>
+                
+                </p>
+            </div>
+            <div class="level-end">
+            
+                <div class="field has-addons is-flex-center-mobile has-mt-5-mobile is-flex-wrap is-flex-middle">
+                
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" title="CC BY-NC-SA 4.0" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                        
+                        <i class="fab fa-creative-commons"></i>&nbsp;<i class="fab fa-creative-commons-by"></i>&nbsp;<i class="fab fa-creative-commons-nc"></i>&nbsp;<i class="fab fa-creative-commons-sa"></i>&nbsp;
+                        
+                    </a>
+                </p>
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" title="Xuan Hua&#39;s GitHub" href="https://www.github.com/huaxuan0720">
+                        
+                        <i class="fab fa-github"></i>&nbsp;
+                        
+                    </a>
+                </p>
+                
+                </div>
+            
+            </div>
+        </div>
+    </div>
+</footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
+<script>moment.locale("en");</script>
+
+
+    
+    
+    
+    <script src="/js/animation.js"></script>
+    
+
+    
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
+    <script src="/js/gallery.js" defer></script>
+    
+
+    
+    
+
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
+            my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        });
+    });
+</script>
+
+
+    
+    
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    MathJax.Hub.Config({
+        'HTML-CSS': {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+});
+</script>
+
+    
+    
+
+<a id="back-to-top" title="Back to Top" href="javascript:;">
+    <i class="fas fa-chevron-up"></i>
+</a>
+<script src="/js/back-to-top.js" defer></script>
+
+
+    
+    
+
+    
+    
+    
+    
+
+    
+    
+    
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
+    <script src="/js/clipboard.js" defer></script>
+    
+
+    
+    
+    
+
+    
+
+
+<script src="/js/main.js" defer></script>
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="Type something...">
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: 'Posts',
+                PAGES: 'Pages',
+                CATEGORIES: 'Categories',
+                TAGS: 'Tags',
+                UNTITLED: '(Untitled)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script src="/js/insight.js" defer></script>
+<link rel="stylesheet" href="/css/search.css">
+<link rel="stylesheet" href="/css/insight.css">
+    
+</body>
+</html>

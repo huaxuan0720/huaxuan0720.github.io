@@ -16,7 +16,7 @@
 <meta property="og:description" content="一、PCA    在之前讲述过如何使用PCA以及背后的基本的几何原理。但是并没有给出详细的数学推导，因此，在这里补上PCA的详细数学推导过程。">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://huaxuan0720.github.io/gallery/MachineLearning.jpg">
-<meta property="og:updated_time" content="2019-08-24T14:51:09.360Z">
+<meta property="og:updated_time" content="2019-09-03T14:22:48.639Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="PCA背后的公式推导">
 <meta name="twitter:description" content="一、PCA    在之前讲述过如何使用PCA以及背后的基本的几何原理。但是并没有给出详细的数学推导，因此，在这里补上PCA的详细数学推导过程。">
@@ -166,7 +166,7 @@
             <div class="level-left">
                 <time class="level-item has-text-grey" datetime="2019-08-14T08:56:03.000Z"><i class="far fa-calendar-alt">&nbsp;</i>2019-08-14</time>
                 
-                <time class="level-item has-text-grey is-hidden-mobile" datetime="2019-08-24T14:51:09.360Z"><i class="far fa-calendar-check">&nbsp;</i>2019-08-24</time>
+                <time class="level-item has-text-grey is-hidden-mobile" datetime="2019-09-03T14:22:48.639Z"><i class="far fa-calendar-check">&nbsp;</i>2019-09-03</time>
                 
                 
                 <div class="level-item">
@@ -179,7 +179,7 @@
                     <i class="far fa-clock"></i>&nbsp;
                     
                     
-                    11 minutes read (About 1692 words)
+                    12 minutes read (About 1750 words)
                 </span>
                 
                 
@@ -279,7 +279,8 @@ RS = AS^T S = A
 <h6 id="编码矩阵和解码矩阵的关系">2.编码矩阵和解码矩阵的关系</h6>
 <p>  现在开始，让我们从头开始推导PCA的相关公式。根据我们的经验，线性变换是所有变换中最简单的，因此我们就从最简单的线性变换开始。</p>
 <p>  假设我们的数据矩阵依旧表示成上面的形式，如果我们收集数据维度太多，不便于进一步分析，我们希望可以对数据进行一定的线性压缩，这种压缩是可逆的，存在一个解码矩阵可以将数据还原成原始的数据。</p>
-<p>  我们考虑其中的一个数据向量<span class="math inline">\(x_i\)</span>，<span class="math inline">\(x_i \in \Bbb{R^m}\)</span>。编码压缩之后的数据向量为<span class="math inline">\(c_i\)</span>，<span class="math inline">\(c_i \in \Bbb{R^l}\)</span>，其中<span class="math inline">\(l &lt; m\)</span>。我们可以将这个编码过程表示成一个函数，即<span class="math inline">\(f(x_i) = c_i\)</span>。同时也可以将解码函数表示成一个函数，即</p>
+<p>  我们考虑其中的一个数据向量<span class="math inline">\(x_i\)</span>，<span class="math inline">\(x_i \in \Bbb{R^m}\)</span>。编码压缩之后的数据向量为<span class="math inline">\(c_i\)</span>，<span class="math inline">\(c_i \in \Bbb{R^l}\)</span>，其中<span class="math inline">\(l &lt; m\)</span>。我们可以将这个编码过程表示成一个函数，即<span class="math inline">\(f(x_i) = c_i\)</span>。同时也可以将解码函数表示成一个函数，即<span class="math inline">\(g(c_i)=x_i\)</span>，我们定义解码矩阵为<span class="math inline">\(D\)</span>，<span class="math inline">\(D \in \Bbb{R^{l \times m}}\)</span>即有$g(c_i) = D ; c_i $那么下一步我们就是需要找解码矩阵和加码矩阵的关系。</p>
+<p> </p>
 
         </div>
         
@@ -343,6 +344,13 @@ RS = AS^T S = A
 
 <div class="card card-transparent">
     <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        <div class="level-start">
+            <a class="level level-item has-link-grey  article-nav-prev" href="/2019/09/01/Note26-FasterRCNN-0/">
+                <i class="level-item fas fa-chevron-left"></i>
+                <span class="level-item">Faster R-CNN源码阅读之零：写在前面</span>
+            </a>
+        </div>
         
         
         <div class="level-end">
@@ -421,7 +429,7 @@ RS = AS^T S = A
                         Posts
                     </p>
                     <p class="title has-text-weight-normal">
-                        27
+                        40
                     </p>
                 </a>
             </div>
@@ -441,7 +449,7 @@ RS = AS^T S = A
                         Tags
                     </p>
                     <p class="title has-text-weight-normal">
-                        21
+                        22
                     </p>
                 </a>
             </div>

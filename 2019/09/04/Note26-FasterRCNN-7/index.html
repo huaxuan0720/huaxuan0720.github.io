@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+<title>Faster R-CNN源码阅读之七：Faster R-CNN/lib/rpn_msr/anchor_target_layer_tf.py - Welcome to My Blogs</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+    <meta name="description" content="一、介绍    本demo由Faster R-CNN官方提供，我只是在官方的代码上增加了注释，一方面方便我自己学习，另一方面贴出来和大家一起交流。    该文件中的函数的主要目的是产生anchors并结合gt boxes（ground truth boxes）给这些anchors进行标记labels（前景还是背景），然后生成这些anchors的权重信息，并产生bbox的RPN网络回归结果目标。">
+<meta name="keywords" content="深度学习,目标检测,FasterRCNN">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Faster R-CNN源码阅读之七：Faster R-CNN&#x2F;lib&#x2F;rpn_msr&#x2F;anchor_target_layer_tf.py">
+<meta property="og:url" content="http://huaxuan0720.github.io/2019/09/04/Note26-FasterRCNN-7/index.html">
+<meta property="og:site_name" content="Welcome to My Blogs">
+<meta property="og:description" content="一、介绍    本demo由Faster R-CNN官方提供，我只是在官方的代码上增加了注释，一方面方便我自己学习，另一方面贴出来和大家一起交流。    该文件中的函数的主要目的是产生anchors并结合gt boxes（ground truth boxes）给这些anchors进行标记labels（前景还是背景），然后生成这些anchors的权重信息，并产生bbox的RPN网络回归结果目标。">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://huaxuan0720.github.io/gallery/DeepLearning.jpg">
+<meta property="og:updated_time" content="2019-09-04T05:14:22.542Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Faster R-CNN源码阅读之七：Faster R-CNN&#x2F;lib&#x2F;rpn_msr&#x2F;anchor_target_layer_tf.py">
+<meta name="twitter:description" content="一、介绍    本demo由Faster R-CNN官方提供，我只是在官方的代码上增加了注释，一方面方便我自己学习，另一方面贴出来和大家一起交流。    该文件中的函数的主要目的是产生anchors并结合gt boxes（ground truth boxes）给这些anchors进行标记labels（前景还是背景），然后生成这些anchors的权重信息，并产生bbox的RPN网络回归结果目标。">
+<meta name="twitter:image" content="http://huaxuan0720.github.io/gallery/DeepLearning.jpg">
+
+
+
+
+
+
+
+<link rel="icon" href="/images/favicon.svg">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/github-gist.css">
+
+
+    
+    
+    
+    <style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
+    
+
+    
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css">
+    
+
+    
+    
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css">
+
+
+    
+    
+    
+    
+
+<link rel="stylesheet" href="/css/back-to-top.css">
+
+
+    
+    
+
+    
+    
+    
+    
+
+    
+    
+<link rel="stylesheet" href="/css/progressbar.css">
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+
+    
+    
+    
+
+    
+    
+    
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="is-3-column">
+    <nav class="navbar navbar-main">
+    <div class="container">
+        <div class="navbar-brand is-flex-center">
+            <a class="navbar-item navbar-logo" href="/">
+            
+                <img src="/images/favicon.svg" alt="Faster R-CNN源码阅读之七：Faster R-CNN/lib/rpn_msr/anchor_target_layer_tf.py" height="28">
+            
+            </a>
+        </div>
+        <div class="navbar-menu">
+            
+            <div class="navbar-start">
+                
+                <a class="navbar-item" href="/">主页</a>
+                
+                <a class="navbar-item" href="/archives/">归档</a>
+                
+                <a class="navbar-item" href="/categories/">类别</a>
+                
+                <a class="navbar-item" href="/tags/">标签</a>
+                
+                <a class="navbar-item" href="/about/">关于</a>
+                
+            </div>
+            
+            <div class="navbar-end">
+                
+                    
+                    
+                    <a class="navbar-item" target="_blank" title="Xuan Hua&#39;s GitHub" href="https://www.github.com/huaxuan0720">
+                        
+                        <i class="fab fa-github"></i>
+                        
+                    </a>
+                    
+                
+                
+                <a class="navbar-item is-hidden-tablet catalogue" title="Catalogue" href="javascript:;">
+                    <i class="fas fa-list-ul"></i>
+                </a>
+                
+                
+                <a class="navbar-item search" title="Search" href="javascript:;">
+                    <i class="fas fa-search"></i>
+                </a>
+                
+            </div>
+        </div>
+    </div>
+</nav>
+    
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-8-tablet is-8-desktop is-9-widescreen has-order-2 column-main"><div class="card">
+    
+    <div class="card-image">
+        <span class="image is-7by1">
+            <img class="thumbnail" src="/gallery/DeepLearning.jpg" alt="Faster R-CNN源码阅读之七：Faster R-CNN/lib/rpn_msr/anchor_target_layer_tf.py">
+        </span>
+    </div>
+    
+    <div class="card-content article ">
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                <i class="fas fa-angle-double-right"></i>Faster R-CNN源码阅读之七：Faster R-CNN/lib/rpn_msr/anchor_target_layer_tf.py
+            
+        </h1>
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2019-09-04T08:27:42.000Z"><i class="far fa-calendar-alt">&nbsp;</i>2019-09-04</time>
+                
+                
+                <div class="level-item">
+                <i class="far fa-folder-open has-text-grey"></i>&nbsp;
+                <a class="has-link-grey -link" href="/categories/目标检测/">目标检测</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    <i class="far fa-clock"></i>&nbsp;
+                    
+                    
+                    25 minutes read (About 3734 words)
+                </span>
+                
+                
+                <span class="level-item has-text-grey" id="busuanzi_container_page_pv">
+                    <i class="far fa-eye"></i>
+                    <span id="busuanzi_value_page_pv">0</span> visits
+                </span>
+                
+            </div>
+        </div>
+        
+        <div class="content">
+            <h5 id="一介绍">一、介绍</h5>
+<p>   本demo由Faster R-CNN官方提供，我只是在官方的代码上增加了注释，一方面方便我自己学习，另一方面贴出来和大家一起交流。<br>
+   该文件中的函数的主要目的是产生anchors并结合gt boxes（ground truth boxes）给这些anchors进行标记labels（前景还是背景），然后生成这些anchors的权重信息，并产生bbox的RPN网络回归结果目标。</p>
+<a id="more"></a>
+<h5 id="二代码以及注释">二、代码以及注释</h5>
+<figure class="highlight python hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br><span class="line">305</span><br><span class="line">306</span><br><span class="line">307</span><br><span class="line">308</span><br><span class="line">309</span><br><span class="line">310</span><br><span class="line">311</span><br><span class="line">312</span><br><span class="line">313</span><br><span class="line">314</span><br><span class="line">315</span><br><span class="line">316</span><br><span class="line">317</span><br><span class="line">318</span><br><span class="line">319</span><br><span class="line">320</span><br><span class="line">321</span><br><span class="line">322</span><br><span class="line">323</span><br><span class="line">324</span><br><span class="line">325</span><br><span class="line">326</span><br><span class="line">327</span><br><span class="line">328</span><br><span class="line">329</span><br><span class="line">330</span><br><span class="line">331</span><br><span class="line">332</span><br><span class="line">333</span><br><span class="line">334</span><br><span class="line">335</span><br><span class="line">336</span><br><span class="line">337</span><br><span class="line">338</span><br><span class="line">339</span><br><span class="line">340</span><br><span class="line">341</span><br><span class="line">342</span><br><span class="line">343</span><br><span class="line">344</span><br><span class="line">345</span><br><span class="line">346</span><br><span class="line">347</span><br><span class="line">348</span><br><span class="line">349</span><br><span class="line">350</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># -*- coding:utf-8 -*-</span></span><br><span class="line"><span class="hljs-comment"># --------------------------------------------------------</span></span><br><span class="line"><span class="hljs-comment"># Faster R-CNN</span></span><br><span class="line"><span class="hljs-comment"># Copyright (c) 2015 Microsoft</span></span><br><span class="line"><span class="hljs-comment"># Licensed under The MIT License [see LICENSE for details]</span></span><br><span class="line"><span class="hljs-comment"># Written by Ross Girshick and Sean Bell</span></span><br><span class="line"><span class="hljs-comment"># --------------------------------------------------------</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">import</span> os</span><br><span class="line"><span class="hljs-keyword">import</span> yaml</span><br><span class="line"><span class="hljs-keyword">from</span> fast_rcnn.config <span class="hljs-keyword">import</span> cfg</span><br><span class="line"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np</span><br><span class="line"><span class="hljs-keyword">import</span> numpy.random <span class="hljs-keyword">as</span> npr</span><br><span class="line"><span class="hljs-keyword">from</span> generate_anchors <span class="hljs-keyword">import</span> generate_anchors</span><br><span class="line"><span class="hljs-keyword">from</span> utils.cython_bbox <span class="hljs-keyword">import</span> bbox_overlaps</span><br><span class="line"><span class="hljs-keyword">from</span> fast_rcnn.bbox_transform <span class="hljs-keyword">import</span> bbox_transform</span><br><span class="line"><span class="hljs-keyword">import</span> pdb</span><br><span class="line"></span><br><span class="line">DEBUG = <span class="hljs-literal">False</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">anchor_target_layer</span><span class="hljs-params">(rpn_cls_score, gt_boxes, im_info, data, _feat_stride=[<span class="hljs-number">16</span>, ], anchor_scales=[<span class="hljs-number">4</span>, <span class="hljs-number">8</span>, <span class="hljs-number">16</span>, <span class="hljs-number">32</span>])</span>:</span></span><br><span class="line">    <span class="hljs-string">"""</span></span><br><span class="line"><span class="hljs-string">    Assign anchors to ground-truth targets. Produces anchor classification</span></span><br><span class="line"><span class="hljs-string">    labels and bounding-box regression targets.</span></span><br><span class="line"><span class="hljs-string">    """</span></span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment"># 产生作为基准的若干个anchors，并获取这些anchors的个数。</span></span><br><span class="line">    _anchors = generate_anchors(scales=np.array(anchor_scales))</span><br><span class="line">    _num_anchors = _anchors.shape[<span class="hljs-number">0</span>]</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment"># if DEBUG代码块仅用作调试时使用，输出某些特定的信息，没有实际的帮助，下同。</span></span><br><span class="line">    <span class="hljs-keyword">if</span> DEBUG:</span><br><span class="line">        <span class="hljs-keyword">print</span> <span class="hljs-string">'anchors:'</span></span><br><span class="line">        <span class="hljs-keyword">print</span> _anchors</span><br><span class="line">        <span class="hljs-keyword">print</span> <span class="hljs-string">'anchor shapes:'</span></span><br><span class="line">        <span class="hljs-keyword">print</span> np.hstack((</span><br><span class="line">            _anchors[:, <span class="hljs-number">2</span>::<span class="hljs-number">4</span>] - _anchors[:, <span class="hljs-number">0</span>::<span class="hljs-number">4</span>],</span><br><span class="line">            _anchors[:, <span class="hljs-number">3</span>::<span class="hljs-number">4</span>] - _anchors[:, <span class="hljs-number">1</span>::<span class="hljs-number">4</span>],</span><br><span class="line">        ))</span><br><span class="line">        _counts = cfg.EPS</span><br><span class="line">        _sums = np.zeros((<span class="hljs-number">1</span>, <span class="hljs-number">4</span>))</span><br><span class="line">        _squared_sums = np.zeros((<span class="hljs-number">1</span>, <span class="hljs-number">4</span>))</span><br><span class="line">        _fg_sum = <span class="hljs-number">0</span></span><br><span class="line">        _bg_sum = <span class="hljs-number">0</span></span><br><span class="line">        _count = <span class="hljs-number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment"># allow boxes to sit over the edge by a small amount</span></span><br><span class="line">    <span class="hljs-comment"># 允许boxes（anchors）超过图像实际边界的某个余量，这里设置为0，表示不允许boxes超过图像边界。</span></span><br><span class="line">    _allowed_border = <span class="hljs-number">0</span></span><br><span class="line">    <span class="hljs-comment"># map of shape (..., H, W)</span></span><br><span class="line">    <span class="hljs-comment"># height, width = rpn_cls_score.shape[1:3]</span></span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment"># 获取图像的信息</span></span><br><span class="line">    im_info = im_info[<span class="hljs-number">0</span>]</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment"># Algorithm:</span></span><br><span class="line">    <span class="hljs-comment">#</span></span><br><span class="line">    <span class="hljs-comment"># for each (H, W) location i</span></span><br><span class="line">    <span class="hljs-comment">#   generate 9 anchor boxes centered on cell i</span></span><br><span class="line">    <span class="hljs-comment">#   apply predicted bbox deltas at cell i to each of the 9 anchors</span></span><br><span class="line">    <span class="hljs-comment"># filter out-of-image anchors</span></span><br><span class="line">    <span class="hljs-comment"># measure GT overlap</span></span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment"># 算法：</span></span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment"># 断言，目前版本的算法仅能允许每次feed一张图片</span></span><br><span class="line">    <span class="hljs-keyword">assert</span> rpn_cls_score.shape[<span class="hljs-number">0</span>] == <span class="hljs-number">1</span>, \</span><br><span class="line">        <span class="hljs-string">'Only single item batches are supported'</span></span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment"># map of shape (..., H, W)</span></span><br><span class="line">    height, width = rpn_cls_score.shape[<span class="hljs-number">1</span>:<span class="hljs-number">3</span>]</span><br><span class="line"></span><br><span class="line">    <span class="hljs-keyword">if</span> DEBUG:</span><br><span class="line">        <span class="hljs-keyword">print</span> <span class="hljs-string">'AnchorTargetLayer: height'</span>, height, <span class="hljs-string">'width'</span>, width</span><br><span class="line">        <span class="hljs-keyword">print</span> <span class="hljs-string">''</span></span><br><span class="line">        <span class="hljs-keyword">print</span> <span class="hljs-string">'im_size: (&#123;&#125;, &#123;&#125;)'</span>.format(im_info[<span class="hljs-number">0</span>], im_info[<span class="hljs-number">1</span>])</span><br><span class="line">        <span class="hljs-keyword">print</span> <span class="hljs-string">'scale: &#123;&#125;'</span>.format(im_info[<span class="hljs-number">2</span>])</span><br><span class="line">        <span class="hljs-keyword">print</span> <span class="hljs-string">'height, width: (&#123;&#125;, &#123;&#125;)'</span>.format(height, width)</span><br><span class="line">        <span class="hljs-keyword">print</span> <span class="hljs-string">'rpn: gt_boxes.shape'</span>, gt_boxes.shape</span><br><span class="line">        <span class="hljs-keyword">print</span> <span class="hljs-string">'rpn: gt_boxes'</span>, gt_boxes</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment"># 1. Generate proposals from bbox deltas and shifted anchors</span></span><br><span class="line">    <span class="hljs-comment"># 1. 生成所有的加入偏移量之后的anchors，具体过程可以参考proposal_layer_tf.py文件。</span></span><br><span class="line">    shift_x = np.arange(<span class="hljs-number">0</span>, width) * _feat_stride</span><br><span class="line">    shift_y = np.arange(<span class="hljs-number">0</span>, height) * _feat_stride</span><br><span class="line">    shift_x, shift_y = np.meshgrid(shift_x, shift_y)</span><br><span class="line">    shifts = np.vstack((shift_x.ravel(), shift_y.ravel(),</span><br><span class="line">                        shift_x.ravel(), shift_y.ravel())).transpose()</span><br><span class="line">    <span class="hljs-comment"># add A anchors (1, A, 4) to</span></span><br><span class="line">    <span class="hljs-comment"># cell K shifts (K, 1, 4) to get</span></span><br><span class="line">    <span class="hljs-comment"># shift anchors (K, A, 4)</span></span><br><span class="line">    <span class="hljs-comment"># reshape to (K*A, 4) shifted anchors</span></span><br><span class="line">    A = _num_anchors</span><br><span class="line">    K = shifts.shape[<span class="hljs-number">0</span>]</span><br><span class="line">    all_anchors = (_anchors.reshape((<span class="hljs-number">1</span>, A, <span class="hljs-number">4</span>)) +</span><br><span class="line">                   shifts.reshape((<span class="hljs-number">1</span>, K, <span class="hljs-number">4</span>)).transpose((<span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">2</span>)))</span><br><span class="line">    all_anchors = all_anchors.reshape((K * A, <span class="hljs-number">4</span>))</span><br><span class="line">    total_anchors = int(K * A)</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment"># only keep anchors inside the image</span></span><br><span class="line">    <span class="hljs-comment"># 获取所有的边界都在图像边界（加上余量之后）的范围内的anchors的索引。</span></span><br><span class="line">    inds_inside = np.where(</span><br><span class="line">        (all_anchors[:, <span class="hljs-number">0</span>] &gt;= -_allowed_border) &amp;</span><br><span class="line">        (all_anchors[:, <span class="hljs-number">1</span>] &gt;= -_allowed_border) &amp;</span><br><span class="line">        (all_anchors[:, <span class="hljs-number">2</span>] &lt; im_info[<span class="hljs-number">1</span>] + _allowed_border) &amp;  <span class="hljs-comment"># width</span></span><br><span class="line">        (all_anchors[:, <span class="hljs-number">3</span>] &lt; im_info[<span class="hljs-number">0</span>] + _allowed_border)  <span class="hljs-comment"># height</span></span><br><span class="line">    )[<span class="hljs-number">0</span>]</span><br><span class="line"></span><br><span class="line">    <span class="hljs-keyword">if</span> DEBUG:</span><br><span class="line">        <span class="hljs-keyword">print</span> <span class="hljs-string">'total_anchors'</span>, total_anchors</span><br><span class="line">        <span class="hljs-keyword">print</span> <span class="hljs-string">'inds_inside'</span>, len(inds_inside)</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment"># keep only inside anchors</span></span><br><span class="line">    <span class="hljs-comment"># 获取上述求得的边界均满足条件的anchors。</span></span><br><span class="line">    anchors = all_anchors[inds_inside, :]</span><br><span class="line">    <span class="hljs-keyword">if</span> DEBUG:</span><br><span class="line">        <span class="hljs-keyword">print</span> <span class="hljs-string">'anchors.shape'</span>, anchors.shape</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment"># label: 1 is positive, 0 is negative, -1 is don't care</span></span><br><span class="line">    <span class="hljs-comment"># 初始化label，1表示正样本，0表示负样本，-1表示不关心。</span></span><br><span class="line">    <span class="hljs-comment"># 因此刚开始，我们将所有的label设置为-1。</span></span><br><span class="line">    labels = np.empty((len(inds_inside),), dtype=np.float32)</span><br><span class="line">    labels.fill(<span class="hljs-number">-1</span>)</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment"># overlaps between the anchors and the gt boxes</span></span><br><span class="line">    <span class="hljs-comment"># overlaps (ex, gt)</span></span><br><span class="line">    <span class="hljs-comment"># 计算每一个anchor和每一个gt boxes（ground truth boxes）之间的overlap</span></span><br><span class="line">    <span class="hljs-comment"># 假设anchors的数目为N，gt boxes的数目为K，</span></span><br><span class="line">    <span class="hljs-comment"># 则bbox_overlaps会返回一个shape为[N, K]的数组array，里面依次保存着第i个anchor和第j个gt box之间的IOU。</span></span><br><span class="line">    overlaps = bbox_overlaps(</span><br><span class="line">        np.ascontiguousarray(anchors, dtype=np.float),</span><br><span class="line">        np.ascontiguousarray(gt_boxes, dtype=np.float))</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment"># 横向比较，为每一个anchor找到与其拥有最高的IOU的gt box，并返回这些gt box的索引（这里是列索引）。</span></span><br><span class="line">    argmax_overlaps = overlaps.argmax(axis=<span class="hljs-number">1</span>)</span><br><span class="line">    <span class="hljs-comment"># 保存的是每一个anchor与其拥有最高IOU的gt box的IOU值。</span></span><br><span class="line">    max_overlaps = overlaps[np.arange(len(inds_inside)), argmax_overlaps]</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment"># 纵向比较，为每一个gt box找到与其拥有最高的IOU的anchor，并返回这些anchors的索引（这里是行索引）。</span></span><br><span class="line">    gt_argmax_overlaps = overlaps.argmax(axis=<span class="hljs-number">0</span>)</span><br><span class="line">    <span class="hljs-comment"># 保存的是每一个gt box与其拥有最高IOU的anchor的IOU值。</span></span><br><span class="line">    <span class="hljs-comment"># 注意这里gt_argmax_overlaps和np.arange(overlaps.shape[1])的顺序。</span></span><br><span class="line">    <span class="hljs-comment"># （个人认为以下的两行代码都更为简便的写法，实际上第二行代码可以省略）</span></span><br><span class="line">    gt_max_overlaps = overlaps[gt_argmax_overlaps,</span><br><span class="line">                               np.arange(overlaps.shape[<span class="hljs-number">1</span>])]</span><br><span class="line">    <span class="hljs-comment"># 这里按行的顺序获取最大值的索引，本质上是对gt_argmax_overlaps进行从小到大的排序</span></span><br><span class="line">    gt_argmax_overlaps = np.where(overlaps == gt_max_overlaps)[<span class="hljs-number">0</span>]</span><br><span class="line"></span><br><span class="line">    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> cfg.TRAIN.RPN_CLOBBER_POSITIVES:</span><br><span class="line">        <span class="hljs-comment"># assign bg labels first so that positive labels can clobber them</span></span><br><span class="line">        <span class="hljs-comment"># 首先对那些小于一定阈值的anchor进行label的赋值，把它们标记为背景anchor（label标记为0）。</span></span><br><span class="line">        labels[max_overlaps &lt; cfg.TRAIN.RPN_NEGATIVE_OVERLAP] = <span class="hljs-number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment"># fg label: for each gt, anchor with highest overlap</span></span><br><span class="line">    <span class="hljs-comment"># 标记前景anchors的label，与某一个gt box有最高IOU的anchor的label标记为1。</span></span><br><span class="line">    <span class="hljs-comment"># 之所以这么做是因为有时候IOU高于某一阈值的anchor不存在，仅考虑使用阈值标记label就会出现错误。</span></span><br><span class="line">    labels[gt_argmax_overlaps] = <span class="hljs-number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment"># fg label: above threshold IOU</span></span><br><span class="line">    <span class="hljs-comment"># 与某一个gt box的IOU大于某一阈值的anchor的label标记为1。</span></span><br><span class="line">    labels[max_overlaps &gt;= cfg.TRAIN.RPN_POSITIVE_OVERLAP] = <span class="hljs-number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="hljs-keyword">if</span> cfg.TRAIN.RPN_CLOBBER_POSITIVES:</span><br><span class="line">        <span class="hljs-comment"># assign bg labels last so that negative labels can clobber positives</span></span><br><span class="line">        <span class="hljs-comment"># 最后对背景anchor进行赋值。</span></span><br><span class="line">        <span class="hljs-comment"># 和上面的if not cfg.TRAIN.RPN_CLOBBER_POSITIVES代码块功能类似，就是看positive和negative谁比较强。</span></span><br><span class="line">        <span class="hljs-comment"># 这两部分的代码在实际过程中只能执行一个。</span></span><br><span class="line">        <span class="hljs-comment"># 前一部分代码现将一部分label设置为0，则默认为positive比negative强，因为在前面的两行label赋值代码中有可能anchor的label会从0变成1。</span></span><br><span class="line">        <span class="hljs-comment"># 这一部分代码则与前面的if代码块作用相反，默认为negative比positive强，因为在这一部分代码中，可能有已经被标记为1的label会被重新标记为0。</span></span><br><span class="line">        labels[max_overlaps &lt; cfg.TRAIN.RPN_NEGATIVE_OVERLAP] = <span class="hljs-number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment"># subsample positive labels if we have too many</span></span><br><span class="line">    <span class="hljs-comment"># 如果有过多的正样本label，即过多的前景anchors，随机选择一些，剩下的未被选择的标记为-1。</span></span><br><span class="line">    <span class="hljs-comment"># 需要的最大前景数目</span></span><br><span class="line">    num_fg = int(cfg.TRAIN.RPN_FG_FRACTION * cfg.TRAIN.RPN_BATCHSIZE)</span><br><span class="line">    <span class="hljs-comment"># 获取label为1即所有前景anchors的索引</span></span><br><span class="line">    fg_inds = np.where(labels == <span class="hljs-number">1</span>)[<span class="hljs-number">0</span>]</span><br><span class="line">    <span class="hljs-comment"># 如果前景数目过多</span></span><br><span class="line">    <span class="hljs-keyword">if</span> len(fg_inds) &gt; num_fg:</span><br><span class="line">        <span class="hljs-comment"># 随机选择一些前景，数目为总前景数目减去所需要的前景数目</span></span><br><span class="line">        disable_inds = npr.choice(</span><br><span class="line">            fg_inds, size=(len(fg_inds) - num_fg), replace=<span class="hljs-literal">False</span>)</span><br><span class="line">        <span class="hljs-comment"># 把这些前景anchors的label变更为-1，表示不关心。</span></span><br><span class="line">        labels[disable_inds] = <span class="hljs-number">-1</span></span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment"># subsample negative labels if we have too many</span></span><br><span class="line">    <span class="hljs-comment"># 如果有过多的背景数目，也是同理筛选一些保留。</span></span><br><span class="line">    num_bg = cfg.TRAIN.RPN_BATCHSIZE - np.sum(labels == <span class="hljs-number">1</span>)</span><br><span class="line">    bg_inds = np.where(labels == <span class="hljs-number">0</span>)[<span class="hljs-number">0</span>]</span><br><span class="line">    <span class="hljs-keyword">if</span> len(bg_inds) &gt; num_bg:</span><br><span class="line">        disable_inds = npr.choice(</span><br><span class="line">            bg_inds, size=(len(bg_inds) - num_bg), replace=<span class="hljs-literal">False</span>)</span><br><span class="line">        labels[disable_inds] = <span class="hljs-number">-1</span></span><br><span class="line">        <span class="hljs-comment"># print "was %s inds, disabling %s, now %s inds" % (</span></span><br><span class="line">        <span class="hljs-comment"># len(bg_inds), len(disable_inds), np.sum(labels == 0))</span></span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment"># 创建一个shape为[len(inds_inside), 4]大小的全0数组，用来存储等会生成的anchors的回归目标</span></span><br><span class="line">    bbox_targets = np.zeros((len(inds_inside), <span class="hljs-number">4</span>), dtype=np.float32)</span><br><span class="line">    <span class="hljs-comment"># _compute_targets函数返回一个用于anchors回归成targets的包含每个anchor回归值(dx、dy、dw、dh)的array,</span></span><br><span class="line">    <span class="hljs-comment"># 形状（(len(inds_inside), 4），即（anchors.shape[0],4）</span></span><br><span class="line">    <span class="hljs-comment"># 第二个参数gt_boxes[argmax_overlaps, :]括号内部的取值可以保证每一个anchor都对应于与之拥有最高IOU的gt box。</span></span><br><span class="line">    <span class="hljs-comment"># bbox_targets本质上是RPN应该生成的数据，用以bbox的回归操作。即bbox targets是网络在训练的时候需要生成的目标。</span></span><br><span class="line">    bbox_targets = _compute_targets(anchors, gt_boxes[argmax_overlaps, :])</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment"># 定义一个全0的(len(inds_inside), 4)二维数组，表示bbox inside weights，并对对应的label为1的bbox inside weights进行赋值</span></span><br><span class="line">    bbox_inside_weights = np.zeros((len(inds_inside), <span class="hljs-number">4</span>), dtype=np.float32)</span><br><span class="line">    <span class="hljs-comment"># 这里将对应label为1的bbox inside weights赋值为cfg.TRAIN.RPN_BBOX_INSIDE_WEIGHTS，</span></span><br><span class="line">    <span class="hljs-comment"># cfg.TRAIN.RPN_BBOX_INSIDE_WEIGHTS一般是一个长度为4的全有1组成的一维数组。</span></span><br><span class="line">    bbox_inside_weights[labels == <span class="hljs-number">1</span>, :] = np.array(cfg.TRAIN.RPN_BBOX_INSIDE_WEIGHTS)</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment"># 定义一个全0的(len(inds_inside), 4)二维数组，表示bbox outside weights。</span></span><br><span class="line">    bbox_outside_weights = np.zeros((len(inds_inside), <span class="hljs-number">4</span>), dtype=np.float32)</span><br><span class="line">    <span class="hljs-comment"># cfg.TRAIN.RPN_POSITIVE_WEIGHT一般设为-1</span></span><br><span class="line">    <span class="hljs-keyword">if</span> cfg.TRAIN.RPN_POSITIVE_WEIGHT &lt; <span class="hljs-number">0</span>:</span><br><span class="line">        <span class="hljs-comment"># uniform weighting of examples (given non-uniform sampling)</span></span><br><span class="line">        <span class="hljs-comment"># 统一的样本（anchors）配置权重方法，else代码块中为非统一样本配置权重方法。</span></span><br><span class="line">        <span class="hljs-comment"># 在统一的方法中正样本（anchors）和负样本（anchors）的bbox outside weights均被赋值为正负样本数目之后的倒数。</span></span><br><span class="line"></span><br><span class="line">        <span class="hljs-comment"># 这一步是获取正负样本（anchors）的总数目（1表示正样本，0表示负样本，-1表示不关心）</span></span><br><span class="line">        num_examples = np.sum(labels &gt;= <span class="hljs-number">0</span>)</span><br><span class="line"></span><br><span class="line">        <span class="hljs-comment"># 赋值</span></span><br><span class="line">        positive_weights = np.ones((<span class="hljs-number">1</span>, <span class="hljs-number">4</span>)) * <span class="hljs-number">1.0</span> / num_examples</span><br><span class="line">        negative_weights = np.ones((<span class="hljs-number">1</span>, <span class="hljs-number">4</span>)) * <span class="hljs-number">1.0</span> / num_examples</span><br><span class="line">    <span class="hljs-keyword">else</span>:</span><br><span class="line">        <span class="hljs-comment"># 保证cfg.TRAIN.RPN_POSITIVE_WEIGHT 在0和1之间</span></span><br><span class="line">        <span class="hljs-keyword">assert</span> ((cfg.TRAIN.RPN_POSITIVE_WEIGHT &gt; <span class="hljs-number">0</span>) &amp; (cfg.TRAIN.RPN_POSITIVE_WEIGHT &lt; <span class="hljs-number">1</span>))</span><br><span class="line">        <span class="hljs-comment"># 正样本的权重</span></span><br><span class="line">        positive_weights = (cfg.TRAIN.RPN_POSITIVE_WEIGHT / np.sum(labels == <span class="hljs-number">1</span>))</span><br><span class="line">        <span class="hljs-comment"># 负样本的权重</span></span><br><span class="line">        negative_weights = ((<span class="hljs-number">1.0</span> - cfg.TRAIN.RPN_POSITIVE_WEIGHT) / np.sum(labels == <span class="hljs-number">0</span>))</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment"># 对正负样本（anchors）的bbox outside weights分别进行赋值。</span></span><br><span class="line">    bbox_outside_weights[labels == <span class="hljs-number">1</span>, :] = positive_weights</span><br><span class="line">    bbox_outside_weights[labels == <span class="hljs-number">0</span>, :] = negative_weights</span><br><span class="line"></span><br><span class="line">    <span class="hljs-keyword">if</span> DEBUG:</span><br><span class="line">        _sums += bbox_targets[labels == <span class="hljs-number">1</span>, :].sum(axis=<span class="hljs-number">0</span>)</span><br><span class="line">        _squared_sums += (bbox_targets[labels == <span class="hljs-number">1</span>, :] ** <span class="hljs-number">2</span>).sum(axis=<span class="hljs-number">0</span>)</span><br><span class="line">        _counts += np.sum(labels == <span class="hljs-number">1</span>)</span><br><span class="line">        means = _sums / _counts</span><br><span class="line">        stds = np.sqrt(_squared_sums / _counts - means ** <span class="hljs-number">2</span>)</span><br><span class="line">        <span class="hljs-keyword">print</span> <span class="hljs-string">'means:'</span></span><br><span class="line">        <span class="hljs-keyword">print</span> means</span><br><span class="line">        <span class="hljs-keyword">print</span> <span class="hljs-string">'stdevs:'</span></span><br><span class="line">        <span class="hljs-keyword">print</span> stds</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment"># map up to original set of anchors</span></span><br><span class="line">    <span class="hljs-comment"># 从获取到存在图片内部的anchors之后，我们一直在对这些anchors进行操作，而剩下的相当多的anchors就被直接忽略掉了，</span></span><br><span class="line">    <span class="hljs-comment"># 现在我们需要考虑利用上这一部分anchors。</span></span><br><span class="line">    <span class="hljs-comment"># 注：inds_inside变量保存的是存在于图片内部的anchors在生成的全部的anchors中的索引，</span></span><br><span class="line">    <span class="hljs-comment"># 而在后续的操作过程中，我们并没有改变提取出来的anchors的顺序，因此这些索引还是和anchors，labels等一一对应。</span></span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment"># 将剩下的anchors进行label的标注，由于这些anchors并不是全部存在于图片内部，因此这里将他们的label设置为-1，表示不关心。</span></span><br><span class="line">    <span class="hljs-comment"># total_anchors是一个整数，表示之前生成的最最原始的anchors的数目。下同</span></span><br><span class="line">    <span class="hljs-comment"># inds_inside表示存在于图片内部的anchors在所有原始anchors中的索引。下同</span></span><br><span class="line">    labels = _unmap(labels, total_anchors, inds_inside, fill=<span class="hljs-number">-1</span>)</span><br><span class="line">    <span class="hljs-comment"># 下面的三行代码也是同理，将那些原始的anchors的信息也添加进去，由于没有经过上面的计算过程，因此这些信息全部被设置为0。</span></span><br><span class="line">    bbox_targets = _unmap(bbox_targets, total_anchors, inds_inside, fill=<span class="hljs-number">0</span>)</span><br><span class="line">    bbox_inside_weights = _unmap(bbox_inside_weights, total_anchors, inds_inside, fill=<span class="hljs-number">0</span>)</span><br><span class="line">    bbox_outside_weights = _unmap(bbox_outside_weights, total_anchors, inds_inside, fill=<span class="hljs-number">0</span>)</span><br><span class="line"></span><br><span class="line">    <span class="hljs-keyword">if</span> DEBUG:</span><br><span class="line">        <span class="hljs-keyword">print</span> <span class="hljs-string">'rpn: max max_overlap'</span>, np.max(max_overlaps)</span><br><span class="line">        <span class="hljs-keyword">print</span> <span class="hljs-string">'rpn: num_positive'</span>, np.sum(labels == <span class="hljs-number">1</span>)</span><br><span class="line">        <span class="hljs-keyword">print</span> <span class="hljs-string">'rpn: num_negative'</span>, np.sum(labels == <span class="hljs-number">0</span>)</span><br><span class="line">        _fg_sum += np.sum(labels == <span class="hljs-number">1</span>)</span><br><span class="line">        _bg_sum += np.sum(labels == <span class="hljs-number">0</span>)</span><br><span class="line">        _count += <span class="hljs-number">1</span></span><br><span class="line">        <span class="hljs-keyword">print</span> <span class="hljs-string">'rpn: num_positive avg'</span>, _fg_sum / _count</span><br><span class="line">        <span class="hljs-keyword">print</span> <span class="hljs-string">'rpn: num_negative avg'</span>, _bg_sum / _count</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment"># labels</span></span><br><span class="line">    <span class="hljs-comment"># pdb.set_trace()</span></span><br><span class="line">    <span class="hljs-comment"># 在前面anchors的产生过程中可以看出，其本质上也是在特征图上滑窗操作，在每个特征图的点上生成若干个anchors。</span></span><br><span class="line">    <span class="hljs-comment"># 这里height，width分别表示特征图的高度和宽度，A表示在每个位置产生的anchors的数目，reshape之后就和特征图上的位置一一对应。</span></span><br><span class="line">    <span class="hljs-comment"># 之后transpose(0, 3, 1, 2)，此时最精确信息为width，此时以width信息进行fastest聚类。（？？）</span></span><br><span class="line">    labels = labels.reshape((<span class="hljs-number">1</span>, height, width, A)).transpose(<span class="hljs-number">0</span>, <span class="hljs-number">3</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>)</span><br><span class="line">    labels = labels.reshape((<span class="hljs-number">1</span>, <span class="hljs-number">1</span>, A * height, width))</span><br><span class="line">    rpn_labels = labels</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment"># 将以下的三个变量的通道顺序更改为[N, C, H, W]，N为样本维，C表示通道维，H表示height，W表示宽度。</span></span><br><span class="line">    <span class="hljs-comment"># 重新给变量命名，并结合上述的rpn_labels一并返回。</span></span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment"># bbox_targets</span></span><br><span class="line">    bbox_targets = bbox_targets.reshape((<span class="hljs-number">1</span>, height, width, A * <span class="hljs-number">4</span>)).transpose(<span class="hljs-number">0</span>, <span class="hljs-number">3</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>)</span><br><span class="line"></span><br><span class="line">    rpn_bbox_targets = bbox_targets</span><br><span class="line">    <span class="hljs-comment"># bbox_inside_weights</span></span><br><span class="line">    bbox_inside_weights = bbox_inside_weights.reshape((<span class="hljs-number">1</span>, height, width, A * <span class="hljs-number">4</span>)).transpose(<span class="hljs-number">0</span>, <span class="hljs-number">3</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>)</span><br><span class="line">    <span class="hljs-comment"># assert bbox_inside_weights.shape[2] == height</span></span><br><span class="line">    <span class="hljs-comment"># assert bbox_inside_weights.shape[3] == width</span></span><br><span class="line"></span><br><span class="line">    rpn_bbox_inside_weights = bbox_inside_weights</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment"># bbox_outside_weights</span></span><br><span class="line">    bbox_outside_weights = bbox_outside_weights.reshape((<span class="hljs-number">1</span>, height, width, A * <span class="hljs-number">4</span>)).transpose(<span class="hljs-number">0</span>, <span class="hljs-number">3</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>)</span><br><span class="line">    <span class="hljs-comment"># assert bbox_outside_weights.shape[2] == height</span></span><br><span class="line">    <span class="hljs-comment"># assert bbox_outside_weights.shape[3] == width</span></span><br><span class="line"></span><br><span class="line">    rpn_bbox_outside_weights = bbox_outside_weights</span><br><span class="line"></span><br><span class="line">    <span class="hljs-keyword">return</span> rpn_labels, rpn_bbox_targets, rpn_bbox_inside_weights, rpn_bbox_outside_weights</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">_unmap</span><span class="hljs-params">(data, count, inds, fill=<span class="hljs-number">0</span>)</span>:</span></span><br><span class="line">    <span class="hljs-string">""" Unmap a subset of item (data) back to the original set of items (of size count)</span></span><br><span class="line"><span class="hljs-string">    在之前的处理过程中，我们一直在处理存在于图片边界内部的anchors，还有相当多的anchors在图片边界外部或者在图片边界上。</span></span><br><span class="line"><span class="hljs-string">    而这一部分我们直接忽略掉了，现在利用这个函数将他们也进行简单处理，赋予他们所需要的label和weights信息。</span></span><br><span class="line"><span class="hljs-string">    :param data: 该参数有两种形式，一个是图片内部anchors的labels，另一个是图片内部anchors的RPN回归目标以及权重等信息。</span></span><br><span class="line"><span class="hljs-string">                 labels是一个一维数组，其他的都是shape为[N, 4]形状的二维数组。</span></span><br><span class="line"><span class="hljs-string">    :param count:原始anchors的数目，这里包括图片边缘内部的，也包括存在于图片边缘上的和外部的。</span></span><br><span class="line"><span class="hljs-string">    :param inds: 存在于图片边缘内部的anchors在原始anchors序列中的索引，也是一个一维数组。</span></span><br><span class="line"><span class="hljs-string">    :param fill: 默认填充的数值，在图片边缘上的和外部的anchors没有经过前面的计算过程，这些参数只用fill提供的值默认填充。</span></span><br><span class="line"><span class="hljs-string">    :return: 补完之后的信息，这里的信息是所有anchors的信息，包括图片内部的，边界上的和边界外的、</span></span><br><span class="line"><span class="hljs-string">    """</span></span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment"># 长度为1，表示这里补完的是labels信息</span></span><br><span class="line">    <span class="hljs-keyword">if</span> len(data.shape) == <span class="hljs-number">1</span>:</span><br><span class="line">        <span class="hljs-comment"># 定义矩阵。使用fill填充</span></span><br><span class="line">        ret = np.empty((count,), dtype=np.float32)</span><br><span class="line">        ret.fill(fill)</span><br><span class="line">        <span class="hljs-comment"># 将图片内部anchors的信息重新赋值给矩阵，位置信息由inds提供。</span></span><br><span class="line">        ret[inds] = data</span><br><span class="line">    <span class="hljs-keyword">else</span>:</span><br><span class="line">        <span class="hljs-comment"># 这里补完的是bbox回归目标，权值等信息，和填充labels的过程类似。</span></span><br><span class="line">        ret = np.empty((count,) + data.shape[<span class="hljs-number">1</span>:], dtype=np.float32)</span><br><span class="line">        ret.fill(fill)</span><br><span class="line">        ret[inds, :] = data</span><br><span class="line">    <span class="hljs-keyword">return</span> ret</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">_compute_targets</span><span class="hljs-params">(ex_rois, gt_rois)</span>:</span></span><br><span class="line">    <span class="hljs-string">"""</span></span><br><span class="line"><span class="hljs-string">    Compute bounding-box regression targets for an image.</span></span><br><span class="line"><span class="hljs-string">    :param ex_rois: 待处理的rois，一般是一系列anchors</span></span><br><span class="line"><span class="hljs-string">    :param gt_rois: ground truth boxes, 与每一个ex_rois(anchor)一一对应，每一行都是与当前ex_roi(anchor)其拥有最大IOU的gt box。</span></span><br><span class="line"><span class="hljs-string">    :return:</span></span><br><span class="line"><span class="hljs-string">    """</span></span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment"># 确保每一个ex_roi都有一个gt box对应</span></span><br><span class="line">    <span class="hljs-keyword">assert</span> ex_rois.shape[<span class="hljs-number">0</span>] == gt_rois.shape[<span class="hljs-number">0</span>]</span><br><span class="line">    <span class="hljs-comment"># anchor长度为4</span></span><br><span class="line">    <span class="hljs-keyword">assert</span> ex_rois.shape[<span class="hljs-number">1</span>] == <span class="hljs-number">4</span></span><br><span class="line">    <span class="hljs-comment"># gt box的长度为5，分别表示实际bbox的坐标（4）和类别（1)</span></span><br><span class="line">    <span class="hljs-keyword">assert</span> gt_rois.shape[<span class="hljs-number">1</span>] == <span class="hljs-number">5</span></span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment"># 分别计算bbox transform，这里只用到了gt box的坐标部分</span></span><br><span class="line">    <span class="hljs-keyword">return</span> bbox_transform(ex_rois, gt_rois[:, :<span class="hljs-number">4</span>]).astype(np.float32, copy=<span class="hljs-literal">False</span>)</span><br></pre></td></tr></table></figure>
+
+        </div>
+        
+            <ul class="post-copyright">
+            <li><strong>本文标题：</strong><a href="http://huaxuan0720.github.io/2019/09/04/Note26-FasterRCNN-7/">Faster R-CNN源码阅读之七：Faster R-CNN/lib/rpn_msr/anchor_target_layer_tf.py</a></li>
+            <li><strong>本文作者：</strong><a href="http://huaxuan0720.github.io">Da Vinci</a></li>
+            <li><strong>本文链接：</strong><a href="http://huaxuan0720.github.io/2019/09/04/Note26-FasterRCNN-7/">http://huaxuan0720.github.io/2019/09/04/Note26-FasterRCNN-7/</a></li>
+            <li><strong>发布时间：</strong>2019-09-04</li>
+            <li><strong>版权声明：</strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
+            </li>
+            </ul>
+        
+        
+        <hr style="height:1px;margin:1rem 0">
+        <div class="level is-size-7 is-uppercase">
+            <div class="level-start">
+                <div class="level-item">
+                    <i class="fas fa-tags has-text-grey"></i>&nbsp;
+                    <a class="has-link-grey -link" href="/tags/FasterRCNN/">FasterRCNN</a>,&nbsp;<a class="has-link-grey -link" href="/tags/深度学习/">深度学习</a>,&nbsp;<a class="has-link-grey -link" href="/tags/目标检测/">目标检测</a>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+    </div>
+</div>
+
+
+
+<div class="card">
+    <div class="card-content">
+        <h3 class="menu-label has-text-centered">Like this article? Support the author with</h3>
+        <div class="buttons is-centered">
+            
+                
+<a class="button is-info donate">
+    <span class="icon is-small">
+        <i class="fab fa-alipay"></i>
+    </span>
+    <span>Alipay</span>
+    <div class="qrcode"><img src="/images/alipay.jpg" alt="Alipay"></div>
+</a>
+
+                
+                
+<a class="button is-success donate">
+    <span class="icon is-small">
+        <i class="fab fa-weixin"></i>
+    </span>
+    <span>Wechat</span>
+    <div class="qrcode"><img src="/images/wechat.jpg" alt="Wechat"></div>
+</a>
+
+                
+        </div>
+    </div>
+</div>
+
+
+
+<div class="card card-transparent">
+    <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        <div class="level-start">
+            <a class="level level-item has-link-grey  article-nav-prev" href="/2019/09/04/Note26-FasterRCNN-8/">
+                <i class="level-item fas fa-chevron-left"></i>
+                <span class="level-item">Faster R-CNN源码阅读之八：Faster R-CNN/lib/rpn_msr/proposal_target_layer_tf.py</span>
+            </a>
+        </div>
+        
+        
+        <div class="level-end">
+            <a class="level level-item has-link-grey  article-nav-next" href="/2019/09/04/Note26-FasterRCNN-6/">
+                <span class="level-item">Faster R-CNN源码阅读之六：Faster R-CNN/lib/fast_rcnn/bbox_transform.py</span>
+                <i class="level-item fas fa-chevron-right"></i>
+            </a>
+        </div>
+        
+    </div>
+</div>
+
+
+
+<div class="card">
+    <div class="card-content">
+        <h3 class="title is-5 has-text-weight-normal">Comments</h3>
+        
+<div id="valine-thread" class="content"></div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+<script>
+    new Valine({
+        el: '#valine-thread' ,
+        notify: true,
+        verify: false,
+        app_id: 'iccwxYBr9y70NgcI4taslyB9-gzGzoHsz',
+        app_key: 'ksGgGN0AeLXQQ1HfOy0mCrM0',
+        placeholder: 'xxxxxxxx'
+    });
+</script>
+
+    </div>
+</div>
+
+</div>
+                
+
+
+
+
+<div class="column is-4-tablet is-4-desktop is-3-widescreen  has-order-1 column-left ">
+    
+        
+<div class="card widget">
+    <div class="card-content">
+        <nav class="level" style="margin-bottom:1rem">
+            <div class="level-item has-text-centered">
+                <div>
+                    
+                        <img class="image is-96x96 has-mb-6" src="/images/icon.jpg" alt="Da Vinci">
+                    
+                    
+                    <p class="is-size-4 is-block">
+                        Da Vinci
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-block">
+                        A Student
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-flex is-flex-center has-text-grey">
+                        <i class="fas fa-map-marker-alt has-mr-7"></i>
+                        <span>Hangzhou Zhejiang, China</span>
+                    </p>
+                    
+                </div>
+            </div>
+        </nav>
+        <nav class="level menu-list is-mobile" style="margin-bottom:1rem">
+            <div class="level-item has-text-centered is-marginless">
+                <a href="/archives/">
+                    <p class="heading">
+                        Posts
+                    </p>
+                    <p class="title has-text-weight-normal">
+                        40
+                    </p>
+                </a>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <a href="/categories/">
+                    <p class="heading">
+                        Categories
+                    </p>
+                    <p class="title has-text-weight-normal">
+                        3
+                    </p>
+                </a>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <a href="/tags/">
+                    <p class="heading">
+                        Tags
+                    </p>
+                    <p class="title has-text-weight-normal">
+                        22
+                    </p>
+                </a>
+            </div>
+        </nav>
+        <div class="level">
+            <a class="level-item button is-link is-rounded" href="https://github.com/huaxuan0720" target="_blank">
+                <i class="fab fa-github"></i>&nbsp;&nbsp;Follow</a>
+        </div>
+        
+        
+        <div class="level is-mobile">
+            
+            <a class="level-item button is-white is-marginless" target="_blank" title="Github" href="https://github.com/huaxuan0720">
+                
+                <i class="fab fa-github"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" title="Facebook" href="/">
+                
+                <i class="fab fa-facebook"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" title="Twitter" href="/">
+                
+                <i class="fab fa-twitter"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" title="RSS" href="/">
+                
+                <i class="fas fa-rss"></i>
+                
+            </a>
+            
+        </div>
+        
+    </div>
+</div>
+
+    
+        
+<div class="card widget column-left is-sticky" id="toc">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                Catalogue
+            </h3>
+            <ul class="menu-list"><li>
+        <a class="is-flex" href="#一介绍">
+        <span class="has-mr-6">1</span>
+        <span>一、介绍</span>
+        </a></li><li>
+        <a class="is-flex" href="#二代码以及注释">
+        <span class="has-mr-6">2</span>
+        <span>二、代码以及注释</span>
+        </a></li></ul>
+        </div>
+    </div>
+</div>
+
+
+    
+    
+        <div class="column-right-shadow is-hidden-widescreen ">
+        
+        </div>
+    
+</div>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
+    <div class="container">
+        <div class="level">
+            <div class="level-start has-text-centered-mobile">
+                <a class="footer-logo is-block has-mb-6" href="/">
+                
+                    <img src="/images/favicon.svg" alt="Faster R-CNN源码阅读之七：Faster R-CNN/lib/rpn_msr/anchor_target_layer_tf.py" height="28">
+                
+                </a>
+                <p class="is-size-7">
+                &copy; 2019 Da Vinci&nbsp;
+                Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> & <a href="http://github.com/ppoffice/hexo-theme-icarus" target="_blank">Icarus</a>
+                
+                <br>
+                <span id="busuanzi_container_site_uv">
+                Visited by <span id="busuanzi_value_site_uv">0</span> users
+                </span>
+                
+                </p>
+            </div>
+            <div class="level-end">
+            
+                <div class="field has-addons is-flex-center-mobile has-mt-5-mobile is-flex-wrap is-flex-middle">
+                
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" title="CC BY-NC-SA 4.0" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                        
+                        <i class="fab fa-creative-commons"></i>&nbsp;<i class="fab fa-creative-commons-by"></i>&nbsp;<i class="fab fa-creative-commons-nc"></i>&nbsp;<i class="fab fa-creative-commons-sa"></i>&nbsp;
+                        
+                    </a>
+                </p>
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" title="Xuan Hua&#39;s GitHub" href="https://www.github.com/huaxuan0720">
+                        
+                        <i class="fab fa-github"></i>&nbsp;
+                        
+                    </a>
+                </p>
+                
+                </div>
+            
+            </div>
+        </div>
+    </div>
+</footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
+<script>moment.locale("en");</script>
+
+
+    
+    
+    
+    <script src="/js/animation.js"></script>
+    
+
+    
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
+    <script src="/js/gallery.js" defer></script>
+    
+
+    
+    
+
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
+            my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        });
+    });
+</script>
+
+
+    
+    
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    MathJax.Hub.Config({
+        'HTML-CSS': {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+});
+</script>
+
+    
+    
+
+<a id="back-to-top" title="Back to Top" href="javascript:;">
+    <i class="fas fa-chevron-up"></i>
+</a>
+<script src="/js/back-to-top.js" defer></script>
+
+
+    
+    
+
+    
+    
+    
+    
+
+    
+    
+    
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
+    <script src="/js/clipboard.js" defer></script>
+    
+
+    
+    
+    
+
+    
+
+
+<script src="/js/main.js" defer></script>
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="Type something...">
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: 'Posts',
+                PAGES: 'Pages',
+                CATEGORIES: 'Categories',
+                TAGS: 'Tags',
+                UNTITLED: '(Untitled)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script src="/js/insight.js" defer></script>
+<link rel="stylesheet" href="/css/search.css">
+<link rel="stylesheet" href="/css/insight.css">
+    
+</body>
+</html>
