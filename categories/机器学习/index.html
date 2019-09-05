@@ -193,8 +193,7 @@
         </div>
         
         <div class="content">
-            <h5 id="一pca">一、PCA</h5>
-<p>   在之前讲述过如何使用PCA以及背后的基本的几何原理。但是并没有给出详细的数学推导，因此，在这里补上PCA的详细数学推导过程。</p>
+            <h5 id="一、PCA"><a href="#一、PCA" class="headerlink" title="一、PCA"></a>一、PCA</h5><p>&emsp;&emsp; 在之前讲述过如何使用PCA以及背后的基本的几何原理。但是并没有给出详细的数学推导，因此，在这里补上PCA的详细数学推导过程。  </p>
         </div>
         
         
@@ -268,8 +267,7 @@
         </div>
         
         <div class="content">
-            <h5 id="前言">前言</h5>
-<p>  在之前都是在讨论SVM，即支持向量机在分类中的使用，但是有很多的问题是回归问题，给出的标签值是一个连续值，能不能使用SVM或者其他的关于SVM的技术来处理分类问题呢，实际上是可以的，这个就是使用支持向量回归模型（Support Vector Regression， SVR）。</p>
+            <h5 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h5><p>&emsp;&emsp;在之前都是在讨论SVM，即支持向量机在分类中的使用，但是有很多的问题是回归问题，给出的标签值是一个连续值，能不能使用SVM或者其他的关于SVM的技术来处理分类问题呢，实际上是可以的，这个就是使用支持向量回归模型（Support Vector Regression， SVR）。</p>
         </div>
         
         
@@ -344,7 +342,6 @@
         
         <div class="content">
             
-
         </div>
         
         
@@ -401,8 +398,7 @@
         </div>
         
         <div class="content">
-            <h5 id="一硬间隔svm和软间隔svm">一、硬间隔SVM和软间隔SVM</h5>
-<p>  前面简单介绍了以下线性可分SVM，本质上前面介绍的SVM属于硬间隔SVM，因为我们已经知道存在一个超平面 <span class="math inline">\(S:\omega \cdot x + b = 0\)</span> 可以将所有的样本数据完美分开。但是实际上，并不是所有的样本数据都这么完美。有时候存在这种情况，给定一个样本数据集，绝大多数的样本都是线性可分的，但是存在某些特别的样本是线性不可分的。例如，如果我们将 <span class="math inline">\(y = 0\)</span> 这条直线看作一个分类的超平面， <span class="math inline">\(y = 0\)</span> 以上的点标记为1， <span class="math inline">\(y = 0\)</span> 以下的点标记为-1，那么绝大多数的样本点符合这个规则，但是有一些点位于 <span class="math inline">\(y = 0\)</span> 以上，却被标记为-1，有些点位于 <span class="math inline">\(y = 0\)</span> 以下，却被标记为了1，这样就会导致整个数据集线性不可分。</p>
+            <h5 id="一、硬间隔SVM和软间隔SVM"><a href="#一、硬间隔SVM和软间隔SVM" class="headerlink" title="一、硬间隔SVM和软间隔SVM"></a>一、硬间隔SVM和软间隔SVM</h5><p>&emsp;&emsp;前面简单介绍了以下线性可分SVM，本质上前面介绍的SVM属于硬间隔SVM，因为我们已经知道存在一个超平面 $S:\omega \cdot x + b = 0$ 可以将所有的样本数据完美分开。但是实际上，并不是所有的样本数据都这么完美。有时候存在这种情况，给定一个样本数据集，绝大多数的样本都是线性可分的，但是存在某些特别的样本是线性不可分的。例如，如果我们将 $y = 0$ 这条直线看作一个分类的超平面， $y = 0$ 以上的点标记为1， $y = 0$ 以下的点标记为-1，那么绝大多数的样本点符合这个规则，但是有一些点位于 $y = 0$ 以上，却被标记为-1，有些点位于 $y = 0$ 以下，却被标记为了1，这样就会导致整个数据集线性不可分。</p>
         </div>
         
         
@@ -476,8 +472,7 @@
         </div>
         
         <div class="content">
-            <h5 id="一支持向量机">一、支持向量机</h5>
-<p>  支持向量机（support vector machines，简称SVM）是一种非常高效的分类器，在神经网络出现前，SVM被称为最强分类器。SVM的核心思想就是，对于两个类别的数据，每个数据点都可以抽象为多维空间中的一个坐标点，每一个点都对应于一个标签。那么我们已经知道这两个类别可以被一个超平面相隔开，即在超平面的一侧是一个类别，另一侧是另一个类别。很明显。在绝大多数情况下，这样的超平面并不唯一。其中，将两个类别分开，并且距离两个类别中离超平面最近的若干个点距离之和最大的那一个超平面则最能满足我们的要求。因为有这样的一个超平面，所有当我们引入一个新的样本数据时，我们就有最高的把握可以将这个新的样本点分类正确。这就是SVM的核心思想。</p>
+            <h5 id="一、支持向量机"><a href="#一、支持向量机" class="headerlink" title="一、支持向量机"></a>一、支持向量机</h5><p>&emsp;&emsp;支持向量机（support vector machines，简称SVM）是一种非常高效的分类器，在神经网络出现前，SVM被称为最强分类器。SVM的核心思想就是，对于两个类别的数据，每个数据点都可以抽象为多维空间中的一个坐标点，每一个点都对应于一个标签。那么我们已经知道这两个类别可以被一个超平面相隔开，即在超平面的一侧是一个类别，另一侧是另一个类别。很明显。在绝大多数情况下，这样的超平面并不唯一。其中，将两个类别分开，并且距离两个类别中离超平面最近的若干个点距离之和最大的那一个超平面则最能满足我们的要求。因为有这样的一个超平面，所有当我们引入一个新的样本数据时，我们就有最高的把握可以将这个新的样本点分类正确。这就是SVM的核心思想。  </p>
         </div>
         
         
@@ -551,8 +546,7 @@
         </div>
         
         <div class="content">
-            <h5 id="前言">前言</h5>
-<p>  前面介绍了单层全连接层并使用激活函数激活的情况，尝试去进行了多样本的梯度下降计算，这一篇文章打算简单介绍一下多层全连接层的梯度下降的情况，重点在于如何进行梯度的向后传播。还是请注意：这里的所有推导过程都只是针对当前设置的参数信息，并不具有一般性，但是所有的推导过程可以推导到一般的运算，因此以下给出的并不是反向传播算法的严格证明，但是可以很好的帮助理解反向传播算法。</p>
+            <h5 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h5><p>&emsp;&emsp;前面介绍了单层全连接层并使用激活函数激活的情况，尝试去进行了多样本的梯度下降计算，这一篇文章打算简单介绍一下多层全连接层的梯度下降的情况，重点在于如何进行梯度的向后传播。还是请注意：这里的所有推导过程都只是针对当前设置的参数信息，并不具有一般性，但是所有的推导过程可以推导到一般的运算，因此以下给出的并不是反向传播算法的严格证明，但是可以很好的帮助理解反向传播算法。  </p>
         </div>
         
         
@@ -626,8 +620,7 @@
         </div>
         
         <div class="content">
-            <h5 id="前言">前言</h5>
-<p>  前面介绍了单层全连接层，并且没有使用激活函数，这种情况比较简单，这一篇文章打算简单介绍一下多个输出，以及使用激活函数进行非线性激活的情况。还是请注意：这里的所有推导过程都只是针对当前设置的参数信息，并不具有一般性，但是所有的推导过程可以推导到一般的运算，因此以下给出的并不是反向传播算法的严格证明，但是可以很好的帮助理解反向传播算法。</p>
+            <h5 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h5><p>&emsp;&emsp;前面介绍了单层全连接层，并且没有使用激活函数，这种情况比较简单，这一篇文章打算简单介绍一下多个输出，以及使用激活函数进行非线性激活的情况。还是请注意：这里的所有推导过程都只是针对当前设置的参数信息，并不具有一般性，但是所有的推导过程可以推导到一般的运算，因此以下给出的并不是反向传播算法的严格证明，但是可以很好的帮助理解反向传播算法。</p>
         </div>
         
         
@@ -701,8 +694,7 @@
         </div>
         
         <div class="content">
-            <h5 id="一反向传播算法">一、反向传播算法</h5>
-<p>  近年来，深度学习的快速发展带来了一系列喜人的成果，不管是在图像领域还是在NLP领域，深度学习都显示了其极其强大的能力。而深度学习之所以可以进行大规模的参数运算，反向传播算法功不可没，可以说，没有反向传播算法，深度学习就不可能得以快速发展，因此在此之前，有必要了解一下反向传播算法的具体原理和公式推导。请注意：这里的所有推导过程都只是针对当前设置的参数信息，并不具有一般性，但是所有的推导过程可以推导到一般的运算，因此以下给出的并不是反向传播算法的严格证明，但是可以很好的帮助理解反向传播算法。<br></p>
+            <h5 id="一、反向传播算法"><a href="#一、反向传播算法" class="headerlink" title="一、反向传播算法"></a>一、反向传播算法</h5><p>&emsp;&emsp;近年来，深度学习的快速发展带来了一系列喜人的成果，不管是在图像领域还是在NLP领域，深度学习都显示了其极其强大的能力。而深度学习之所以可以进行大规模的参数运算，反向传播算法功不可没，可以说，没有反向传播算法，深度学习就不可能得以快速发展，因此在此之前，有必要了解一下反向传播算法的具体原理和公式推导。请注意：这里的所有推导过程都只是针对当前设置的参数信息，并不具有一般性，但是所有的推导过程可以推导到一般的运算，因此以下给出的并不是反向传播算法的严格证明，但是可以很好的帮助理解反向传播算法。  </p>
         </div>
         
         
@@ -776,8 +768,7 @@
         </div>
         
         <div class="content">
-            <h5 id="数据降维">数据降维</h5>
-<p>  在很多时候，我们收集的数据样本的维度很多，而且有些维度之间存在某一些联系，比如，当我们想要收集用户的消费情况时，用户的收入和用户的食物支出往往存在一些联系，收入越高往往食物的支出也越高（这里只是举个例子，不一定正确。）。那么在拿到这样的数据的时候，我们首先想到的就是我们需要对其中的信息做一些处理，排除掉一些冗余的维度，保留必要的维度信息。这样一来，我们可以大大减小我们的后期处理的工作量，这就是数据降维的基本要求。</p>
+            <h5 id="数据降维"><a href="#数据降维" class="headerlink" title="数据降维"></a>数据降维</h5><p>&emsp;&emsp;在很多时候，我们收集的数据样本的维度很多，而且有些维度之间存在某一些联系，比如，当我们想要收集用户的消费情况时，用户的收入和用户的食物支出往往存在一些联系，收入越高往往食物的支出也越高（这里只是举个例子，不一定正确。）。那么在拿到这样的数据的时候，我们首先想到的就是我们需要对其中的信息做一些处理，排除掉一些冗余的维度，保留必要的维度信息。这样一来，我们可以大大减小我们的后期处理的工作量，这就是数据降维的基本要求。</p>
         </div>
         
         
@@ -851,8 +842,7 @@
         </div>
         
         <div class="content">
-            <h5 id="前言">前言</h5>
-<p>  奇异值分解(Singular Value Decomposition，以下简称SVD)是在一种十分经典的无监督的机器学习算法，它可以用于处理降维算法中的特征分解，还可以用于推荐系统，以及自然语言处理等领域。是很多机器学习算法的基石。</p>
+            <h5 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h5><p>&emsp;&emsp;奇异值分解(Singular Value Decomposition，以下简称SVD)是在一种十分经典的无监督的机器学习算法，它可以用于处理降维算法中的特征分解，还可以用于推荐系统，以及自然语言处理等领域。是很多机器学习算法的基石。</p>
         </div>
         
         
@@ -948,7 +938,7 @@
                         Posts
                     </p>
                     <p class="title has-text-weight-normal">
-                        40
+                        41
                     </p>
                 </a>
             </div>
@@ -968,7 +958,7 @@
                         Tags
                     </p>
                     <p class="title has-text-weight-normal">
-                        22
+                        23
                     </p>
                 </a>
             </div>
@@ -1070,7 +1060,7 @@
         <h3 class="menu-label">
             Tag Cloud
         </h3>
-        <a href="/tags/AdaBoost/" style="font-size: 10px;">AdaBoost</a> <a href="/tags/EM算法/" style="font-size: 10px;">EM算法</a> <a href="/tags/FasterRCNN/" style="font-size: 17.78px;">FasterRCNN</a> <a href="/tags/PCA/" style="font-size: 11.11px;">PCA</a> <a href="/tags/SVD/" style="font-size: 10px;">SVD</a> <a href="/tags/SVM/" style="font-size: 12.22px;">SVM</a> <a href="/tags/SVR/" style="font-size: 10px;">SVR</a> <a href="/tags/Support-Vector-Regression/" style="font-size: 10px;">Support Vector Regression</a> <a href="/tags/Welcome/" style="font-size: 10px;">Welcome</a> <a href="/tags/YOLOv3/" style="font-size: 15.56px;">YOLOv3</a> <a href="/tags/主成分分析/" style="font-size: 11.11px;">主成分分析</a> <a href="/tags/卷积/" style="font-size: 13.33px;">卷积</a> <a href="/tags/反向传播/" style="font-size: 14.44px;">反向传播</a> <a href="/tags/反向传播算法/" style="font-size: 12.22px;">反向传播算法</a> <a href="/tags/奇异值分解/" style="font-size: 10px;">奇异值分解</a> <a href="/tags/支持向量回归/" style="font-size: 10px;">支持向量回归</a> <a href="/tags/支持向量机/" style="font-size: 12.22px;">支持向量机</a> <a href="/tags/机器学习/" style="font-size: 16.67px;">机器学习</a> <a href="/tags/核函数/" style="font-size: 10px;">核函数</a> <a href="/tags/深度学习/" style="font-size: 20px;">深度学习</a> <a href="/tags/目标检测/" style="font-size: 18.89px;">目标检测</a> <a href="/tags/逻辑回归/" style="font-size: 10px;">逻辑回归</a>
+        <a href="/tags/AdaBoost/" style="font-size: 10px;">AdaBoost</a> <a href="/tags/EM算法/" style="font-size: 10px;">EM算法</a> <a href="/tags/FasterRCNN/" style="font-size: 17.78px;">FasterRCNN</a> <a href="/tags/PCA/" style="font-size: 11.11px;">PCA</a> <a href="/tags/SSD/" style="font-size: 10px;">SSD</a> <a href="/tags/SVD/" style="font-size: 10px;">SVD</a> <a href="/tags/SVM/" style="font-size: 12.22px;">SVM</a> <a href="/tags/SVR/" style="font-size: 10px;">SVR</a> <a href="/tags/Support-Vector-Regression/" style="font-size: 10px;">Support Vector Regression</a> <a href="/tags/Welcome/" style="font-size: 10px;">Welcome</a> <a href="/tags/YOLOv3/" style="font-size: 15.56px;">YOLOv3</a> <a href="/tags/主成分分析/" style="font-size: 11.11px;">主成分分析</a> <a href="/tags/卷积/" style="font-size: 13.33px;">卷积</a> <a href="/tags/反向传播/" style="font-size: 14.44px;">反向传播</a> <a href="/tags/反向传播算法/" style="font-size: 12.22px;">反向传播算法</a> <a href="/tags/奇异值分解/" style="font-size: 10px;">奇异值分解</a> <a href="/tags/支持向量回归/" style="font-size: 10px;">支持向量回归</a> <a href="/tags/支持向量机/" style="font-size: 12.22px;">支持向量机</a> <a href="/tags/机器学习/" style="font-size: 16.67px;">机器学习</a> <a href="/tags/核函数/" style="font-size: 10px;">核函数</a> <a href="/tags/深度学习/" style="font-size: 20px;">深度学习</a> <a href="/tags/目标检测/" style="font-size: 18.89px;">目标检测</a> <a href="/tags/逻辑回归/" style="font-size: 10px;">逻辑回归</a>
     </div>
 </div>
 
@@ -1090,7 +1080,7 @@
                     <span class="level-item">September 2019</span>
                 </span>
                 <span class="level-end">
-                    <span class="level-item tag">13</span>
+                    <span class="level-item tag">14</span>
                 </span>
             </a>
         </li>
@@ -1146,6 +1136,25 @@
         
         <article class="media">
             
+            <a href="/2019/09/05/Note27-SSD-00/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/gallery/DeepLearning.jpg" alt="SSD源码阅读之零：写在前面">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-09-05T07:36:40.000Z">2019-09-05</time></div>
+                    <a href="/2019/09/05/Note27-SSD-00/" class="has-link-black-ter is-size-6">SSD源码阅读之零：写在前面</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/目标检测/">目标检测</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
             <a href="/2019/09/04/Note26-FasterRCNN-12/" class="media-left">
                 <p class="image is-64x64">
                     <img class="thumbnail" src="/gallery/DeepLearning.jpg" alt="Faster R-CNN源码阅读之十二：写在最后">
@@ -1220,25 +1229,6 @@
             </div>
         </article>
         
-        <article class="media">
-            
-            <a href="/2019/09/04/Note26-FasterRCNN-8/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/gallery/DeepLearning.jpg" alt="Faster R-CNN源码阅读之八：Faster R-CNN/lib/rpn_msr/proposal_target_layer_tf.py">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-09-04T08:27:45.000Z">2019-09-04</time></div>
-                    <a href="/2019/09/04/Note26-FasterRCNN-8/" class="has-link-black-ter is-size-6">Faster R-CNN源码阅读之八：Faster R-CNN/lib/rpn_msr/proposal_target_layer_tf.py</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/目标检测/">目标检测</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
     </div>
 </div>
 
@@ -1273,7 +1263,7 @@
                 <span class="level-item">目标检测</span>
             </span>
             <span class="level-end">
-                <span class="level-item tag">20</span>
+                <span class="level-item tag">21</span>
             </span>
         </a></li>
             </ul>
@@ -1301,6 +1291,25 @@
         
         <article class="media">
             
+            <a href="/2019/09/05/Note27-SSD-00/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/gallery/DeepLearning.jpg" alt="SSD源码阅读之零：写在前面">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-09-05T07:36:40.000Z">2019-09-05</time></div>
+                    <a href="/2019/09/05/Note27-SSD-00/" class="has-link-black-ter is-size-6">SSD源码阅读之零：写在前面</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/目标检测/">目标检测</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
             <a href="/2019/09/04/Note26-FasterRCNN-12/" class="media-left">
                 <p class="image is-64x64">
                     <img class="thumbnail" src="/gallery/DeepLearning.jpg" alt="Faster R-CNN源码阅读之十二：写在最后">
@@ -1375,25 +1384,6 @@
             </div>
         </article>
         
-        <article class="media">
-            
-            <a href="/2019/09/04/Note26-FasterRCNN-8/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/gallery/DeepLearning.jpg" alt="Faster R-CNN源码阅读之八：Faster R-CNN/lib/rpn_msr/proposal_target_layer_tf.py">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-09-04T08:27:45.000Z">2019-09-04</time></div>
-                    <a href="/2019/09/04/Note26-FasterRCNN-8/" class="has-link-black-ter is-size-6">Faster R-CNN源码阅读之八：Faster R-CNN/lib/rpn_msr/proposal_target_layer_tf.py</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/目标检测/">目标检测</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
     </div>
 </div>
 
@@ -1428,7 +1418,7 @@
                 <span class="level-item">目标检测</span>
             </span>
             <span class="level-end">
-                <span class="level-item tag">20</span>
+                <span class="level-item tag">21</span>
             </span>
         </a></li>
             </ul>
