@@ -7,19 +7,19 @@
 
 
 
-    <meta name="description" content="一、硬间隔SVM和软间隔SVM&amp;emsp;&amp;emsp;前面简单介绍了以下线性可分SVM，本质上前面介绍的SVM属于硬间隔SVM，因为我们已经知道存在一个超平面 $S:\omega \cdot x + b = 0$ 可以将所有的样本数据完美分开。但是实际上，并不是所有的样本数据都这么完美。有时候存在这种情况，给定一个样本数据集，绝大多数的样本都是线性可分的，但是存在某些特别的样本是线性不可分的。例如">
+    <meta name="description" content="一、硬间隔SVM和软间隔SVM   前面简单介绍了以下线性可分SVM，本质上前面介绍的SVM属于硬间隔SVM，因为我们已经知道存在一个超平面 \(S:\omega \cdot x + b = 0\) 可以将所有的样本数据完美分开。但是实际上，并不是所有的样本数据都这么完美。有时候存在这种情况，给定一个样本数据集，绝大多数的样本都是线性可分的，但是存在某些特别的样本是线性不可分的。例如，如果我们将">
 <meta name="keywords" content="机器学习,支持向量机,SVM">
 <meta property="og:type" content="article">
 <meta property="og:title" content="线性不可分支持向量机">
 <meta property="og:url" content="http://huaxuan0720.github.io/2019/06/15/Note22-SVM-Soft-Margin/index.html">
 <meta property="og:site_name" content="Welcome to My Blogs">
-<meta property="og:description" content="一、硬间隔SVM和软间隔SVM&amp;emsp;&amp;emsp;前面简单介绍了以下线性可分SVM，本质上前面介绍的SVM属于硬间隔SVM，因为我们已经知道存在一个超平面 $S:\omega \cdot x + b = 0$ 可以将所有的样本数据完美分开。但是实际上，并不是所有的样本数据都这么完美。有时候存在这种情况，给定一个样本数据集，绝大多数的样本都是线性可分的，但是存在某些特别的样本是线性不可分的。例如">
+<meta property="og:description" content="一、硬间隔SVM和软间隔SVM   前面简单介绍了以下线性可分SVM，本质上前面介绍的SVM属于硬间隔SVM，因为我们已经知道存在一个超平面 \(S:\omega \cdot x + b = 0\) 可以将所有的样本数据完美分开。但是实际上，并不是所有的样本数据都这么完美。有时候存在这种情况，给定一个样本数据集，绝大多数的样本都是线性可分的，但是存在某些特别的样本是线性不可分的。例如，如果我们将">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://huaxuan0720.github.io/gallery/MachineLearning.jpg">
 <meta property="og:updated_time" content="2019-06-17T04:16:33.514Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="线性不可分支持向量机">
-<meta name="twitter:description" content="一、硬间隔SVM和软间隔SVM&amp;emsp;&amp;emsp;前面简单介绍了以下线性可分SVM，本质上前面介绍的SVM属于硬间隔SVM，因为我们已经知道存在一个超平面 $S:\omega \cdot x + b = 0$ 可以将所有的样本数据完美分开。但是实际上，并不是所有的样本数据都这么完美。有时候存在这种情况，给定一个样本数据集，绝大多数的样本都是线性可分的，但是存在某些特别的样本是线性不可分的。例如">
+<meta name="twitter:description" content="一、硬间隔SVM和软间隔SVM   前面简单介绍了以下线性可分SVM，本质上前面介绍的SVM属于硬间隔SVM，因为我们已经知道存在一个超平面 \(S:\omega \cdot x + b = 0\) 可以将所有的样本数据完美分开。但是实际上，并不是所有的样本数据都这么完美。有时候存在这种情况，给定一个样本数据集，绝大多数的样本都是线性可分的，但是存在某些特别的样本是线性不可分的。例如，如果我们将">
 <meta name="twitter:image" content="http://huaxuan0720.github.io/gallery/MachineLearning.jpg">
 
 
@@ -192,25 +192,111 @@
         </div>
         
         <div class="content">
-            <h5 id="一、硬间隔SVM和软间隔SVM"><a href="#一、硬间隔SVM和软间隔SVM" class="headerlink" title="一、硬间隔SVM和软间隔SVM"></a>一、硬间隔SVM和软间隔SVM</h5><p>&emsp;&emsp;前面简单介绍了以下线性可分SVM，本质上前面介绍的SVM属于硬间隔SVM，因为我们已经知道存在一个超平面 $S:\omega \cdot x + b = 0$ 可以将所有的样本数据完美分开。但是实际上，并不是所有的样本数据都这么完美。有时候存在这种情况，给定一个样本数据集，绝大多数的样本都是线性可分的，但是存在某些特别的样本是线性不可分的。例如，如果我们将 $y = 0$ 这条直线看作一个分类的超平面， $y = 0$ 以上的点标记为1， $y = 0$ 以下的点标记为-1，那么绝大多数的样本点符合这个规则，但是有一些点位于 $y = 0$ 以上，却被标记为-1，有些点位于 $y = 0$ 以下，却被标记为了1，这样就会导致整个数据集线性不可分。</p>
+            <h5 id="一硬间隔svm和软间隔svm">一、硬间隔SVM和软间隔SVM</h5>
+<p>  前面简单介绍了以下线性可分SVM，本质上前面介绍的SVM属于硬间隔SVM，因为我们已经知道存在一个超平面 <span class="math inline">\(S:\omega \cdot x + b = 0\)</span> 可以将所有的样本数据完美分开。但是实际上，并不是所有的样本数据都这么完美。有时候存在这种情况，给定一个样本数据集，绝大多数的样本都是线性可分的，但是存在某些特别的样本是线性不可分的。例如，如果我们将 <span class="math inline">\(y = 0\)</span> 这条直线看作一个分类的超平面， <span class="math inline">\(y = 0\)</span> 以上的点标记为1， <span class="math inline">\(y = 0\)</span> 以下的点标记为-1，那么绝大多数的样本点符合这个规则，但是有一些点位于 <span class="math inline">\(y = 0\)</span> 以上，却被标记为-1，有些点位于 <span class="math inline">\(y = 0\)</span> 以下，却被标记为了1，这样就会导致整个数据集线性不可分。</p>
 <a id="more"></a>
-
-<p>&emsp;&emsp;线性不可分的数据集不能使用硬间隔SVM，根本原因在于硬间隔SVM对于函数距离的使用较为严格，必须满足 $y_i(\omega \cdot x + b) \geq 1$ 这个条件。所以为了可以解决上面提到的问题，我们可以在硬间隔SVM的表达式上进行一些修改。既然条件比较严格，那么我们就对每一个条件进行一定的松弛操作，所以我们需要引入一个新的松弛变量 $\xi$ ，于是对每一个条件，我们有：<br>$$<br>y_i (\omega \cdot x_i + b) \geq 1 - \xi_i \quad (1 \leq i \leq m) \tag{1}<br>$$<br>&emsp;&emsp;其中， $\xi_i \geq 0$。因为引入了多余的参数，所有我们需要对原目标函数和松弛变量之间的关系进行平衡，因此，目标函数更改为：<br>$$<br>\frac{1}{2} ||\omega||^2 + C \sum_{i = 1}^{m} \xi_i \quad (1 \leq i \leq m) \tag{2}<br>$$<br>&emsp;&emsp;这里的 $C$ 是一个人为设定的超参数，通常 $C &gt; 0$，或者可以叫做平衡系数，或者惩罚参数，主要是用来平衡两者之间的关系。当 $C$ 比较大的时候对那些对那些误分类的样本数据的惩罚作用就会比较大，反之则会比较小，所以最小化目标函数就包括了既要使得超平面 $S$ 到最近样本的 距离之和最小，又要使得误分类的数据样本的数目最小。</p>
-<p>&emsp;&emsp;所以，我们需要求解的问题就变成了如下形式（ $m$ 为样本数目）：<br>$$<br>\begin{aligned}<br>\min \limits_{\omega, b, \xi} &amp; \quad \frac{1}{2} ||\omega||^2 + C \sum_{i = 1}^{m} \xi_i \<br>s.t. &amp; \quad y_i (\omega \cdot x_i + b) \geq 1 - \xi_i \quad (1 \leq i \leq m) \<br>&amp; \quad \xi_i \geq 0 \quad (1 \leq i \leq m)<br>\end{aligned} \tag{3}<br>$$</p>
-<h5 id="二、学习的对偶问题"><a href="#二、学习的对偶问题" class="headerlink" title="二、学习的对偶问题"></a>二、学习的对偶问题</h5><p>&emsp;&emsp;首先我们对式(3)进行一个小小的变化，如下：<br>$$<br>\begin{aligned}<br>\min \limits_{\omega, b, \xi} &amp; \quad \frac{1}{2} ||\omega||^2 + C \sum_{i = 1}^{m} \xi_i \<br>s.t. &amp; \quad y_i (\omega \cdot x_i + b) - 1 + \xi_i \geq 0 \quad (1 \leq i \leq m) \<br>&amp; \quad \xi_i \geq 0 \quad (1 \leq i \leq m)<br>\end{aligned} \tag{4}<br>$$<br>&emsp;&emsp;和前面一样，我们对上面的式子使用拉格朗日数乘法，因为上面由两个不同类型的约束条件，所以我们需要使用两个不同的变量进行控制。在这里我们使用 $\alpha = (\alpha_1, \alpha_2, …, \alpha_i)$ 来对第一个条件进行约束，使用 $\mu = (\mu_1, \mu_2, …, \mu_i)$ 来对第二个条件进行约束，于是我们的问题就转换成了求解下面的式子的极大极小值的问题（ $L(w, b, \xi, \alpha, \mu)$ 表示我们使用的拉格朗日函数）：<br>$$<br>\max_{\alpha, \mu} \min_{\omega, b, \xi} \quad L(w, b, \xi, \alpha, \mu) \tag{5}<br>$$<br>&emsp;&emsp;我们的拉格朗日函数定义如下：<br>$$<br>\begin{aligned}<br>L(w, b, \xi, \alpha, \mu) &amp;= \frac{1}{2} ||\omega||^2 + C \sum_{i = 1}^{m} \xi_i - \sum_{i = 1}^{m} \alpha_i (y_i (\omega \cdot x_i + b) - 1 + \xi_i) - \sum_{i = 1}^{m} \mu_i \xi_i \<br>&amp;= \frac{1}{2} ||\omega||^2 + C \sum_{i = 1}^{m} \xi_i - \sum_{i = 1}^{m} \alpha_i y_i (\omega \cdot x_i + b) + \sum_{i = 1}^{m} \alpha_i - \sum_{i = 1}^{m} \alpha_i \xi_i - \sum_{i = 1}^{m}  \mu_i \xi_i \<br>&amp;= \frac{1}{2} ||\omega||^2 + C \sum_{i = 1}^{m} \xi_i - \omega \cdot \sum_{i = 1}^{m} \alpha_i y_i x_i - b \sum_{i = 1}^{m} \alpha_i y_i + \sum_{i = 1}^{m} \alpha_i - \sum_{i = 1}^{m} \alpha_i \xi_i - \sum_{i = 1}^{m}  \mu_i \xi_i<br>\end{aligned} \tag{6}<br>$$<br>&emsp;&emsp;接着，我们需要先求出目标拉格朗日函数对于 $\omega$ ，$b$ ，$\xi$ 的极小值，所以我们需要对着三个变量分别求偏导，（注意，由于 $\xi$ 的每一个分量都是相同地位的，所以我们只需要对其中的一个分量求偏导即可。）如下：<br>$$<br>\frac{\partial}{\partial \omega} L(w, b, \xi, \alpha, \mu)= \omega - \sum_{i = 1}^{m} \alpha_i y_i x_i \tag{7}<br>$$<br>$$<br>\frac{\partial}{\partial b} L(w, b, \xi, \alpha, \mu) = \sum_{i = 1}^{m} \alpha_i y_i \tag{8}<br>$$<br>$$<br>\frac{\partial}{\partial \xi_i} L(w, b, \xi, \alpha, \mu) = C - \alpha_i - \mu_i \tag{9}<br>$$<br>&emsp;&emsp;我们分别令上面的三个偏导数为0，于是我们可以得到：<br>$$<br>\omega = \sum_{i = 1}^{m} \alpha_i y_i x_i \tag{10}<br>$$<br>$$<br>\sum_{i = 1}^{m} \alpha_i y_i = 0 \tag{11}<br>$$<br>$$<br>C = \alpha_i + \mu_i \tag{12}<br>$$<br>&emsp;&emsp;我们将上面的结果代入到 $L(w, b, \xi, \alpha, \mu)$ 中：<br>$$<br>\begin{aligned}<br>L(w, b, \xi, \alpha, \mu) &amp;= \frac{1}{2} ||\omega||^2 + C \sum_{i = 1}^{m} \xi_i - \omega \cdot \sum_{i = 1}^{m} \alpha_i y_i x_i - b \sum_{i = 1}^{m} \alpha_i y_i + \sum_{i = 1}^{m} \alpha_i - \sum_{i = 1}^{m} \alpha_i \xi_i - \sum_{i = 1}^{m}  \mu_i \xi_i \<br>&amp;= \frac{1}{2} ||\omega||^2 + C \sum_{i = 1}^{m} \xi_i - \omega \cdot \omega + \sum_{i = 1}^{m} \alpha_i - \sum_{i = 1}^{m} \alpha_i \xi_i - \sum_{i = 1}^{m}  \mu_i \xi_i \<br>&amp;= \frac{1}{2} ||\omega||^2 + C \sum_{i = 1}^{m} \xi_i - \omega \cdot \omega + \sum_{i = 1}^{m} \alpha_i - \sum_{i = 1}^{m} (\alpha_i \xi_i +  \mu_i \xi_i) \<br>&amp;= \frac{1}{2} ||\omega||^2 + C \sum_{i = 1}^{m} \xi_i - \omega \cdot \omega + \sum_{i = 1}^{m} \alpha_i - \sum_{i = 1}^{m} \xi_i (\alpha_i +  \mu_i) \<br>&amp;= \frac{1}{2} ||\omega||^2 + C \sum_{i = 1}^{m} \xi_i - \omega \cdot \omega + \sum_{i = 1}^{m} \alpha_i -  C \sum_{i = 1}^{m} \xi_i \<br>&amp;= - \frac{1}{2} ||\omega||^2 + \sum_{i = 1}^{m} \alpha_i \<br>&amp;= -\frac{1}{2} (\sum_{i= 1}^{m} \alpha_i y_i x_i)(\sum_{j= 1}^{m} \alpha_j y_j x_j) + \sum_{i= 1}^{m} \alpha_i \<br>&amp;= -\frac{1}{2} \sum_{i= 1}^{m}\sum_{j= 1}^{m} \alpha_i \alpha_j y_i y_j (x_i \cdot x_j) + \sum_{i= 1}^{m} \alpha_i<br>\end{aligned} \tag{13}<br>$$<br>&emsp;&emsp;所以问题就变成了求解下面式子的极大值：<br>$$<br>\max \limits_{\alpha, \mu} \quad -\frac{1}{2} \sum_{i= 1}^{m}\sum_{j= 1}^{m} \alpha_i \alpha_j y_i y_j (x_i \cdot x_j) + \sum_{i= 1}^{m} \alpha_i<br>$$<br>&emsp;&emsp;反转一下正负号，就会有：<br>$$<br>\min \limits_{\alpha, \mu} \quad \frac{1}{2} \sum_{i= 1}^{m}\sum_{j= 1}^{m} \alpha_i \alpha_j y_i y_j (x_i \cdot x_j) - \sum_{i= 1}^{m} \alpha_i \tag{14}<br>$$<br>&emsp;&emsp;所以我们所需要的原问题的对偶问题可以表示如下：<br>$$<br>\begin{aligned}<br>\min \limits_{\alpha, \mu} &amp;\quad \frac{1}{2} \sum_{i= 1}^{m}\sum_{j= 1}^{m} \alpha_i \alpha_j y_i y_j (x_i \cdot x_j) - \sum_{i= 1}^{m} \alpha_i \<br>s.t. &amp;\quad \sum_{i = 1}^{m} \alpha_i y_i = 0 \<br>&amp;\quad C - \alpha_i - \mu_i = 0 \<br>&amp;\quad \alpha_i \geq 0 \<br>&amp;\quad \mu_i \geq 0, \quad 1 \leq i \leq m<br>\end{aligned} \tag{15}<br>$$<br>&emsp;&emsp;观察到上式中存在一个等式关系，于是，我们可以利用这个等式关系消去 $\mu_i$ 这个变量：<br>$$<br>\because C - \alpha_i - \mu_i = 0 \<br>\therefore \mu_i = C - \alpha_i \<br>\therefore \mu_i = C - \alpha_i \geq 0 \<br>\therefore C \geq \alpha_i<br>$$<br>&emsp;&emsp;于是，我们的问题可以有如下的表达：<br>$$<br>\begin{aligned}<br>\min \limits_{\alpha} &amp;\quad \frac{1}{2} \sum_{i= 1}^{m}\sum_{j= 1}^{m} \alpha_i \alpha_j y_i y_j (x_i \cdot x_j) - \sum_{i= 1}^{m} \alpha_i \<br>s.t. &amp;\quad \sum_{i = 1}^{m} \alpha_i y_i = 0 \<br>&amp;\quad 0 \leq \alpha_i \leq C, \quad 1 \leq i \leq m<br>\end{aligned}\tag{16}<br>$$<br>&emsp;&emsp;以上就是我们需要求出的线性不可分SVM原问题的对偶形式。</p>
-<h6 id="求解-omega-和-b-参数"><a href="#求解-omega-和-b-参数" class="headerlink" title="求解 $\omega$ 和 $b$ 参数"></a>求解 $\omega$ 和 $b$ 参数</h6><p>&emsp;&emsp;我们求出最后满足公式(16)所设定的条件的最优解的 $\alpha$ 的数值之后，接下来就需要计算超平面的 $\omega$ 和 $b$ 参数了。根据公式(10)，再结合我们计算出的 $\alpha$ 的最优解，就可以计算出超平面的 $\omega$ 参数，即：<br>$$<br>\omega^* = \sum_{i= 1}^{m} \alpha_i y_i x_i \tag{17}<br>$$<br>&emsp;&emsp;由于超平面方程只和某些特定的数据样本有关，和很多数据样本无关，这些无关的样本点对应的 $\alpha$ 参数为0。因此，我们可以选择某一个 $\alpha$ 的分量 $\alpha_i$，该分量满足 $0 &lt; \alpha_i &lt; C$ ，就可以求得超平面的 $b$ 参数。因为对于这类样本数据，我们可以知道它的函数间隔是1（或者-1），于是有：<br>$$<br>y_i (\omega^* \cdot x_i + b^<em>) = 1 \tag{18}<br>$$<br>&emsp;&emsp;由上可以计算出 $b^</em>$ 的数值为：<br>$$<br>b^* = y_i - \omega^* \cdot x_i \<br>b^* = y_i -  x_i \cdot \sum_{j = 1}^{m} \alpha_j y_j x_j \tag{18}<br>$$</p>
-<h5 id="三、支持向量和决策函数"><a href="#三、支持向量和决策函数" class="headerlink" title="三、支持向量和决策函数"></a>三、支持向量和决策函数</h5><p>&emsp;&emsp;当我们根据上面的对偶问题求解出了需要的 $\omega^<em>$ 和 $b^</em>$ 参数后，我们就可以知道该分类模型的决策函数如下：<br>$$<br>f(x) = sign(\omega^* \cdot x + b^*) \tag{19}<br>$$<br>&emsp;&emsp;其中， $sign()$ 函数表示的是取数值的符号，如果数值是正数，返回1，如果数值是负数，返回-1。<br>&emsp;&emsp;在线性不可分SVM的求解过程中，因为引入了松弛变量，所以支持向量的判定会较为复杂。会出现以下的情况：</p>
-<ol>
-<li>如果 $\alpha_i &lt; C$，这时 $\xi_i = 0$，我们可以知道此时该样本位于间隔的边界上，正好属于一个支持向量。  </li>
-<li>如果 $\alpha_i = C$，这时我们知道该样本的数据已经偏离了正确的间隔边界，所以又存在以下的几种情况：  <ol>
-<li>如果此时 $0 &lt; \xi_i &lt; 1$，那我们根据函数间隔的性质可以知道，虽然样本数据已经越过了间隔的边界，但是仍然属于分类正确的样本，此时样本数据位于超平面和间隔边界之间。  </li>
-<li>如果此时 $\xi_i = 1$，那么我们根据函数间隔的性质，可以知道的是样本正好位于分类的超平面上。  </li>
-<li>如果此时 $\xi_i &gt; 1$，那么这时候，样本数据已经越过了分类的超平面，已经属于误分类的样本数据了，且 $\xi_i$ 的数值越大，距离超平面越远。  </li>
-</ol>
+<p>  线性不可分的数据集不能使用硬间隔SVM，根本原因在于硬间隔SVM对于函数距离的使用较为严格，必须满足 <span class="math inline">\(y_i(\omega \cdot x + b) \geq 1\)</span> 这个条件。所以为了可以解决上面提到的问题，我们可以在硬间隔SVM的表达式上进行一些修改。既然条件比较严格，那么我们就对每一个条件进行一定的松弛操作，所以我们需要引入一个新的松弛变量 <span class="math inline">\(\xi\)</span> ，于是对每一个条件，我们有： <span class="math display">\[
+y_i (\omega \cdot x_i + b) \geq 1 - \xi_i \quad (1 \leq i \leq m) \tag{1}
+\]</span>   其中， <span class="math inline">\(\xi_i \geq 0\)</span>。因为引入了多余的参数，所有我们需要对原目标函数和松弛变量之间的关系进行平衡，因此，目标函数更改为： <span class="math display">\[
+\frac{1}{2} ||\omega||^2 + C \sum_{i = 1}^{m} \xi_i \quad (1 \leq i \leq m) \tag{2}
+\]</span>   这里的 <span class="math inline">\(C\)</span> 是一个人为设定的超参数，通常 <span class="math inline">\(C &gt; 0\)</span>，或者可以叫做平衡系数，或者惩罚参数，主要是用来平衡两者之间的关系。当 <span class="math inline">\(C\)</span> 比较大的时候对那些对那些误分类的样本数据的惩罚作用就会比较大，反之则会比较小，所以最小化目标函数就包括了既要使得超平面 <span class="math inline">\(S\)</span> 到最近样本的 距离之和最小，又要使得误分类的数据样本的数目最小。</p>
+<p>  所以，我们需要求解的问题就变成了如下形式（ <span class="math inline">\(m\)</span> 为样本数目）： <span class="math display">\[
+\begin{aligned}
+\min \limits_{\omega, b, \xi} &amp; \quad \frac{1}{2} ||\omega||^2 + C \sum_{i = 1}^{m} \xi_i \\
+s.t. &amp; \quad y_i (\omega \cdot x_i + b) \geq 1 - \xi_i \quad (1 \leq i \leq m) \\
+&amp; \quad \xi_i \geq 0 \quad (1 \leq i \leq m)
+\end{aligned} \tag{3}
+\]</span></p>
+<h5 id="二学习的对偶问题">二、学习的对偶问题</h5>
+<p>  首先我们对式(3)进行一个小小的变化，如下： <span class="math display">\[
+\begin{aligned}
+\min \limits_{\omega, b, \xi} &amp; \quad \frac{1}{2} ||\omega||^2 + C \sum_{i = 1}^{m} \xi_i \\
+s.t. &amp; \quad y_i (\omega \cdot x_i + b) - 1 + \xi_i \geq 0 \quad (1 \leq i \leq m) \\
+&amp; \quad \xi_i \geq 0 \quad (1 \leq i \leq m)
+\end{aligned} \tag{4}
+\]</span>   和前面一样，我们对上面的式子使用拉格朗日数乘法，因为上面由两个不同类型的约束条件，所以我们需要使用两个不同的变量进行控制。在这里我们使用 <span class="math inline">\(\alpha = (\alpha_1, \alpha_2, ..., \alpha_i)\)</span> 来对第一个条件进行约束，使用 <span class="math inline">\(\mu = (\mu_1, \mu_2, ..., \mu_i)\)</span> 来对第二个条件进行约束，于是我们的问题就转换成了求解下面的式子的极大极小值的问题（ <span class="math inline">\(L(w, b, \xi, \alpha, \mu)\)</span> 表示我们使用的拉格朗日函数）： <span class="math display">\[
+\max_{\alpha, \mu} \min_{\omega, b, \xi} \quad L(w, b, \xi, \alpha, \mu) \tag{5}
+\]</span>   我们的拉格朗日函数定义如下： <span class="math display">\[
+\begin{aligned}
+L(w, b, \xi, \alpha, \mu) &amp;= \frac{1}{2} ||\omega||^2 + C \sum_{i = 1}^{m} \xi_i - \sum_{i = 1}^{m} \alpha_i (y_i (\omega \cdot x_i + b) - 1 + \xi_i) - \sum_{i = 1}^{m} \mu_i \xi_i \\
+&amp;= \frac{1}{2} ||\omega||^2 + C \sum_{i = 1}^{m} \xi_i - \sum_{i = 1}^{m} \alpha_i y_i (\omega \cdot x_i + b) + \sum_{i = 1}^{m} \alpha_i - \sum_{i = 1}^{m} \alpha_i \xi_i - \sum_{i = 1}^{m}  \mu_i \xi_i \\
+&amp;= \frac{1}{2} ||\omega||^2 + C \sum_{i = 1}^{m} \xi_i - \omega \cdot \sum_{i = 1}^{m} \alpha_i y_i x_i - b \sum_{i = 1}^{m} \alpha_i y_i + \sum_{i = 1}^{m} \alpha_i - \sum_{i = 1}^{m} \alpha_i \xi_i - \sum_{i = 1}^{m}  \mu_i \xi_i
+\end{aligned} \tag{6}
+\]</span>   接着，我们需要先求出目标拉格朗日函数对于 <span class="math inline">\(\omega\)</span> ，<span class="math inline">\(b\)</span> ，<span class="math inline">\(\xi\)</span> 的极小值，所以我们需要对着三个变量分别求偏导，（注意，由于 <span class="math inline">\(\xi\)</span> 的每一个分量都是相同地位的，所以我们只需要对其中的一个分量求偏导即可。）如下： <span class="math display">\[
+\frac{\partial}{\partial \omega} L(w, b, \xi, \alpha, \mu)= \omega - \sum_{i = 1}^{m} \alpha_i y_i x_i \tag{7}
+\]</span> <span class="math display">\[
+\frac{\partial}{\partial b} L(w, b, \xi, \alpha, \mu) = \sum_{i = 1}^{m} \alpha_i y_i \tag{8}
+\]</span> <span class="math display">\[
+\frac{\partial}{\partial \xi_i} L(w, b, \xi, \alpha, \mu) = C - \alpha_i - \mu_i \tag{9}
+\]</span>   我们分别令上面的三个偏导数为0，于是我们可以得到： <span class="math display">\[
+\omega = \sum_{i = 1}^{m} \alpha_i y_i x_i \tag{10}
+\]</span> <span class="math display">\[
+\sum_{i = 1}^{m} \alpha_i y_i = 0 \tag{11}
+\]</span> <span class="math display">\[
+C = \alpha_i + \mu_i \tag{12}
+\]</span>   我们将上面的结果代入到 <span class="math inline">\(L(w, b, \xi, \alpha, \mu)\)</span> 中： <span class="math display">\[
+\begin{aligned}
+L(w, b, \xi, \alpha, \mu) &amp;= \frac{1}{2} ||\omega||^2 + C \sum_{i = 1}^{m} \xi_i - \omega \cdot \sum_{i = 1}^{m} \alpha_i y_i x_i - b \sum_{i = 1}^{m} \alpha_i y_i + \sum_{i = 1}^{m} \alpha_i - \sum_{i = 1}^{m} \alpha_i \xi_i - \sum_{i = 1}^{m}  \mu_i \xi_i \\
+&amp;= \frac{1}{2} ||\omega||^2 + C \sum_{i = 1}^{m} \xi_i - \omega \cdot \omega + \sum_{i = 1}^{m} \alpha_i - \sum_{i = 1}^{m} \alpha_i \xi_i - \sum_{i = 1}^{m}  \mu_i \xi_i \\
+&amp;= \frac{1}{2} ||\omega||^2 + C \sum_{i = 1}^{m} \xi_i - \omega \cdot \omega + \sum_{i = 1}^{m} \alpha_i - \sum_{i = 1}^{m} (\alpha_i \xi_i +  \mu_i \xi_i) \\
+&amp;= \frac{1}{2} ||\omega||^2 + C \sum_{i = 1}^{m} \xi_i - \omega \cdot \omega + \sum_{i = 1}^{m} \alpha_i - \sum_{i = 1}^{m} \xi_i (\alpha_i +  \mu_i) \\
+&amp;= \frac{1}{2} ||\omega||^2 + C \sum_{i = 1}^{m} \xi_i - \omega \cdot \omega + \sum_{i = 1}^{m} \alpha_i -  C \sum_{i = 1}^{m} \xi_i \\
+&amp;= - \frac{1}{2} ||\omega||^2 + \sum_{i = 1}^{m} \alpha_i \\
+&amp;= -\frac{1}{2} (\sum_{i= 1}^{m} \alpha_i y_i x_i)(\sum_{j= 1}^{m} \alpha_j y_j x_j) + \sum_{i= 1}^{m} \alpha_i \\
+&amp;= -\frac{1}{2} \sum_{i= 1}^{m}\sum_{j= 1}^{m} \alpha_i \alpha_j y_i y_j (x_i \cdot x_j) + \sum_{i= 1}^{m} \alpha_i
+\end{aligned} \tag{13}
+\]</span>   所以问题就变成了求解下面式子的极大值： <span class="math display">\[
+\max \limits_{\alpha, \mu} \quad -\frac{1}{2} \sum_{i= 1}^{m}\sum_{j= 1}^{m} \alpha_i \alpha_j y_i y_j (x_i \cdot x_j) + \sum_{i= 1}^{m} \alpha_i
+\]</span>   反转一下正负号，就会有： <span class="math display">\[
+\min \limits_{\alpha, \mu} \quad \frac{1}{2} \sum_{i= 1}^{m}\sum_{j= 1}^{m} \alpha_i \alpha_j y_i y_j (x_i \cdot x_j) - \sum_{i= 1}^{m} \alpha_i \tag{14}
+\]</span>   所以我们所需要的原问题的对偶问题可以表示如下： <span class="math display">\[
+\begin{aligned}
+\min \limits_{\alpha, \mu} &amp;\quad \frac{1}{2} \sum_{i= 1}^{m}\sum_{j= 1}^{m} \alpha_i \alpha_j y_i y_j (x_i \cdot x_j) - \sum_{i= 1}^{m} \alpha_i \\
+s.t. &amp;\quad \sum_{i = 1}^{m} \alpha_i y_i = 0 \\
+&amp;\quad C - \alpha_i - \mu_i = 0 \\
+&amp;\quad \alpha_i \geq 0 \\
+&amp;\quad \mu_i \geq 0, \quad 1 \leq i \leq m
+\end{aligned} \tag{15}
+\]</span>   观察到上式中存在一个等式关系，于是，我们可以利用这个等式关系消去 <span class="math inline">\(\mu_i\)</span> 这个变量： <span class="math display">\[
+\because C - \alpha_i - \mu_i = 0 \\
+\therefore \mu_i = C - \alpha_i \\
+\therefore \mu_i = C - \alpha_i \geq 0 \\
+\therefore C \geq \alpha_i
+\]</span>   于是，我们的问题可以有如下的表达： <span class="math display">\[
+\begin{aligned}
+\min \limits_{\alpha} &amp;\quad \frac{1}{2} \sum_{i= 1}^{m}\sum_{j= 1}^{m} \alpha_i \alpha_j y_i y_j (x_i \cdot x_j) - \sum_{i= 1}^{m} \alpha_i \\
+s.t. &amp;\quad \sum_{i = 1}^{m} \alpha_i y_i = 0 \\
+&amp;\quad 0 \leq \alpha_i \leq C, \quad 1 \leq i \leq m  
+\end{aligned}\tag{16}
+\]</span>   以上就是我们需要求出的线性不可分SVM原问题的对偶形式。</p>
+<h6 id="求解-omega-和-b-参数">求解 <span class="math inline">\(\omega\)</span> 和 <span class="math inline">\(b\)</span> 参数</h6>
+<p>  我们求出最后满足公式(16)所设定的条件的最优解的 <span class="math inline">\(\alpha\)</span> 的数值之后，接下来就需要计算超平面的 <span class="math inline">\(\omega\)</span> 和 <span class="math inline">\(b\)</span> 参数了。根据公式(10)，再结合我们计算出的 <span class="math inline">\(\alpha\)</span> 的最优解，就可以计算出超平面的 <span class="math inline">\(\omega\)</span> 参数，即： <span class="math display">\[
+\omega^* = \sum_{i= 1}^{m} \alpha_i y_i x_i \tag{17}
+\]</span>   由于超平面方程只和某些特定的数据样本有关，和很多数据样本无关，这些无关的样本点对应的 <span class="math inline">\(\alpha\)</span> 参数为0。因此，我们可以选择某一个 <span class="math inline">\(\alpha\)</span> 的分量 <span class="math inline">\(\alpha_i\)</span>，该分量满足 <span class="math inline">\(0 &lt; \alpha_i &lt; C\)</span> ，就可以求得超平面的 <span class="math inline">\(b\)</span> 参数。因为对于这类样本数据，我们可以知道它的函数间隔是1（或者-1），于是有： <span class="math display">\[
+y_i (\omega^* \cdot x_i + b^*) = 1 \tag{18}
+\]</span>   由上可以计算出 <span class="math inline">\(b^*\)</span> 的数值为： <span class="math display">\[
+b^* = y_i - \omega^* \cdot x_i \\
+b^* = y_i -  x_i \cdot \sum_{j = 1}^{m} \alpha_j y_j x_j \tag{18}
+\]</span></p>
+<h5 id="三支持向量和决策函数">三、支持向量和决策函数</h5>
+<p>  当我们根据上面的对偶问题求解出了需要的 <span class="math inline">\(\omega^*\)</span> 和 <span class="math inline">\(b^*\)</span> 参数后，我们就可以知道该分类模型的决策函数如下： <span class="math display">\[
+f(x) = sign(\omega^* \cdot x + b^*) \tag{19}
+\]</span>   其中， <span class="math inline">\(sign()\)</span> 函数表示的是取数值的符号，如果数值是正数，返回1，如果数值是负数，返回-1。<br>
+  在线性不可分SVM的求解过程中，因为引入了松弛变量，所以支持向量的判定会较为复杂。会出现以下的情况：</p>
+<ol type="1">
+<li>如果 <span class="math inline">\(\alpha_i &lt; C\)</span>，这时 <span class="math inline">\(\xi_i = 0\)</span>，我们可以知道此时该样本位于间隔的边界上，正好属于一个支持向量。<br>
 </li>
+<li>如果 <span class="math inline">\(\alpha_i = C\)</span>，这时我们知道该样本的数据已经偏离了正确的间隔边界，所以又存在以下的几种情况：
+<ol type="1">
+<li>如果此时 <span class="math inline">\(0 &lt; \xi_i &lt; 1\)</span>，那我们根据函数间隔的性质可以知道，虽然样本数据已经越过了间隔的边界，但是仍然属于分类正确的样本，此时样本数据位于超平面和间隔边界之间。<br>
+</li>
+<li>如果此时 <span class="math inline">\(\xi_i = 1\)</span>，那么我们根据函数间隔的性质，可以知道的是样本正好位于分类的超平面上。<br>
+</li>
+<li>如果此时 <span class="math inline">\(\xi_i &gt; 1\)</span>，那么这时候，样本数据已经越过了分类的超平面，已经属于误分类的样本数据了，且 <span class="math inline">\(\xi_i\)</span> 的数值越大，距离超平面越远。</li>
+</ol></li>
 </ol>
-<p>&emsp;&emsp;以上的样本数据统称为<strong>支持向量</strong>。</p>
-<p>&emsp;&emsp;综上就是线性不可分SVM的全部求解过程。</p>
+<p>  以上的样本数据统称为<strong>支持向量</strong>。</p>
+<p>  综上就是线性不可分SVM的全部求解过程。</p>
 
         </div>
         
@@ -430,19 +516,19 @@
                 Catalogue
             </h3>
             <ul class="menu-list"><li>
-        <a class="is-flex" href="#一、硬间隔SVM和软间隔SVM">
+        <a class="is-flex" href="#一硬间隔svm和软间隔svm">
         <span class="has-mr-6">1</span>
         <span>一、硬间隔SVM和软间隔SVM</span>
         </a></li><li>
-        <a class="is-flex" href="#二、学习的对偶问题">
+        <a class="is-flex" href="#二学习的对偶问题">
         <span class="has-mr-6">2</span>
         <span>二、学习的对偶问题</span>
         </a><ul class="menu-list"><li>
         <a class="is-flex" href="#求解-omega-和-b-参数">
         <span class="has-mr-6">2.1</span>
-        <span>求解 $\omega$ 和 $b$ 参数</span>
+        <span>求解 \(\omega\) 和 \(b\) 参数</span>
         </a></li></ul></li><li>
-        <a class="is-flex" href="#三、支持向量和决策函数">
+        <a class="is-flex" href="#三支持向量和决策函数">
         <span class="has-mr-6">3</span>
         <span>三、支持向量和决策函数</span>
         </a></li></ul>

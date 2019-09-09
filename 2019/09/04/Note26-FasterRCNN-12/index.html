@@ -7,19 +7,19 @@
 
 
 
-    <meta name="description" content="写在最后&amp;emsp;&amp;emsp; 毫无疑问，Faster RCNN（以及Faster RCNN的各种变体）作为当前目标检测方面的先锋，在这方面确实贡献巨大。下一步计划对one-stage的目标检测方法进行学习。由于给的源码中，关于数据准备的代码过于复杂，不具有一定的普适性，实际上，完全可以根据自己的项目工程进行数据准备代码的编写，即简单又直观，因此，在这里就省略了数据准备方面的代码的分享，还请各位">
+    <meta name="description" content="写在最后    毫无疑问，Faster RCNN（以及Faster RCNN的各种变体）作为当前目标检测方面的先锋，在这方面确实贡献巨大。下一步计划对one-stage的目标检测方法进行学习。由于给的源码中，关于数据准备的代码过于复杂，不具有一定的普适性，实际上，完全可以根据自己的项目工程进行数据准备代码的编写，即简单又直观，因此，在这里就省略了数据准备方面的代码的分享，还请各位大佬们原谅！">
 <meta name="keywords" content="深度学习,目标检测,FasterRCNN">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Faster R-CNN源码阅读之十二：写在最后">
 <meta property="og:url" content="http://huaxuan0720.github.io/2019/09/04/Note26-FasterRCNN-12/index.html">
 <meta property="og:site_name" content="Welcome to My Blogs">
-<meta property="og:description" content="写在最后&amp;emsp;&amp;emsp; 毫无疑问，Faster RCNN（以及Faster RCNN的各种变体）作为当前目标检测方面的先锋，在这方面确实贡献巨大。下一步计划对one-stage的目标检测方法进行学习。由于给的源码中，关于数据准备的代码过于复杂，不具有一定的普适性，实际上，完全可以根据自己的项目工程进行数据准备代码的编写，即简单又直观，因此，在这里就省略了数据准备方面的代码的分享，还请各位">
+<meta property="og:description" content="写在最后    毫无疑问，Faster RCNN（以及Faster RCNN的各种变体）作为当前目标检测方面的先锋，在这方面确实贡献巨大。下一步计划对one-stage的目标检测方法进行学习。由于给的源码中，关于数据准备的代码过于复杂，不具有一定的普适性，实际上，完全可以根据自己的项目工程进行数据准备代码的编写，即简单又直观，因此，在这里就省略了数据准备方面的代码的分享，还请各位大佬们原谅！">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://huaxuan0720.github.io/gallery/DeepLearning.jpg">
 <meta property="og:updated_time" content="2019-09-04T05:31:09.212Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Faster R-CNN源码阅读之十二：写在最后">
-<meta name="twitter:description" content="写在最后&amp;emsp;&amp;emsp; 毫无疑问，Faster RCNN（以及Faster RCNN的各种变体）作为当前目标检测方面的先锋，在这方面确实贡献巨大。下一步计划对one-stage的目标检测方法进行学习。由于给的源码中，关于数据准备的代码过于复杂，不具有一定的普适性，实际上，完全可以根据自己的项目工程进行数据准备代码的编写，即简单又直观，因此，在这里就省略了数据准备方面的代码的分享，还请各位">
+<meta name="twitter:description" content="写在最后    毫无疑问，Faster RCNN（以及Faster RCNN的各种变体）作为当前目标检测方面的先锋，在这方面确实贡献巨大。下一步计划对one-stage的目标检测方法进行学习。由于给的源码中，关于数据准备的代码过于复杂，不具有一定的普适性，实际上，完全可以根据自己的项目工程进行数据准备代码的编写，即简单又直观，因此，在这里就省略了数据准备方面的代码的分享，还请各位大佬们原谅！">
 <meta name="twitter:image" content="http://huaxuan0720.github.io/gallery/DeepLearning.jpg">
 
 
@@ -190,7 +190,9 @@
         </div>
         
         <div class="content">
-            <h5 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h5><p>&emsp;&emsp; 毫无疑问，Faster RCNN（以及Faster RCNN的各种变体）作为当前目标检测方面的先锋，在这方面确实贡献巨大。下一步计划对one-stage的目标检测方法进行学习。由于给的源码中，关于数据准备的代码过于复杂，不具有一定的普适性，实际上，完全可以根据自己的项目工程进行数据准备代码的编写，即简单又直观，因此，在这里就省略了数据准备方面的代码的分享，还请各位大佬们原谅！<br>&emsp;&emsp; 由于时间实在仓促，本身也还只是一个学生，在阅读代码的过程中难免会有理解不正确之处，还请各位大佬看到了不吝指出，谢谢！  </p>
+            <h5 id="写在最后">写在最后</h5>
+<p>   毫无疑问，Faster RCNN（以及Faster RCNN的各种变体）作为当前目标检测方面的先锋，在这方面确实贡献巨大。下一步计划对one-stage的目标检测方法进行学习。由于给的源码中，关于数据准备的代码过于复杂，不具有一定的普适性，实际上，完全可以根据自己的项目工程进行数据准备代码的编写，即简单又直观，因此，在这里就省略了数据准备方面的代码的分享，还请各位大佬们原谅！<br>
+   由于时间实在仓促，本身也还只是一个学生，在阅读代码的过程中难免会有理解不正确之处，还请各位大佬看到了不吝指出，谢谢！</p>
 
         </div>
         

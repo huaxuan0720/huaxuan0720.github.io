@@ -7,19 +7,19 @@
 
 
 
-    <meta name="description" content="前言&amp;emsp;&amp;emsp;奇异值分解(Singular Value Decomposition，以下简称SVD)是在一种十分经典的无监督的机器学习算法，它可以用于处理降维算法中的特征分解，还可以用于推荐系统，以及自然语言处理等领域。是很多机器学习算法的基石。">
+    <meta name="description" content="前言   奇异值分解(Singular Value Decomposition，以下简称SVD)是在一种十分经典的无监督的机器学习算法，它可以用于处理降维算法中的特征分解，还可以用于推荐系统，以及自然语言处理等领域。是很多机器学习算法的基石。">
 <meta name="keywords" content="机器学习,奇异值分解,SVD">
 <meta property="og:type" content="article">
 <meta property="og:title" content="奇异值分解SVD">
 <meta property="og:url" content="http://huaxuan0720.github.io/2019/05/10/Note4-SVD/index.html">
 <meta property="og:site_name" content="Welcome to My Blogs">
-<meta property="og:description" content="前言&amp;emsp;&amp;emsp;奇异值分解(Singular Value Decomposition，以下简称SVD)是在一种十分经典的无监督的机器学习算法，它可以用于处理降维算法中的特征分解，还可以用于推荐系统，以及自然语言处理等领域。是很多机器学习算法的基石。">
+<meta property="og:description" content="前言   奇异值分解(Singular Value Decomposition，以下简称SVD)是在一种十分经典的无监督的机器学习算法，它可以用于处理降维算法中的特征分解，还可以用于推荐系统，以及自然语言处理等领域。是很多机器学习算法的基石。">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://huaxuan0720.github.io/gallery/MachineLearning.jpg">
 <meta property="og:updated_time" content="2019-06-03T07:35:19.500Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="奇异值分解SVD">
-<meta name="twitter:description" content="前言&amp;emsp;&amp;emsp;奇异值分解(Singular Value Decomposition，以下简称SVD)是在一种十分经典的无监督的机器学习算法，它可以用于处理降维算法中的特征分解，还可以用于推荐系统，以及自然语言处理等领域。是很多机器学习算法的基石。">
+<meta name="twitter:description" content="前言   奇异值分解(Singular Value Decomposition，以下简称SVD)是在一种十分经典的无监督的机器学习算法，它可以用于处理降维算法中的特征分解，还可以用于推荐系统，以及自然语言处理等领域。是很多机器学习算法的基石。">
 <meta name="twitter:image" content="http://huaxuan0720.github.io/gallery/MachineLearning.jpg">
 
 
@@ -192,47 +192,191 @@
         </div>
         
         <div class="content">
-            <h5 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h5><p>&emsp;&emsp;奇异值分解(Singular Value Decomposition，以下简称SVD)是在一种十分经典的无监督的机器学习算法，它可以用于处理降维算法中的特征分解，还可以用于推荐系统，以及自然语言处理等领域。是很多机器学习算法的基石。</p>
-<a id="more"></a>
-
-<h5 id="特征值和特征向量"><a href="#特征值和特征向量" class="headerlink" title="特征值和特征向量"></a>特征值和特征向量</h5><p>&emsp;&emsp;再了解SVD之前，对于矩阵的特征值和特征向量还是有必要做一个简单的回顾。  </p>
-<p>&emsp;&emsp;假设矩阵$A$是一个实对称矩阵，大小为$n \times n$，如果有一个实数$\lambda$和一个长度为$n$的向量$\alpha$，满足下面的等式关系：<br>$$<br>A \alpha = \lambda \alpha \tag{1}<br>$$<br>&emsp;&emsp;我们就将$\lambda$称为矩阵$A$的特征值，将$\alpha$称为矩阵$A$的特征向量，是一个列向量。  </p>
-<p>&emsp;&emsp;由线性代数的相关知识我们可以知道，对于一个$n$阶的实对称矩阵，一定存在$n$个相互正交的特征向量。对于每一个特征向量，我们可以将其规范化，使其模长$|\alpha|$为1。于是，我们有：<br>$$<br>\alpha_i^T \alpha_i = 1 \<br>\alpha_i^T \alpha_j = 0, \quad i \ne j<br>$$<br>&emsp;&emsp;我们将所有的特征值按照从大到小的顺序进行排列，并将对应的特征的特征向量也按照特征值的大小进行排列，于是，我们会有以下的个排列：<br>$$<br>\lambda_1, \lambda_2, \cdots, \lambda_n \<br>\alpha_1, \alpha_2, \cdots, \alpha_n<br>$$<br>&emsp;&emsp;上面的所有的特征值可以依次被放入一个$ n \times n$的对角矩阵的对角线元素中，我们不妨称这个对角矩阵为$\Sigma$，于是我们有：<br>$$<br>\Sigma =<br>\begin{bmatrix}<br>\lambda_1 &amp; 0 &amp; \cdots &amp; 0 \<br>0 &amp; \lambda_2 &amp; \ddots &amp; 0 \<br>\vdots &amp; \vdots &amp; \ddots &amp; \vdots \<br>0 &amp; 0 &amp; \ddots &amp; \lambda_n \<br>\end{bmatrix}<br>$$<br>&emsp;&emsp;同样，我们也将上述的特征向量按照特征值的顺序进行排列，也组成了一个$n \times n$的矩阵，不妨记作$W$，于是有：<br>$$<br>W = [\alpha_1, \alpha_2, \cdots, \alpha_n]<br>$$<br>&emsp;&emsp;综上，我们可以得到如下的关系式：<br>$$<br>A W = W \Sigma \tag{2}<br>$$<br>&emsp;&emsp;在等式的两边同时乘以$W^{-1}$，我们可以得到：<br>$$<br>A = W \Sigma W^{-1} \tag{3}<br>$$<br>&emsp;&emsp;考虑到特征向量彼此两两正交，模长为1，我们就有：<br>$$<br>W W^T = E \tag{4}<br>$$<br>&emsp;&emsp;即：<br>$$<br>W^{-1} = W^T \tag{5}<br>$$<br>&emsp;&emsp;将式(5)代入式(3)中，我们可以得到：<br>$$<br>A = W \Sigma W^{-1} = W \Sigma W^T \tag{6}<br>$$<br>&emsp;&emsp;这是一个非常重要的关系，在前面我们就是利用这个关系来计算主成分分析PCA的。</p>
-<h5 id="奇异值分解SVD"><a href="#奇异值分解SVD" class="headerlink" title="奇异值分解SVD"></a>奇异值分解SVD</h5><p>&emsp;&emsp;在前面已经找到了一个重要的关系，在我们之前的讨论过程中，我们已经知道满足这个条件的矩阵的要求是该矩阵是一个实对称矩阵，如果只是一个普通的矩阵$A_{m \times n}$，我们其实也可以通过类似的方法进行矩阵分解，这时候我们需要构造的矩阵等式如下：<br>$$<br>A = U \Sigma V^T \tag{7}<br>$$<br>&emsp;&emsp;其中，$U$是一个大小为$m \times m $的矩阵，$\Sigma$是一个大小为$m \times n$的矩阵，$V^T$是一个大小为$n \times n$的矩阵。</p>
-<p><img src="/2019/05/10/Note4-SVD/svd.png" alt></p>
-<h6 id="矩阵-U-的求解"><a href="#矩阵-U-的求解" class="headerlink" title="矩阵$U$ 的求解"></a>矩阵$U$ 的求解</h6><p>&emsp;&emsp;定义了相关的矩阵等式关系之后，我们既需要求解其中的每一个矩阵的具体数值。首先来求解矩阵$U$的数值。  </p>
-<p>&emsp;&emsp;首先构造矩阵$AA^T$，该矩阵是一个大小为$m \times m$的矩阵，然后我们对这个矩阵进行特征值和特征向量的求解，并按照对应特征值的大小对特征向量进行排序。我们这里设特征值序列和特征向量序列如下：<br>$$<br>\lambda_1, \lambda_2, \cdots, \lambda_m \<br>u_1, u_2, \cdots, u_m<br>$$<br>&emsp;&emsp;其中每一对特征值和特征向量都满足：<br>$$<br>(AA^T) u_i = \lambda_i u_i \tag{7}<br>$$</p>
-<p>&emsp;&emsp;我们将这些特征向量组合成一个矩阵，就是我们需要的矩阵$U$， 即：<br>$$<br>U = \begin{bmatrix} u_1 &amp; u_2 &amp; \cdots &amp; u_m\end{bmatrix}<br>$$</p>
-<h6 id="矩阵-V-的求解"><a href="#矩阵-V-的求解" class="headerlink" title="矩阵$V$ 的求解"></a>矩阵$V$ 的求解</h6><p>&emsp;&emsp;和求解矩阵$U$类似，首先构造矩阵$A^T A$，该矩阵是一个大小为$n \times n$的矩阵，然后我们对这个矩阵进行特征值和特征向量的求解，并按照对应特征值的大小对特征向量进行排序。我们这里设特征值序列和特征向量序列如下：<br>$$<br>\sigma_1, \sigma_2, \cdots, \sigma_n \<br>v_1, v_2, \cdots, v_n<br>$$<br>&emsp;&emsp;其中每一对特征值和特征向量都满足：<br>$$<br>(A^TA) v_i = \sigma_i v_i \tag{8}<br>$$</p>
-<p>&emsp;&emsp;我们将这些特征向量组合成一个矩阵，就是我们需要的矩阵$V$， 即：<br>$$<br>V = \begin{bmatrix} v_1 &amp; v_2 &amp; \cdots &amp; v_n\end{bmatrix}<br>$$</p>
-<h6 id="矩阵-Sigma-的求解"><a href="#矩阵-Sigma-的求解" class="headerlink" title="矩阵$\Sigma$ 的求解"></a>矩阵$\Sigma$ 的求解</h6><p>&emsp;&emsp;当求出矩阵$U$和矩阵$V$时，我们就可以求出矩阵$\Sigma$了：<br>$$<br>U \Sigma V^T = A\<br>\Sigma = U^{-1} A (V^T)^{-1}<br>$$<br>&emsp;&emsp;考虑到矩阵$U$和矩阵$V$的特殊性质，即$U^{-1} = U^T$，$V^{-1} = V^T$，代入上面的式子中，我们有：<br>$$<br>\Sigma = U^T A V \tag{9}<br>$$</p>
-<h6 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h6><p>&emsp;&emsp;其实，以上的步骤并不是随便得来的，是有严格证明的，下面以证明矩阵$V$为例进行说明。</p>
-<p>&emsp;&emsp;首先，我们等式$A = U \Sigma V^T$左右两边分别求矩阵转置，得到：<br>$$<br>A^T = V \Sigma^T U^T<br>$$<br>&emsp;&emsp;接着有：<br>$$<br>\begin{aligned}<br>A^T A &amp;= (V \Sigma^T U^T)(U \Sigma V^T) \<br>&amp;= V \Sigma^T U^T U \Sigma V^T \<br>&amp;= V \Sigma^T \Sigma V^T \<br>&amp;= V (U^T A V)^T (U^T A V) V^T \<br>&amp;= V (V^T A^T U)(U^T A V) V^T \<br>&amp;= V V^T A^T U U^T A V V^T \<br>&amp;= A^T A<br>\end{aligned}<br>$$<br>&emsp;&emsp;注意到上面证明过程的第三行，我们有$A^T A = V \Sigma^T \Sigma V^T $，而矩阵$V$是矩阵$A^T A$的特征向量组成的矩阵，因此，矩阵$\Sigma^T \Sigma$就是矩阵$A^T A$的特征值组成的对角矩阵，这又给了我们一个新的求解$\Sigma$矩阵的方法。 <strong>当我们求出所有的 $A^T A$ 矩阵的特征值之后，我们在这些特征值的基础上进行开方操作，并将结果组成一个对角矩阵，这个对角矩阵就是我们需要的 $\Sigma$ 矩阵。</strong>   所以我们发现，实际上$\Sigma$是一个对角矩阵，只在对角线上存在着有效元素，其他部位的元素都为0。我们将矩阵$\Sigma$的对角线上的元素称为<strong>奇异值</strong>。</p>
-<p>&emsp;&emsp;同样的道理，如果我们计算$A A^T$，我们也能得到相同的结果，而计算过程就是证明矩阵$U$的正确性的过程。  </p>
-<p>&emsp;&emsp;接下来，我们考虑这样一件事，我们已经求解出了所有的矩阵信息，有$A = U \Sigma V^T$，我们同时在等式的左右两边乘以$V$，有：<br>$$<br>AV = U \Sigma V^T V = U \Sigma<br>$$<br>&emsp;&emsp;即：<br>$$<br>A \begin{bmatrix} v_1 &amp; v_2 &amp; \cdots &amp; v_n\end{bmatrix} = \begin{bmatrix} u_1 &amp; u_2 &amp; \cdots &amp; u_m\end{bmatrix}<br>\begin{bmatrix}<br>a_1 &amp; ;  &amp; ; \<br>; &amp; a_2 ; &amp; \<br>; &amp; ; &amp; \ddots<br>\end{bmatrix}_{m \times n}<br>$$<br>&emsp;&emsp;其中，$a_i$ 表示的是 $\Sigma$ 矩阵的对角线元素，所以有：<br>$$<br>A v_i = u_i a_i<br>$$<br>&emsp;&emsp;故：<br>$$<br>a_i = \frac{A v_i}{u_i} \tag{9}<br>$$<br>&emsp;&emsp;上述也是一种求解$\Sigma$矩阵的方法。</p>
-<h5 id="SVD的使用"><a href="#SVD的使用" class="headerlink" title="SVD的使用"></a>SVD的使用</h5><p>&emsp;&emsp;接下来，我们通过一个简单的例子来实际使用以下SVD。假设我们的数据矩阵$A$如下：<br>$$<br>A =<br>\begin{bmatrix}<br>1 &amp; 2 \<br>1 &amp; 0 \<br>0 &amp; 1<br>\end{bmatrix}<br>$$<br>&emsp;&emsp;接下来我们计算$A^T A$和$A A^T$，有：<br>$$<br>AA^T = \begin{bmatrix}<br>1 &amp; 2 \<br>1 &amp; 0 \<br>0 &amp; 1 \<br>\end{bmatrix}<br>\begin{bmatrix}<br>1 &amp; 1 &amp; 0 \<br>2 &amp; 0 &amp; 1 \<br>\end{bmatrix} =<br>\begin{bmatrix}<br>5 &amp; 1 &amp; 2 \<br>1 &amp; 1 &amp; 0 \<br>2 &amp; 0 &amp; 1 \<br>\end{bmatrix} \<br>A^TA =<br>\begin{bmatrix}<br>1 &amp; 1 &amp; 0 \<br>2 &amp; 0 &amp; 1 \<br>\end{bmatrix} \begin{bmatrix}<br>1 &amp; 2 \<br>1 &amp; 0 \<br>0 &amp; 1 \<br>\end{bmatrix} = \begin{bmatrix} 2 &amp; 2 \2 &amp; 5 \end{bmatrix}<br>$$<br>&emsp;&emsp;对于矩阵$AA^T$，我们可以求解出它的所有的特征值和特征向量，如下：<br>$$<br>\quad \lambda_1 = 6, u_1 =<br>\begin{bmatrix}<br>\frac{5}{\sqrt{30}} \<br>\frac{1}{\sqrt{30}} \<br>\frac{2}{\sqrt{30}}<br>\end{bmatrix} \quad \lambda_2 = 1, u_2 =<br>\begin{bmatrix} 0 \<br>\frac{2}{\sqrt{5}} \<br>-\frac{1}{\sqrt{5}}<br>\end{bmatrix} \quad \lambda_3 = 0, u_3 =<br>\begin{bmatrix}<br>-\frac{1}{\sqrt{6}} \<br>\frac{1}{\sqrt{6}} \<br>\frac{2}{\sqrt{6}}<br>\end{bmatrix}<br>$$<br>&emsp;&emsp;对于矩阵$A^TA$，我们可以求解出它的所有的特征值和特征向量，如下：<br>$$<br>\lambda_1 = 6, v_1 = \begin{bmatrix} \frac{1}{\sqrt{5}} \ \frac{2}{\sqrt{5}}\end{bmatrix} \quad \lambda_2 = 1, v_2 = \begin{bmatrix} \frac{2}{\sqrt{5}} \ -\frac{1}{\sqrt{5}}\end{bmatrix}<br>$$<br>&emsp;&emsp;由上面的特征值信息，我们可以求出矩阵$\Sigma$的对角线元素，即直接在特征值的基础上取根号即可，依次为：<br>$$<br>a_1 = \sqrt{6}, a_2 = 1<br>$$<br>&emsp;&emsp;由上面的所有计算结果，我们可以得到矩阵$U$，$V$和$\Sigma$，如下：<br>$$<br>U = \begin{bmatrix} \frac{5}{\sqrt{30}} &amp; 0 &amp; -\frac{1}{\sqrt{6}} \ \frac{1}{\sqrt{30}} &amp; \frac{2}{\sqrt{5}} &amp;  \frac{1}{\sqrt{6}} \ \frac{2}{\sqrt{30}} &amp; -\frac{1}{\sqrt{5}} &amp; \frac{2}{\sqrt{6}}\end{bmatrix}<br>$$<br>$$<br>V = \begin{bmatrix} \frac{1}{\sqrt{5}} &amp; \frac{2}{\sqrt{5}} \ \frac{2}{\sqrt{5}} &amp;  -\frac{1}{\sqrt{5}} \end{bmatrix}<br>$$<br>$$<br>\Sigma = \begin{bmatrix} \sqrt{6} &amp; 0 \ 0 &amp; 1 \ 0 &amp; 0 \end{bmatrix}<br>$$<br>&emsp;&emsp;于是，我们的原始矩阵$A$可以分解成如下：<br>$$<br>A = U \Sigma V^T<br>$$<br>&emsp;&emsp;即：<br>$$<br>\begin{bmatrix}<br>1 &amp; 2 \<br>1 &amp; 0 \<br>0 &amp; 1<br>\end{bmatrix} = \begin{bmatrix} \frac{5}{\sqrt{30}} &amp; 0 &amp; -\frac{1}{\sqrt{6}} \ \frac{1}{\sqrt{30}} &amp; \frac{2}{\sqrt{5}} &amp;  \frac{1}{\sqrt{6}} \ \frac{2}{\sqrt{30}} &amp; -\frac{1}{\sqrt{5}} &amp; \frac{2}{\sqrt{6}}\end{bmatrix} \begin{bmatrix} \sqrt{6} &amp; 0 \ 0 &amp; 1 \ 0 &amp; 0 \end{bmatrix} \begin{bmatrix} \frac{1}{\sqrt{5}} &amp; \frac{2}{\sqrt{5}} \ \frac{2}{\sqrt{5}} &amp;  -\frac{1}{\sqrt{5}} \end{bmatrix}<br>$$</p>
-<p>&emsp;&emsp;在前面的这个求解的例子中，我们很难发现SVD究竟有什么用处，毕竟求解矩阵乘积，矩阵的特征值和特征向量都是十分复杂是过程。实际上我们在求解奇异值的时候，可以利用矩阵的特征值进行求解，这样奇异值就和特征值具有相同的特点，如果按照从大到小的顺序排列奇异值，我们发现奇异值的数值下降很快，在有些情况下，奇异值前10%~15%的数值之和已经占据了全部奇异值数值之和的90%以上，而过于小的奇异值我们可以将其省略，因为奇异值太小，对最后的生成矩阵影响就会非常小，可以直接忽略不计。当我们采用这种策略的时候，我们可以适当的选取数值最大的几个奇异值，并选取对应的特征向量，这个时候我们就可以只是用这些数据来重构我们的原始矩阵。  </p>
-<p><img src="/2019/05/10/Note4-SVD/1042406-20170105140822191-1774139119.png" alt></p>
-<p>&emsp;&emsp;下面是一个具体的使用SVD重构数据矩阵的python代码实例，数据来源为《机器学习实战》一书。在代码中，我们试图去利用SVD重构一个01矩阵组成的数字0。</p>
-<p>&emsp;&emsp;数据如下：</p>
+            <h5 id="前言">前言</h5>
+<p>  奇异值分解(Singular Value Decomposition，以下简称SVD)是在一种十分经典的无监督的机器学习算法，它可以用于处理降维算法中的特征分解，还可以用于推荐系统，以及自然语言处理等领域。是很多机器学习算法的基石。 <a id="more"></a></p>
+<h5 id="特征值和特征向量">特征值和特征向量</h5>
+<p>  再了解SVD之前，对于矩阵的特征值和特征向量还是有必要做一个简单的回顾。</p>
+<p>  假设矩阵<span class="math inline">\(A\)</span>是一个实对称矩阵，大小为<span class="math inline">\(n \times n\)</span>，如果有一个实数<span class="math inline">\(\lambda\)</span>和一个长度为<span class="math inline">\(n\)</span>的向量<span class="math inline">\(\alpha\)</span>，满足下面的等式关系： <span class="math display">\[
+A \alpha = \lambda \alpha \tag{1}
+\]</span>   我们就将<span class="math inline">\(\lambda\)</span>称为矩阵<span class="math inline">\(A\)</span>的特征值，将<span class="math inline">\(\alpha\)</span>称为矩阵<span class="math inline">\(A\)</span>的特征向量，是一个列向量。</p>
+<p>  由线性代数的相关知识我们可以知道，对于一个<span class="math inline">\(n\)</span>阶的实对称矩阵，一定存在<span class="math inline">\(n\)</span>个相互正交的特征向量。对于每一个特征向量，我们可以将其规范化，使其模长<span class="math inline">\(|\alpha|\)</span>为1。于是，我们有： <span class="math display">\[
+\alpha_i^T \alpha_i = 1 \\
+\alpha_i^T \alpha_j = 0, \quad i \ne j
+\]</span>   我们将所有的特征值按照从大到小的顺序进行排列，并将对应的特征的特征向量也按照特征值的大小进行排列，于是，我们会有以下的个排列： <span class="math display">\[
+\lambda_1, \lambda_2, \cdots, \lambda_n \\
+\alpha_1, \alpha_2, \cdots, \alpha_n
+\]</span>   上面的所有的特征值可以依次被放入一个$ n n<span class="math inline">\(的对角矩阵的对角线元素中，我们不妨称这个对角矩阵为\)</span>$，于是我们有： <span class="math display">\[
+\Sigma = 
+\begin{bmatrix}
+\lambda_1 &amp; 0 &amp; \cdots &amp; 0 \\
+0 &amp; \lambda_2 &amp; \ddots &amp; 0 \\
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+0 &amp; 0 &amp; \ddots &amp; \lambda_n \\
+\end{bmatrix}
+\]</span>   同样，我们也将上述的特征向量按照特征值的顺序进行排列，也组成了一个<span class="math inline">\(n \times n\)</span>的矩阵，不妨记作<span class="math inline">\(W\)</span>，于是有： <span class="math display">\[
+W = [\alpha_1, \alpha_2, \cdots, \alpha_n]
+\]</span>   综上，我们可以得到如下的关系式： <span class="math display">\[
+A W = W \Sigma \tag{2}
+\]</span>   在等式的两边同时乘以<span class="math inline">\(W^{-1}\)</span>，我们可以得到： <span class="math display">\[
+A = W \Sigma W^{-1} \tag{3}
+\]</span>   考虑到特征向量彼此两两正交，模长为1，我们就有： <span class="math display">\[
+W W^T = E \tag{4}
+\]</span>   即： <span class="math display">\[
+W^{-1} = W^T \tag{5}
+\]</span>   将式(5)代入式(3)中，我们可以得到： <span class="math display">\[
+A = W \Sigma W^{-1} = W \Sigma W^T \tag{6}
+\]</span>   这是一个非常重要的关系，在前面我们就是利用这个关系来计算主成分分析PCA的。</p>
+<h5 id="奇异值分解svd">奇异值分解SVD</h5>
+<p>  在前面已经找到了一个重要的关系，在我们之前的讨论过程中，我们已经知道满足这个条件的矩阵的要求是该矩阵是一个实对称矩阵，如果只是一个普通的矩阵<span class="math inline">\(A_{m \times n}\)</span>，我们其实也可以通过类似的方法进行矩阵分解，这时候我们需要构造的矩阵等式如下： <span class="math display">\[
+A = U \Sigma V^T \tag{7}
+\]</span>   其中，<span class="math inline">\(U\)</span>是一个大小为$m m <span class="math inline">\(的矩阵，\)</span><span class="math inline">\(是一个大小为\)</span>m n<span class="math inline">\(的矩阵，\)</span>V^T<span class="math inline">\(是一个大小为\)</span>n n$的矩阵。</p>
+<p><img src="/2019/05/10/Note4-SVD/svd.png"></p>
+<h6 id="矩阵u-的求解">矩阵<span class="math inline">\(U\)</span> 的求解</h6>
+<p>  定义了相关的矩阵等式关系之后，我们既需要求解其中的每一个矩阵的具体数值。首先来求解矩阵<span class="math inline">\(U\)</span>的数值。</p>
+<p>  首先构造矩阵<span class="math inline">\(AA^T\)</span>，该矩阵是一个大小为<span class="math inline">\(m \times m\)</span>的矩阵，然后我们对这个矩阵进行特征值和特征向量的求解，并按照对应特征值的大小对特征向量进行排序。我们这里设特征值序列和特征向量序列如下： <span class="math display">\[
+\lambda_1, \lambda_2, \cdots, \lambda_m \\
+u_1, u_2, \cdots, u_m
+\]</span>   其中每一对特征值和特征向量都满足： <span class="math display">\[
+(AA^T) u_i = \lambda_i u_i \tag{7}
+\]</span></p>
+<p>  我们将这些特征向量组合成一个矩阵，就是我们需要的矩阵<span class="math inline">\(U\)</span>， 即： <span class="math display">\[
+U = \begin{bmatrix} u_1 &amp; u_2 &amp; \cdots &amp; u_m\end{bmatrix}
+\]</span></p>
+<h6 id="矩阵v-的求解">矩阵<span class="math inline">\(V\)</span> 的求解</h6>
+<p>  和求解矩阵<span class="math inline">\(U\)</span>类似，首先构造矩阵<span class="math inline">\(A^T A\)</span>，该矩阵是一个大小为<span class="math inline">\(n \times n\)</span>的矩阵，然后我们对这个矩阵进行特征值和特征向量的求解，并按照对应特征值的大小对特征向量进行排序。我们这里设特征值序列和特征向量序列如下： <span class="math display">\[
+\sigma_1, \sigma_2, \cdots, \sigma_n \\
+v_1, v_2, \cdots, v_n
+\]</span>   其中每一对特征值和特征向量都满足： <span class="math display">\[
+(A^TA) v_i = \sigma_i v_i \tag{8}
+\]</span></p>
+<p>  我们将这些特征向量组合成一个矩阵，就是我们需要的矩阵<span class="math inline">\(V\)</span>， 即： <span class="math display">\[
+V = \begin{bmatrix} v_1 &amp; v_2 &amp; \cdots &amp; v_n\end{bmatrix}
+\]</span></p>
+<h6 id="矩阵sigma-的求解">矩阵<span class="math inline">\(\Sigma\)</span> 的求解</h6>
+<p>  当求出矩阵<span class="math inline">\(U\)</span>和矩阵<span class="math inline">\(V\)</span>时，我们就可以求出矩阵<span class="math inline">\(\Sigma\)</span>了： <span class="math display">\[
+U \Sigma V^T = A\\
+\Sigma = U^{-1} A (V^T)^{-1}
+\]</span>   考虑到矩阵<span class="math inline">\(U\)</span>和矩阵<span class="math inline">\(V\)</span>的特殊性质，即<span class="math inline">\(U^{-1} = U^T\)</span>，<span class="math inline">\(V^{-1} = V^T\)</span>，代入上面的式子中，我们有： <span class="math display">\[
+\Sigma = U^T A V \tag{9}
+\]</span></p>
+<h6 id="原理">原理</h6>
+<p>  其实，以上的步骤并不是随便得来的，是有严格证明的，下面以证明矩阵<span class="math inline">\(V\)</span>为例进行说明。</p>
+<p>  首先，我们等式<span class="math inline">\(A = U \Sigma V^T\)</span>左右两边分别求矩阵转置，得到： <span class="math display">\[
+A^T = V \Sigma^T U^T
+\]</span>   接着有： <span class="math display">\[
+\begin{aligned}
+A^T A &amp;= (V \Sigma^T U^T)(U \Sigma V^T) \\
+&amp;= V \Sigma^T U^T U \Sigma V^T \\
+&amp;= V \Sigma^T \Sigma V^T \\
+&amp;= V (U^T A V)^T (U^T A V) V^T \\
+&amp;= V (V^T A^T U)(U^T A V) V^T \\
+&amp;= V V^T A^T U U^T A V V^T \\
+&amp;= A^T A
+\end{aligned}
+\]</span>   注意到上面证明过程的第三行，我们有$A^T A = V ^T V^T <span class="math inline">\(，而矩阵\)</span>V<span class="math inline">\(是矩阵\)</span>A^T A<span class="math inline">\(的特征向量组成的矩阵，因此，矩阵\)</span>^T <span class="math inline">\(就是矩阵\)</span>A^T A<span class="math inline">\(的特征值组成的对角矩阵，这又给了我们一个新的求解\)</span>$矩阵的方法。 <strong>当我们求出所有的 <span class="math inline">\(A^T A\)</span> 矩阵的特征值之后，我们在这些特征值的基础上进行开方操作，并将结果组成一个对角矩阵，这个对角矩阵就是我们需要的 <span class="math inline">\(\Sigma\)</span> 矩阵。</strong> 所以我们发现，实际上<span class="math inline">\(\Sigma\)</span>是一个对角矩阵，只在对角线上存在着有效元素，其他部位的元素都为0。我们将矩阵<span class="math inline">\(\Sigma\)</span>的对角线上的元素称为<strong>奇异值</strong>。</p>
+<p>  同样的道理，如果我们计算<span class="math inline">\(A A^T\)</span>，我们也能得到相同的结果，而计算过程就是证明矩阵<span class="math inline">\(U\)</span>的正确性的过程。</p>
+<p>  接下来，我们考虑这样一件事，我们已经求解出了所有的矩阵信息，有<span class="math inline">\(A = U \Sigma V^T\)</span>，我们同时在等式的左右两边乘以<span class="math inline">\(V\)</span>，有： <span class="math display">\[
+AV = U \Sigma V^T V = U \Sigma
+\]</span>   即： <span class="math display">\[
+A \begin{bmatrix} v_1 &amp; v_2 &amp; \cdots &amp; v_n\end{bmatrix} = \begin{bmatrix} u_1 &amp; u_2 &amp; \cdots &amp; u_m\end{bmatrix} 
+\begin{bmatrix} 
+a_1 &amp; \;  &amp; \; \\
+\; &amp; a_2 \; &amp; \\
+\; &amp; \; &amp; \ddots
+\end{bmatrix}_{m \times n}
+\]</span>   其中，<span class="math inline">\(a_i\)</span> 表示的是 <span class="math inline">\(\Sigma\)</span> 矩阵的对角线元素，所以有： <span class="math display">\[
+A v_i = u_i a_i
+\]</span>   故： <span class="math display">\[
+a_i = \frac{A v_i}{u_i} \tag{9}
+\]</span>   上述也是一种求解<span class="math inline">\(\Sigma\)</span>矩阵的方法。</p>
+<h5 id="svd的使用">SVD的使用</h5>
+<p>  接下来，我们通过一个简单的例子来实际使用以下SVD。假设我们的数据矩阵<span class="math inline">\(A\)</span>如下： <span class="math display">\[
+A = 
+\begin{bmatrix} 
+1 &amp; 2 \\ 
+1 &amp; 0 \\
+0 &amp; 1
+\end{bmatrix}
+\]</span>   接下来我们计算<span class="math inline">\(A^T A\)</span>和<span class="math inline">\(A A^T\)</span>，有： <span class="math display">\[
+AA^T = \begin{bmatrix} 
+1 &amp; 2 \\ 
+1 &amp; 0 \\
+0 &amp; 1 \\
+\end{bmatrix} 
+\begin{bmatrix}
+1 &amp; 1 &amp; 0 \\
+2 &amp; 0 &amp; 1 \\
+\end{bmatrix} = 
+\begin{bmatrix}
+5 &amp; 1 &amp; 2 \\
+1 &amp; 1 &amp; 0 \\
+2 &amp; 0 &amp; 1 \\
+\end{bmatrix} \\
+A^TA =  
+\begin{bmatrix}
+1 &amp; 1 &amp; 0 \\
+2 &amp; 0 &amp; 1 \\
+\end{bmatrix} \begin{bmatrix} 
+1 &amp; 2 \\ 
+1 &amp; 0 \\
+0 &amp; 1 \\
+\end{bmatrix} = \begin{bmatrix} 2 &amp; 2 \\2 &amp; 5 \end{bmatrix}
+\]</span>   对于矩阵<span class="math inline">\(AA^T\)</span>，我们可以求解出它的所有的特征值和特征向量，如下： <span class="math display">\[
+\quad \lambda_1 = 6, u_1 = 
+\begin{bmatrix} 
+\frac{5}{\sqrt{30}} \\ 
+\frac{1}{\sqrt{30}} \\ 
+\frac{2}{\sqrt{30}}
+\end{bmatrix} \quad \lambda_2 = 1, u_2 = 
+\begin{bmatrix} 0 \\
+\frac{2}{\sqrt{5}} \\
+-\frac{1}{\sqrt{5}} 
+\end{bmatrix} \quad \lambda_3 = 0, u_3 = 
+\begin{bmatrix} 
+-\frac{1}{\sqrt{6}} \\
+\frac{1}{\sqrt{6}} \\
+\frac{2}{\sqrt{6}} 
+\end{bmatrix}
+\]</span>   对于矩阵<span class="math inline">\(A^TA\)</span>，我们可以求解出它的所有的特征值和特征向量，如下： <span class="math display">\[
+\lambda_1 = 6, v_1 = \begin{bmatrix} \frac{1}{\sqrt{5}} \\ \frac{2}{\sqrt{5}}\end{bmatrix} \quad \lambda_2 = 1, v_2 = \begin{bmatrix} \frac{2}{\sqrt{5}} \\ -\frac{1}{\sqrt{5}}\end{bmatrix}
+\]</span>   由上面的特征值信息，我们可以求出矩阵<span class="math inline">\(\Sigma\)</span>的对角线元素，即直接在特征值的基础上取根号即可，依次为： <span class="math display">\[
+a_1 = \sqrt{6}, a_2 = 1
+\]</span>   由上面的所有计算结果，我们可以得到矩阵<span class="math inline">\(U\)</span>，<span class="math inline">\(V\)</span>和<span class="math inline">\(\Sigma\)</span>，如下： <span class="math display">\[
+U = \begin{bmatrix} \frac{5}{\sqrt{30}} &amp; 0 &amp; -\frac{1}{\sqrt{6}} \\ \frac{1}{\sqrt{30}} &amp; \frac{2}{\sqrt{5}} &amp;  \frac{1}{\sqrt{6}} \\ \frac{2}{\sqrt{30}} &amp; -\frac{1}{\sqrt{5}} &amp; \frac{2}{\sqrt{6}}\end{bmatrix}
+\]</span> <span class="math display">\[
+V = \begin{bmatrix} \frac{1}{\sqrt{5}} &amp; \frac{2}{\sqrt{5}} \\ \frac{2}{\sqrt{5}} &amp;  -\frac{1}{\sqrt{5}} \end{bmatrix}
+\]</span> <span class="math display">\[
+\Sigma = \begin{bmatrix} \sqrt{6} &amp; 0 \\ 0 &amp; 1 \\ 0 &amp; 0 \end{bmatrix}
+\]</span>   于是，我们的原始矩阵<span class="math inline">\(A\)</span>可以分解成如下： <span class="math display">\[
+A = U \Sigma V^T 
+\]</span>   即： <span class="math display">\[
+\begin{bmatrix} 
+1 &amp; 2 \\ 
+1 &amp; 0 \\
+0 &amp; 1
+\end{bmatrix} = \begin{bmatrix} \frac{5}{\sqrt{30}} &amp; 0 &amp; -\frac{1}{\sqrt{6}} \\ \frac{1}{\sqrt{30}} &amp; \frac{2}{\sqrt{5}} &amp;  \frac{1}{\sqrt{6}} \\ \frac{2}{\sqrt{30}} &amp; -\frac{1}{\sqrt{5}} &amp; \frac{2}{\sqrt{6}}\end{bmatrix} \begin{bmatrix} \sqrt{6} &amp; 0 \\ 0 &amp; 1 \\ 0 &amp; 0 \end{bmatrix} \begin{bmatrix} \frac{1}{\sqrt{5}} &amp; \frac{2}{\sqrt{5}} \\ \frac{2}{\sqrt{5}} &amp;  -\frac{1}{\sqrt{5}} \end{bmatrix}
+\]</span></p>
+<p>  在前面的这个求解的例子中，我们很难发现SVD究竟有什么用处，毕竟求解矩阵乘积，矩阵的特征值和特征向量都是十分复杂是过程。实际上我们在求解奇异值的时候，可以利用矩阵的特征值进行求解，这样奇异值就和特征值具有相同的特点，如果按照从大到小的顺序排列奇异值，我们发现奇异值的数值下降很快，在有些情况下，奇异值前10%~15%的数值之和已经占据了全部奇异值数值之和的90%以上，而过于小的奇异值我们可以将其省略，因为奇异值太小，对最后的生成矩阵影响就会非常小，可以直接忽略不计。当我们采用这种策略的时候，我们可以适当的选取数值最大的几个奇异值，并选取对应的特征向量，这个时候我们就可以只是用这些数据来重构我们的原始矩阵。</p>
+<p><img src="/2019/05/10/Note4-SVD/1042406-20170105140822191-1774139119.png"></p>
+<p>  下面是一个具体的使用SVD重构数据矩阵的python代码实例，数据来源为《机器学习实战》一书。在代码中，我们试图去利用SVD重构一个01矩阵组成的数字0。</p>
+<p>  数据如下：</p>
 <figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">00000000000000110000000000000000</span><br><span class="line">00000000000011111100000000000000</span><br><span class="line">00000000000111111110000000000000</span><br><span class="line">00000000001111111111000000000000</span><br><span class="line">00000000111111111111100000000000</span><br><span class="line">00000001111111111111110000000000</span><br><span class="line">00000000111111111111111000000000</span><br><span class="line">00000000111111100001111100000000</span><br><span class="line">00000001111111000001111100000000</span><br><span class="line">00000011111100000000111100000000</span><br><span class="line">00000011111100000000111110000000</span><br><span class="line">00000011111100000000011110000000</span><br><span class="line">00000011111100000000011110000000</span><br><span class="line">00000001111110000000001111000000</span><br><span class="line">00000011111110000000001111000000</span><br><span class="line">00000011111100000000001111000000</span><br><span class="line">00000001111100000000001111000000</span><br><span class="line">00000011111100000000001111000000</span><br><span class="line">00000001111100000000001111000000</span><br><span class="line">00000001111100000000011111000000</span><br><span class="line">00000000111110000000001111100000</span><br><span class="line">00000000111110000000001111100000</span><br><span class="line">00000000111110000000001111100000</span><br><span class="line">00000000111110000000011111000000</span><br><span class="line">00000000111110000000111111000000</span><br><span class="line">00000000111111000001111110000000</span><br><span class="line">00000000011111111111111110000000</span><br><span class="line">00000000001111111111111110000000</span><br><span class="line">00000000001111111111111110000000</span><br><span class="line">00000000000111111111111000000000</span><br><span class="line">00000000000011111111110000000000</span><br><span class="line">00000000000000111111000000000000</span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;代码如下：</p>
+<p>  代码如下：</p>
 <figure class="highlight python hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np</span><br><span class="line"><span class="hljs-keyword">import</span> math</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">load_data</span><span class="hljs-params">()</span>:</span></span><br><span class="line">    matrix = []</span><br><span class="line">    f = open(<span class="hljs-string">"zero.txt"</span>)</span><br><span class="line">    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> f:</span><br><span class="line">        line = i.strip(<span class="hljs-string">"\n"</span>)</span><br><span class="line">        line = list(line)</span><br><span class="line">        matrix.append([int(i) <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> line])</span><br><span class="line">    <span class="hljs-keyword">return</span> np.array(matrix)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># 调整特征向量，使得所有向量的分量之和为正数。</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">adjust</span><span class="hljs-params">(vectors)</span>:</span></span><br><span class="line">    values = np.sum(vectors, axis=<span class="hljs-number">0</span>)</span><br><span class="line"></span><br><span class="line">    <span class="hljs-keyword">for</span> i, v <span class="hljs-keyword">in</span> enumerate(values):</span><br><span class="line">        <span class="hljs-keyword">if</span> v &lt; <span class="hljs-number">0</span>:</span><br><span class="line">            vectors[:, i] *= <span class="hljs-number">-1</span></span><br><span class="line">    <span class="hljs-keyword">return</span> vectors</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># 利用numpy的求解特征值和特征向量的函数进行求解。</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">eig</span><span class="hljs-params">(matrix)</span>:</span></span><br><span class="line">    values, vectors = np.linalg.eig(matrix)</span><br><span class="line">    <span class="hljs-comment"># 有时候函数会返回复数值，这个时候我们只需要取其实数部分。</span></span><br><span class="line">    values = np.real(values)</span><br><span class="line">    vectors = np.real(vectors)</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment"># 按照特征值的大小进行排序。</span></span><br><span class="line">    index = np.argsort(values)[::<span class="hljs-number">-1</span>]</span><br><span class="line">    values = values[index]</span><br><span class="line">    vectors = adjust(vectors[:, index])</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment"># 由于求解过程存在一定的误差，因此特征值会出现极小的负数，我们可以直接将其置为0。</span></span><br><span class="line">    values = np.maximum(values, <span class="hljs-number">0</span>)</span><br><span class="line">    <span class="hljs-keyword">return</span> values, vectors</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">svd</span><span class="hljs-params">(matrix)</span>:</span></span><br><span class="line">    <span class="hljs-comment"># 返回左侧矩阵的特征值和特征向量</span></span><br><span class="line">    left_values, left_vectors = eig(np.matmul(matrix, np.transpose(matrix)))</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment"># 返回右侧矩阵的特征值和特征向量</span></span><br><span class="line">    right_values, right_vectors = eig(np.matmul(np.transpose(matrix), matrix))</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment"># Sigma矩阵</span></span><br><span class="line">    sigma = np.zeros_like(matrix, dtype=np.float64)</span><br><span class="line"></span><br><span class="line">    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(min(len(left_values), len(right_values))):</span><br><span class="line">        sigma[i][i] = math.sqrt(left_values[i])</span><br><span class="line"></span><br><span class="line">    printMat(np.matmul(np.matmul(left_vectors, sigma), np.transpose(right_vectors)))</span><br><span class="line">    <span class="hljs-keyword">pass</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># 输出，这里借鉴了《机器学习实战》一书的输出模板</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">printMat</span><span class="hljs-params">(inMat, thresh=<span class="hljs-number">0.6</span>)</span>:</span></span><br><span class="line">    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(<span class="hljs-number">32</span>):</span><br><span class="line">        <span class="hljs-keyword">for</span> k <span class="hljs-keyword">in</span> range(<span class="hljs-number">32</span>):</span><br><span class="line">            <span class="hljs-keyword">if</span> float(inMat[i, k]) &gt; thresh:</span><br><span class="line">                print(<span class="hljs-string">"1"</span>, end=<span class="hljs-string">""</span>)</span><br><span class="line">            <span class="hljs-keyword">else</span>:</span><br><span class="line">                print(<span class="hljs-string">"0"</span>, end=<span class="hljs-string">""</span>)</span><br><span class="line">        print()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">'__main__'</span>:</span><br><span class="line">    matrix = load_data()</span><br><span class="line">    svd(matrix)</span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;结果如下：</p>
+<p>  结果如下：</p>
 <figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">00000000000000000010000000000000</span><br><span class="line">00000000000011011110000000000000</span><br><span class="line">00000000000111111110000000000000</span><br><span class="line">00000000001111111111000000000000</span><br><span class="line">00000000000111111110111010000000</span><br><span class="line">00000000001101111111111110000000</span><br><span class="line">00000000011111111111111010000000</span><br><span class="line">00000000001111000001111110000000</span><br><span class="line">00000000001111000001111110000000</span><br><span class="line">00000011111100000000111100000000</span><br><span class="line">00000011111100000000111100000000</span><br><span class="line">00000011111100000000011110000000</span><br><span class="line">00000011111100000000011110000000</span><br><span class="line">00000000111110000000001111000000</span><br><span class="line">00000011111110000000001111000000</span><br><span class="line">00000011111100000000001111000000</span><br><span class="line">00000001111100000000001111000000</span><br><span class="line">00000011111100000000001111000000</span><br><span class="line">00000001111100000000001111000000</span><br><span class="line">00000001111100000000001110000000</span><br><span class="line">00000000111110000000001111100000</span><br><span class="line">00000000111110000000001111100000</span><br><span class="line">00000000111110000000001111100000</span><br><span class="line">00000000111110000000001111000000</span><br><span class="line">00000000111110000000111101000000</span><br><span class="line">00000000111111000001111110000000</span><br><span class="line">00000000111111111111111100000000</span><br><span class="line">00000000111111111111100000000000</span><br><span class="line">00000000111111111111100000000000</span><br><span class="line">00000000000011111111100000000000</span><br><span class="line">00000000000011111111110000000000</span><br><span class="line">00000000000000111111000000000000</span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;可以看到，我们自己实现的SVD可以较好地重构出原始数据矩阵。由于求解过程中的误差，我们的重构结果和实际的数据矩阵还是有些不同的，所以，numpy已经将SVD进行了封装，我们可以直接使用其封装好的函数进行求解SVD，这样求出的结果会比自己手动求解的结果好。</p>
-<p>&emsp;&emsp;使用numpy中的SVD的代码如下：</p>
+<p>  可以看到，我们自己实现的SVD可以较好地重构出原始数据矩阵。由于求解过程中的误差，我们的重构结果和实际的数据矩阵还是有些不同的，所以，numpy已经将SVD进行了封装，我们可以直接使用其封装好的函数进行求解SVD，这样求出的结果会比自己手动求解的结果好。</p>
+<p>  使用numpy中的SVD的代码如下：</p>
 <figure class="highlight python hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np</span><br><span class="line"><span class="hljs-keyword">import</span> math</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">load_data</span><span class="hljs-params">()</span>:</span></span><br><span class="line">    matrix = []</span><br><span class="line">    f = open(<span class="hljs-string">"zero.txt"</span>)</span><br><span class="line">    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> f:</span><br><span class="line">        line = i.strip(<span class="hljs-string">"\n"</span>)</span><br><span class="line">        line = list(line)</span><br><span class="line">        matrix.append([int(i) <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> line])</span><br><span class="line">    <span class="hljs-keyword">return</span> np.array(matrix)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">printMat</span><span class="hljs-params">(inMat, thresh=<span class="hljs-number">0.8</span>)</span>:</span></span><br><span class="line">    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(<span class="hljs-number">32</span>):</span><br><span class="line">        <span class="hljs-keyword">for</span> k <span class="hljs-keyword">in</span> range(<span class="hljs-number">32</span>):</span><br><span class="line">            <span class="hljs-keyword">if</span> float(inMat[i, k]) &gt; thresh:</span><br><span class="line">                print(<span class="hljs-number">1</span>, end=<span class="hljs-string">""</span>)</span><br><span class="line">            <span class="hljs-keyword">else</span>:</span><br><span class="line">                print(<span class="hljs-number">0</span>, end=<span class="hljs-string">""</span>)</span><br><span class="line">        print()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">imgCompress</span><span class="hljs-params">(numSV=<span class="hljs-number">5</span>, thresh=<span class="hljs-number">0.8</span>)</span>:</span></span><br><span class="line">    matrix = load_data()</span><br><span class="line"></span><br><span class="line">    print(<span class="hljs-string">"****original matrix******"</span>)</span><br><span class="line">    printMat(matrix, thresh)</span><br><span class="line">    U, Sigma, VT = np.linalg.svd(matrix)</span><br><span class="line">    SigRecon = np.zeros((numSV, numSV))</span><br><span class="line">    <span class="hljs-keyword">for</span> k <span class="hljs-keyword">in</span> range(numSV):  <span class="hljs-comment"># construct diagonal matrix from vector</span></span><br><span class="line">        SigRecon[k, k] = Sigma[k]</span><br><span class="line">    reconMat = np.matmul(np.matmul(U[:, :numSV], SigRecon), VT[:numSV, :])</span><br><span class="line">    print(<span class="hljs-string">"****reconstructed matrix using %d singular values******"</span> % numSV)</span><br><span class="line">    printMat(reconMat, thresh)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">'__main__'</span>:</span><br><span class="line">    imgCompress()</span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;结果如下：</p>
+<p>  结果如下：</p>
 <figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line">****original matrix******</span><br><span class="line">00000000000000110000000000000000</span><br><span class="line">00000000000011111100000000000000</span><br><span class="line">00000000000111111110000000000000</span><br><span class="line">00000000001111111111000000000000</span><br><span class="line">00000000111111111111100000000000</span><br><span class="line">00000001111111111111110000000000</span><br><span class="line">00000000111111111111111000000000</span><br><span class="line">00000000111111100001111100000000</span><br><span class="line">00000001111111000001111100000000</span><br><span class="line">00000011111100000000111100000000</span><br><span class="line">00000011111100000000111110000000</span><br><span class="line">00000011111100000000011110000000</span><br><span class="line">00000011111100000000011110000000</span><br><span class="line">00000001111110000000001111000000</span><br><span class="line">00000011111110000000001111000000</span><br><span class="line">00000011111100000000001111000000</span><br><span class="line">00000001111100000000001111000000</span><br><span class="line">00000011111100000000001111000000</span><br><span class="line">00000001111100000000001111000000</span><br><span class="line">00000001111100000000011111000000</span><br><span class="line">00000000111110000000001111100000</span><br><span class="line">00000000111110000000001111100000</span><br><span class="line">00000000111110000000001111100000</span><br><span class="line">00000000111110000000011111000000</span><br><span class="line">00000000111110000000111111000000</span><br><span class="line">00000000111111000001111110000000</span><br><span class="line">00000000011111111111111110000000</span><br><span class="line">00000000001111111111111110000000</span><br><span class="line">00000000001111111111111110000000</span><br><span class="line">00000000000111111111111000000000</span><br><span class="line">00000000000011111111110000000000</span><br><span class="line">00000000000000111111000000000000</span><br><span class="line">****reconstructed matrix using 5 singular values******</span><br><span class="line">00000000000000000000000000000000</span><br><span class="line">00000000000000111100000000000000</span><br><span class="line">00000000000000111110000000000000</span><br><span class="line">00000000000011111110000000000000</span><br><span class="line">00000000111111111111000000000000</span><br><span class="line">00000000111111111111100000000000</span><br><span class="line">00000000111111111111110000000000</span><br><span class="line">00000000111111000001111000000000</span><br><span class="line">00000000111110000000111000000000</span><br><span class="line">00000001111100000000011100000000</span><br><span class="line">00000011111100000000011110000000</span><br><span class="line">00000011111100000000011110000000</span><br><span class="line">00000011111100000000011110000000</span><br><span class="line">00000000111100000000001111000000</span><br><span class="line">00000001111100000000001111000000</span><br><span class="line">00000001111100000000001111000000</span><br><span class="line">00000001111100000000001111000000</span><br><span class="line">00000001111100000000001111000000</span><br><span class="line">00000001111100000000001111000000</span><br><span class="line">00000001111100000000001110000000</span><br><span class="line">00000000111110000000001111000000</span><br><span class="line">00000000111110000000001111000000</span><br><span class="line">00000000111110000000001111000000</span><br><span class="line">00000000111110000000001111000000</span><br><span class="line">00000000111110000000001110000000</span><br><span class="line">00000000111110000000111100000000</span><br><span class="line">00000000001111111111111110000000</span><br><span class="line">00000000000111111111111110000000</span><br><span class="line">00000000000111111111111110000000</span><br><span class="line">00000000000011111111110000000000</span><br><span class="line">00000000000011111111100000000000</span><br><span class="line">00000000000000111110000000000000</span><br></pre></td></tr></table></figure>
-
-<p>&emsp;&emsp;可以发现，当我们只使用5个奇异值以及其对应的特征向量的时候，我们就可以获得非常好的重构效果，这个时候，我们的数据量为：<br>$$<br>s = 32 * 5 + 5 + 5 * 32 = 325 \<br>compress_rate = \frac{325}{32 * 32} = 37.1%<br>$$<br>&emsp;&emsp;我们的数据量仅仅是原来的三分之一，因此可以SVD很好的进行数据压缩。</p>
-<h5 id="SVD和PCA"><a href="#SVD和PCA" class="headerlink" title="SVD和PCA"></a>SVD和PCA</h5><p>&emsp;&emsp;在求解SVD的过程中，我们求解了两个特殊的矩阵$U$ 和$V$ ，实际上，$U$ 被称为是左奇异矩阵，$V$ 被称为是右奇异矩阵。</p>
-<p>&emsp;&emsp;回想起在求解PCA的过程中，我们也需要求解右奇异矩阵，并利用右奇异矩阵进行了数据的降维，这就是右奇异矩阵的作用之一。当我们考察左奇异矩阵的时候，发现合理的使用右奇异矩阵本质上是对数据量进行了一定的减小，当我们拥有一个矩阵$A$，大小为$m \times n$，其中，$m$ 表示的是数据量，即行数，$n$ 表示的是数据的维度数目，即列数，当我们对数据矩阵右乘右奇异矩阵的时候，列数可以根据选择的特征向量的数目进行减小，当我们当数据矩阵左乘左奇异矩阵的时候，行数可以根据选择的特征向量的数目进行减小。因此，左奇异矩阵可以压缩行数，右奇异矩阵可以压缩列数，综合在一起就可以对数据进行较为全面的压缩。</p>
+<p>  可以发现，当我们只使用5个奇异值以及其对应的特征向量的时候，我们就可以获得非常好的重构效果，这个时候，我们的数据量为： <span class="math display">\[
+s = 32 * 5 + 5 + 5 * 32 = 325 \\
+compress\_rate = \frac{325}{32 * 32} = 37.1\%
+\]</span>   我们的数据量仅仅是原来的三分之一，因此可以SVD很好的进行数据压缩。</p>
+<h5 id="svd和pca">SVD和PCA</h5>
+<p>  在求解SVD的过程中，我们求解了两个特殊的矩阵<span class="math inline">\(U\)</span> 和<span class="math inline">\(V\)</span> ，实际上，<span class="math inline">\(U\)</span> 被称为是左奇异矩阵，<span class="math inline">\(V\)</span> 被称为是右奇异矩阵。</p>
+<p>  回想起在求解PCA的过程中，我们也需要求解右奇异矩阵，并利用右奇异矩阵进行了数据的降维，这就是右奇异矩阵的作用之一。当我们考察左奇异矩阵的时候，发现合理的使用右奇异矩阵本质上是对数据量进行了一定的减小，当我们拥有一个矩阵<span class="math inline">\(A\)</span>，大小为<span class="math inline">\(m \times n\)</span>，其中，<span class="math inline">\(m\)</span> 表示的是数据量，即行数，<span class="math inline">\(n\)</span> 表示的是数据的维度数目，即列数，当我们对数据矩阵右乘右奇异矩阵的时候，列数可以根据选择的特征向量的数目进行减小，当我们当数据矩阵左乘左奇异矩阵的时候，行数可以根据选择的特征向量的数目进行减小。因此，左奇异矩阵可以压缩行数，右奇异矩阵可以压缩列数，综合在一起就可以对数据进行较为全面的压缩。</p>
 
         </div>
         
@@ -298,16 +442,16 @@
     <div class="level post-navigation is-flex-wrap is-mobile">
         
         <div class="level-start">
-            <a class="level level-item has-link-grey  article-nav-prev" href="/2019/05/12/Note5-PCA/">
+            <a class="level level-item has-link-grey  article-nav-prev" href="/2019/05/10/Note3-Logic-Regression/">
                 <i class="level-item fas fa-chevron-left"></i>
-                <span class="level-item">主成分分析PCA</span>
+                <span class="level-item">逻辑回归算法</span>
             </a>
         </div>
         
         
         <div class="level-end">
-            <a class="level level-item has-link-grey  article-nav-next" href="/2019/05/10/Note3-Logic-Regression/">
-                <span class="level-item">逻辑回归算法</span>
+            <a class="level level-item has-link-grey  article-nav-next" href="/2019/05/10/Note2-EM-Algorithm/">
+                <span class="level-item">EM算法</span>
                 <i class="level-item fas fa-chevron-right"></i>
             </a>
         </div>
@@ -460,31 +604,31 @@
         <span class="has-mr-6">2</span>
         <span>特征值和特征向量</span>
         </a></li><li>
-        <a class="is-flex" href="#奇异值分解SVD">
+        <a class="is-flex" href="#奇异值分解svd">
         <span class="has-mr-6">3</span>
         <span>奇异值分解SVD</span>
         </a><ul class="menu-list"><li>
-        <a class="is-flex" href="#矩阵-U-的求解">
+        <a class="is-flex" href="#矩阵u-的求解">
         <span class="has-mr-6">3.1</span>
-        <span>矩阵$U$ 的求解</span>
+        <span>矩阵\(U\) 的求解</span>
         </a></li><li>
-        <a class="is-flex" href="#矩阵-V-的求解">
+        <a class="is-flex" href="#矩阵v-的求解">
         <span class="has-mr-6">3.2</span>
-        <span>矩阵$V$ 的求解</span>
+        <span>矩阵\(V\) 的求解</span>
         </a></li><li>
-        <a class="is-flex" href="#矩阵-Sigma-的求解">
+        <a class="is-flex" href="#矩阵sigma-的求解">
         <span class="has-mr-6">3.3</span>
-        <span>矩阵$\Sigma$ 的求解</span>
+        <span>矩阵\(\Sigma\) 的求解</span>
         </a></li><li>
         <a class="is-flex" href="#原理">
         <span class="has-mr-6">3.4</span>
         <span>原理</span>
         </a></li></ul></li><li>
-        <a class="is-flex" href="#SVD的使用">
+        <a class="is-flex" href="#svd的使用">
         <span class="has-mr-6">4</span>
         <span>SVD的使用</span>
         </a></li><li>
-        <a class="is-flex" href="#SVD和PCA">
+        <a class="is-flex" href="#svd和pca">
         <span class="has-mr-6">5</span>
         <span>SVD和PCA</span>
         </a></li></ul>

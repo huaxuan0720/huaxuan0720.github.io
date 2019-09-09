@@ -7,19 +7,19 @@
 
 
 
-    <meta name="description" content="前言&amp;emsp;&amp;emsp;提升方法（boosting）是一种常用的机器学习方法，应用十分广泛，而且效果非常好，近几年的很多比赛的优胜选手都或多或少使用了提升方法用以提高自己的成绩。 &amp;emsp;&amp;emsp;提升方法的本质是通过对每一个训练样本赋予一个权重，并通过改变这些样本的权重，来学习多个分类器，并按照一定的算法将这些分类器组合在一起，通常是线性组合，因为单个分类器往往效果有限，因此组合多个分">
+    <meta name="description" content="前言   提升方法（boosting）是一种常用的机器学习方法，应用十分广泛，而且效果非常好，近几年的很多比赛的优胜选手都或多或少使用了提升方法用以提高自己的成绩。   提升方法的本质是通过对每一个训练样本赋予一个权重，并通过改变这些样本的权重，来学习多个分类器，并按照一定的算法将这些分类器组合在一起，通常是线性组合，因为单个分类器往往效果有限，因此组合多个分类器往往会提高模型的性能。">
 <meta name="keywords" content="机器学习,AdaBoost">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Adaboost算法">
 <meta property="og:url" content="http://huaxuan0720.github.io/2019/05/10/Note1-AdaBoost/index.html">
 <meta property="og:site_name" content="Welcome to My Blogs">
-<meta property="og:description" content="前言&amp;emsp;&amp;emsp;提升方法（boosting）是一种常用的机器学习方法，应用十分广泛，而且效果非常好，近几年的很多比赛的优胜选手都或多或少使用了提升方法用以提高自己的成绩。 &amp;emsp;&amp;emsp;提升方法的本质是通过对每一个训练样本赋予一个权重，并通过改变这些样本的权重，来学习多个分类器，并按照一定的算法将这些分类器组合在一起，通常是线性组合，因为单个分类器往往效果有限，因此组合多个分">
+<meta property="og:description" content="前言   提升方法（boosting）是一种常用的机器学习方法，应用十分广泛，而且效果非常好，近几年的很多比赛的优胜选手都或多或少使用了提升方法用以提高自己的成绩。   提升方法的本质是通过对每一个训练样本赋予一个权重，并通过改变这些样本的权重，来学习多个分类器，并按照一定的算法将这些分类器组合在一起，通常是线性组合，因为单个分类器往往效果有限，因此组合多个分类器往往会提高模型的性能。">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://huaxuan0720.github.io/gallery/MachineLearning.jpg">
-<meta property="og:updated_time" content="2019-05-12T14:41:27.200Z">
+<meta property="og:updated_time" content="2019-09-09T09:16:53.473Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Adaboost算法">
-<meta name="twitter:description" content="前言&amp;emsp;&amp;emsp;提升方法（boosting）是一种常用的机器学习方法，应用十分广泛，而且效果非常好，近几年的很多比赛的优胜选手都或多或少使用了提升方法用以提高自己的成绩。 &amp;emsp;&amp;emsp;提升方法的本质是通过对每一个训练样本赋予一个权重，并通过改变这些样本的权重，来学习多个分类器，并按照一定的算法将这些分类器组合在一起，通常是线性组合，因为单个分类器往往效果有限，因此组合多个分">
+<meta name="twitter:description" content="前言   提升方法（boosting）是一种常用的机器学习方法，应用十分广泛，而且效果非常好，近几年的很多比赛的优胜选手都或多或少使用了提升方法用以提高自己的成绩。   提升方法的本质是通过对每一个训练样本赋予一个权重，并通过改变这些样本的权重，来学习多个分类器，并按照一定的算法将这些分类器组合在一起，通常是线性组合，因为单个分类器往往效果有限，因此组合多个分类器往往会提高模型的性能。">
 <meta name="twitter:image" content="http://huaxuan0720.github.io/gallery/MachineLearning.jpg">
 
 
@@ -166,7 +166,7 @@
             <div class="level-left">
                 <time class="level-item has-text-grey" datetime="2019-05-10T03:41:51.000Z"><i class="far fa-calendar-alt">&nbsp;</i>2019-05-10</time>
                 
-                <time class="level-item has-text-grey is-hidden-mobile" datetime="2019-05-12T14:41:27.200Z"><i class="far fa-calendar-check">&nbsp;</i>2019-05-12</time>
+                <time class="level-item has-text-grey is-hidden-mobile" datetime="2019-09-09T09:16:53.473Z"><i class="far fa-calendar-check">&nbsp;</i>2019-09-09</time>
                 
                 
                 <div class="level-item">
@@ -179,7 +179,7 @@
                     <i class="far fa-clock"></i>&nbsp;
                     
                     
-                    4 minutes read (About 627 words)
+                    20 minutes read (About 3054 words)
                 </span>
                 
                 
@@ -192,15 +192,168 @@
         </div>
         
         <div class="content">
-            <h5 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h5><p>&emsp;&emsp;提升方法（boosting）是一种常用的机器学习方法，应用十分广泛，而且效果非常好，近几年的很多比赛的优胜选手都或多或少使用了提升方法用以提高自己的成绩。</p>
-<p>&emsp;&emsp;提升方法的本质是通过对每一个训练样本赋予一个权重，并通过改变这些样本的权重，来学习多个分类器，并按照一定的算法将这些分类器组合在一起，通常是线性组合，因为单个分类器往往效果有限，因此组合多个分类器往往会提高模型的性能。 </p>
-<a id="more"></a> 
+            <h5 id="前言">前言</h5>
+<p>  提升方法（boosting）是一种常用的机器学习方法，应用十分广泛，而且效果非常好，近几年的很多比赛的优胜选手都或多或少使用了提升方法用以提高自己的成绩。</p>
+<p>  提升方法的本质是通过对每一个训练样本赋予一个权重，并通过改变这些样本的权重，来学习多个分类器，并按照一定的算法将这些分类器组合在一起，通常是线性组合，因为单个分类器往往效果有限，因此组合多个分类器往往会提高模型的性能。</p>
+<a id="more"></a>
+<h5 id="一提升方法简介">一、提升方法简介</h5>
+<p>  提升方法（boosting）实际上是集成学习方法的一种，其基于这样的一种朴素思想：对于一个复杂的任务来说，将多个“专家”（这里的“专家”本意是指各种机器学习模型，可以较好地满足实际问题的需要）的意见进行适当的整合，进而得出最后的综合的判断，比其中任何一个单一的“专家”给出的判断要好。实际上，也就是“三个臭皮匠顶过诸葛亮”的意思。因此，boousting的本意就是寻找到合适的“臭皮匠”。</p>
+<p>  在实际的数据处理的过程中，我们往往可以很容易地发现各种各样的弱机器学习模型，这些模型仅仅比随机猜测好一些，但是还远远不能满足实际作业的精度要求。但是要寻找到一个单一的十分强大的机器学习模型往往会十分困难，虽然可以很好的满足要求，但是寻找这样的模型并不容易。不过好在，我们可以通过整合之前发现的弱机器学习模型，来进行综合考虑，从而形成一个可以媲美单一的强大的机器学习模型。这些弱机器学习模型往往被称之为“弱学习方法”，强机器学习模型往往被称之为“强学习方法”。</p>
+<h5 id="二adaboost算法">二、AdaBoost算法</h5>
+<h6 id="adaboost算法的过程">1、AdaBoost算法的过程</h6>
+<p>  输入：训练数据集<span class="math inline">\(\{(x_1, y_1), (x_2, y_2), \cdots, (x_N, y_N)\}\)</span>，其中<span class="math inline">\(x_i \in \Bbb{R^n}\)</span>， <span class="math inline">\(y_i \in \{-1, +1\}\)</span></p>
+<p>  输出：最终分类器<span class="math inline">\(G(X)\)</span></p>
+<ul>
+<li>第一步：初始化训练数据的权值分布</li>
+</ul>
+<p><span class="math display">\[
+D_1 = (w_{11}, w_{12}, \cdots, w_{1N}), \; w_{1i} = \frac{1}{N}, \; i = 1, 2, \cdots, N
+\]</span></p>
+<ul>
+<li><p>第二步：开始循环，假设循环的最大次数为K</p>
+<ul>
+<li>第1步：使用当前的权值分布<span class="math inline">\(D_m\)</span>的训练数据进行学习，得到基本分类器。</li>
+</ul>
+<p><span class="math display">\[
+ G_m(x):\Bbb{X} \rArr\{-1, +1\}
+ \]</span></p>
+<ul>
+<li>第2步：计算<span class="math inline">\(G_m(x)\)</span>在训练数据集上的分类误差率（这个分类误差率和权值分布相关）</li>
+</ul>
+<p><span class="math display">\[
+ e_m = \sum
+ \]</span></p>
+<ul>
+<li>第3步：计算<span class="math inline">\(G_m(x)\)</span>的系数(这里的log表示的是自然对数。)</li>
+</ul>
+<p><span class="math display">\[
+ \alpha_m = \frac{1}{2}log(\frac{1 - e_m}{e_m})
+ \]</span></p>
+<ul>
+<li>第4步：更新训练数据集的权值分布 <span class="math display">\[
+D_{m + 1} = (w_{m + 1, 1}, w_{m + 1, 2}, \cdots, w_{m+ 1, N})
+\]</span></li>
+</ul></li>
+</ul>
+<p><span class="math display">\[
+w_{m + 1, i} = w_{m, i}\;exp(-\alpha_m\;y_i\;G_m(x_i))
+\]</span></p>
+<p>  最后将<span class="math inline">\(D_{m + 1} = (w_{m + 1, 1}, w_{m + 1, 2}, \cdots, w_{m+ 1m, N})\)</span>规范化，使之成为一个和为1的概率分布。</p>
+<p><span class="math display">\[
+   w_{m + 1, i} = \frac{w_{m + 1, i}}{\sum_{j=1}^N w_{m + 1, j}}
+\]</span></p>
+<ul>
+<li>第三步：构建基本分类器的线性组合</li>
+</ul>
+<p><span class="math display">\[
+f(x) = \sum_{m=1}^K \alpha_m G_m(x)
+\]</span></p>
+<p>  得到最终的分类器</p>
+<p><span class="math display">\[
+G(X) = sign(f(x)) = sign(\sum_{m=1}^K \alpha_m G_m(x))
+\]</span></p>
+<h6 id="adaboost的使用">2、AdaBoost的使用</h6>
+<p>  详见《统计学习方法》一书。</p>
+<h6 id="adaboost算法的推导">3、Adaboost算法的推导</h6>
+<p>  从前面的例子中可以看出来，Adaboost算法本质上是一个迭代算法，在每一次迭代过程中都会根绝当前的样本权重生成一个分类器，再去更新每一个样本的权重，如果一个样本分类正确，那么它的权重会相应的减小，如果一个样本分类错误，那么它的权重会相应的增大，这样一来，下一轮的分类器就可以更好的关注那些分类错误的样本。</p>
+<p>  因此，我们可以将Adaboost看作是一个损失函数是指数函数的前向提升算法。损失函数定义如下： <span class="math display">\[
+L(y_i, f(x_i)) = exp(-\;y_i\;f(x_i))
+\]</span></p>
+<p>  那么假设我们已经经过了<span class="math inline">\(m - 1\)</span>次迭代，生成了<span class="math inline">\(m-1\)</span>个分类器，其中每一个分类器的权重我们记作<span class="math inline">\(\alpha_i\)</span>，每一次迭代生成的基分类器记作<span class="math inline">\(G_j(x_i)\)</span>，分类器的下标表示的是迭代的次数，我们我们就可以得到经过了<span class="math inline">\(m-1\)</span>次迭代之后的集成分类器为： <span class="math display">\[
+\begin{aligned}
+f_{m-1}(x) &amp;= f_{m - 2}(x) + \alpha_{m - 1}G_{m - 1}(x) \\
+&amp;= f_{m-3}(x) + \alpha_{m-2}G_{m-2}(x) +  \alpha_{m - 1}G_{m - 1}(x)  \\
+&amp;\cdots \\
+&amp;=\alpha_{1}G_{1}(x) +  \alpha_{2}G_{2}(x) + \cdots +\alpha_{m - 1}G_{m - 1}(x)
+\end{aligned}
+\]</span>   因此，我们希望在第<span class="math inline">\(m\)</span>次迭代的过程中可以获得分类器权重<span class="math inline">\(\alpha_m\)</span>和基分类器<span class="math inline">\(G_m(x)\)</span>。我们的损失函数定义如上。</p>
+<p>  根据上面的条件，我们可以根据损失函数极小化经验风险，有： <span class="math display">\[
+\begin{aligned}
+(\alpha_m, G_m(x)) &amp;= \arg\min_{\alpha, G} \sum_i^N L(y_i, f_m(x_i)) \\
+&amp;= \arg\min_{\alpha, G} \sum_i^N L(y_i, f_{m-1}(x_i) + \alpha G(x_i)) \\
+&amp;= \arg\min_{\alpha, G} \sum_i^N exp(-\;y_i(f_{m-1}(x_i) + \alpha G(x_i))) \\
+&amp;= \arg\min_{\alpha, G} \sum_i^N exp(-\;y_if_{m-1}(x_i))\;exp(-y_i\;\alpha\;G(x_i))
+\end{aligned}
+\]</span>   考虑到<span class="math inline">\(exp(-\;y_if_{m-1}(x_i))\)</span>中不包含需要优化的成分，因此，我们可以记为：<span class="math inline">\(exp(-\;y_if_{m-1}(x_i))=w_{m,i}\)</span>，表示的是第<span class="math inline">\(m\)</span>轮中第<span class="math inline">\(i\)</span>个样本的相关参数。所以，上面的式子可以写成： <span class="math display">\[
+(\alpha_m, G_m(x)) = \arg\min_{\alpha, G} \sum_i^N w_{m,i} exp(-y_i\;\alpha\;G(x_i))
+\]</span>   记我们需要优化的式子为<span class="math inline">\(H\)</span>，即有：<span class="math inline">\(H = \sum_i^N w_{m,i} exp(-y_i\;\alpha\;G(x_i))\)</span></p>
+<p>  对于每一个样本来说，都只对应两种状态当中的一种，即分类正确还是分类错误，所以，我们将这两种状态分别处理，因此，我们对上面的<span class="math inline">\(H\)</span>可以改成成如下的式子： <span class="math display">\[
+\begin{aligned}
+H &amp;= \sum_i^N w_{m,i} exp(-y_i\;\alpha\;G(x_i)) \\
+&amp;= \sum_{i,G(x_i)=y_i}^N w_{m,i} e^{-\alpha} + \sum_{i,G(x_i) \neq y_i}^N w_{m,i} e^{\alpha} \\
+&amp;=  e^{-\alpha}\sum_{i,G(x_i)=y_i}^N w_{m,i} + e^{\alpha} \sum_{i,G(x_i) \neq y_i}^N w_{m,i} \\
+&amp;= e^{-\alpha}\sum_{i}^N w_{m,i}\;I(G(x_i)=y_i) + e^{\alpha} \sum_{i}^N w_{m,i}\;I(G(x_i) \neq y_i)
+\end{aligned}
+\]</span>   在上面的式子中，我们为了将两个式子相加变成一个式子，我们增加两个无关项，这两个无关项详见之后结果为0，即有： <span class="math display">\[
+\begin{aligned}
+H 
+&amp;= e^{-\alpha}\sum_{i}^N w_{m,i}\;I(G(x_i)=y_i) + e^{\alpha} \sum_{i}^N w_{m,i}\;I(G(x_i) \neq y_i) \\
+&amp;= e^{-\alpha}\sum_{i}^N w_{m,i}\;I(G(x_i)=y_i) \\&amp;\;\;\;\;+ e^{-\alpha}\sum_{i}^N w_{m,i}\;I(G(x_i) \neq y_i) - e^{-\alpha}\sum_{i}^N w_{m,i}\;I(G(x_i)\neq y_i) \\&amp;\;\;\;\;+ e^{\alpha} \sum_{i}^N w_{m,i}\;I(G(x_i) \neq y_i) \\
+&amp;= e^{-\alpha}\sum_{i}^N w_{m,i}\;(I(G(x_i)=y_i) + I(G(x_i) \neq y_i)) \\
+&amp;\;\;\;\;+ (e^{\alpha} + e^{-\alpha}) \sum_{i}^N w_{m,i}\;I(G(x_i) \neq y_i) \\
+&amp;= e^{-\alpha}\sum_{i}^N w_{m,i} + (e^{\alpha} - e^{-\alpha}) \sum_{i}^N w_{m,i}\;I(G(x_i) \neq y_i)
+\end{aligned}
+\]</span>   从上面的式子的最后一行可以看出，<span class="math inline">\(w_{m,i}\)</span>与极小化无关，可以看作是一个常量，而<span class="math inline">\(\alpha\)</span>是一个待定常数，也和<span class="math inline">\(G(x)\)</span>的极小化无关，因此，对于需要优化的<span class="math inline">\(G(x)\)</span>来说，我们有： <span class="math display">\[
+\begin{aligned}
+(\alpha_m, G_m(x)) &amp;= \arg\min_{\alpha, G} \sum_i^N w_{m,i} exp(-y_i\;\alpha\;G(x_i))\\
+&amp;= \arg\min_{\alpha, G} e^{-\alpha}\sum_{i}^N w_{m,i} + (e^{\alpha} - e^{-\alpha}) \sum_{i}^N w_{m,i}\;I(G(x_i) \neq y_i)
+\end{aligned}
+\]</span></p>
+<p><span class="math display">\[
+\begin{aligned}
+G_m(x) &amp;= \arg\min_{G} \sum_i^N w_{m,i} exp(-y_i\;\alpha\;G(x_i))\\
+&amp;= \arg\min_{G} e^{-\alpha}\sum_{i}^N w_{m,i} + (e^{\alpha} - e^{-\alpha}) \sum_{i}^N w_{m,i}\;I(G(x_i) \neq y_i) \\
+&amp;= \arg\min_{G} (e^{\alpha} - e^{-\alpha}) \sum_{i}^N w_{m,i}\;I(G(x_i) \neq y_i) \\
+&amp;= \arg\min_{G}\sum_{i}^N w_{m,i}\;I(G(x_i) \neq y_i)
+\end{aligned}
+\]</span></p>
+<p>  对于参数<span class="math inline">\(\alpha\)</span>来说，我们对上面的式子进行求导，即有： <span class="math display">\[
+H = e^{-\alpha}\sum_{i}^N w_{m,i} + (e^{\alpha} - e^{-\alpha}) \sum_{i}^N w_{m,i}\;I(G(x_i) \neq y_i)
+\]</span></p>
+<p><span class="math display">\[
+\frac{\partial H}{\partial \alpha} = - e^{-\alpha}\sum_{i}^N w_{m,i} + (e^{\alpha} + e^{-\alpha}) \sum_{i}^N w_{m,i}\;I(G(x_i) \neq y_i)
+\]</span></p>
+<p>  令上面的式子等于0，即<span class="math inline">\(\frac{\partial H}{\partial \alpha} = 0\)</span>，有： <span class="math display">\[
+- e^{-\alpha}\sum_{i}^N w_{m,i} + (e^{\alpha} + e^{-\alpha}) \sum_{i}^N w_{m,i}\;I(G(x_i) \neq y_i) = 0
+\]</span></p>
+<p><span class="math display">\[
+(e^{\alpha} + e^{-\alpha}) \sum_{i}^N w_{m,i}\;I(G(x_i) \neq y_i) = e^{-\alpha}\sum_{i}^N w_{m,i}
+\]</span></p>
+<p><span class="math display">\[
+(e^{\alpha} + e^{-\alpha}) \frac{\sum_{i}^N w_{m,i}\;I(G(x_i) \neq y_i)}{\sum_{i}^N w_{m,i}} = e^{-\alpha}
+\]</span></p>
+<p>  不妨记$  = e_m$，那么，我们有： <span class="math display">\[
+(e^{\alpha} + e^{-\alpha})e_m = e^{-\alpha}
+\]</span>   两边同时乘以<span class="math inline">\(e^{\alpha}\)</span>，有： <span class="math display">\[
+(e^{2\alpha} + 1)e_m = 1
+\]</span></p>
+<p><span class="math display">\[
+e^{2\alpha} = \frac{1}{e_m} - 1 = \frac{1-e_m}{e_m}
+\]</span></p>
+<p>  两边取对数，有： <span class="math display">\[
+2\alpha = ln(\frac{1-e_m}{e_m})
+\]</span></p>
+<p><span class="math display">\[
+\alpha = \frac{1}{2} ln(\frac{1-e_m}{e_m})
+\]</span></p>
+<p>  所以，当我们计算出了相应的基函数权重<span class="math inline">\(\alpha\)</span>和基函数<span class="math inline">\(G(x)\)</span>之后，我们就可以将之前的计算出的所有的基函数及其权重进行相加，得到一个由若干弱分类器（学习器）结合而成的强分类器（学习器）。</p>
+<p>  现在我们考虑一下<span class="math inline">\(w_{m,i}\)</span>的计算，从前面的计算过程可以看出，<span class="math inline">\(w_{m,i}\)</span>本质上可以看作是样本的权重。因此，在算法开始前，我们一般需要将所有样本的权重设置为相同的值，如果有<span class="math inline">\(N\)</span>个样本，我们就应该将<span class="math inline">\(w_{1,i}\)</span>设置为<span class="math inline">\(\frac{1}{N}\)</span>。而在Adaboost算法中，当我们更新完每一个样本的权值之后，也会对样本权值进行规范化操作，使得<span class="math inline">\(\sum_{i}^N w_{m,i} = 1\)</span>。所以，我们有： <span class="math display">\[
+e_m = \frac{\sum_{i}^N w_{m,i}\;I(G(x_i) \neq y_i)}{\sum_{i}^N w_{m,i}} = \frac{\sum_{i}^N w_{m,i}\;I(G(x_i) \neq y_i)}{1} = \sum_{i}^N w_{m,i}\;I(G(x_i) \neq y_i)
+\]</span>   因此，<span class="math inline">\(e_m\)</span>又被称作是分类误差率，它的取值和样本的权值密切相关。</p>
+<p>  假设我们已经通过前面的步骤求出了<span class="math inline">\(\alpha\)</span>和<span class="math inline">\(G(x)\)</span>，则我们有： <span class="math display">\[
+f_m(x) = f_{m - 1}(x) + \alpha_m G_m(x)
+\]</span>   又根据前面的公式，我们有：<span class="math inline">\(w_{m,i}=exp(-\;y_if_{m-1}(x_i))\)</span></p>
+<p>  那么我们需要的更新的<span class="math inline">\(w_{m+1,i}\)</span>为： <span class="math display">\[
+\begin{aligned}
+w_{m+1,i} &amp;= exp(-y_i\;f_m(x_i)) \\
+&amp;= exp(-y_i(f_{m-1}(x_i) + \alpha_m G_m(x_i))) \\
+&amp;= exp(-y_i(f_{m-1}(x_i)) exp(-y_i\;\alpha_m G_m(x_i)) \\
+&amp;=w_{m,i} exp(-y_i\;\alpha_m G_m(x_i))
+\end{aligned}
+\]</span>   如前所言，在更新完样本权值之后，我们需要对其规范化，有： <span class="math display">\[
+w_{m+1,i} = \frac{w_{m+1,i}}{\sum_j^N w_{m+1,j}} = \frac{w_{m,i} exp(-y_i\;\alpha_m G_m(x_i))}{\sum_j^N w_{m,j} exp(-y_j\;\alpha_m G_m(x_j))}
+\]</span>   以上就是Adaboost算法的全部推导过程。</p>
 
-<h5 id="一、提升方法简介"><a href="#一、提升方法简介" class="headerlink" title="一、提升方法简介"></a>一、提升方法简介</h5><p>&emsp;&emsp;提升方法（boosting）实际上是集成学习方法的一种，其基于这样的一种朴素思想：对于一个复杂的任务来说，将多个“专家”（这里的“专家”本意是指各种机器学习模型，可以较好地满足实际问题的需要）的意见进行适当的整合，进而得出最后的综合的判断，比其中任何一个单一的“专家”给出的判断要好。实际上，也就是“三个臭皮匠顶过诸葛亮”的意思。因此，boousting的本意就是寻找到合适的“臭皮匠”。  </p>
-<p>&emsp;&emsp;在实际的数据处理的过程中，我们往往可以很容易地发现各种各样的弱机器学习模型，这些模型仅仅比随机猜测好一些，但是还远远不能满足实际作业的精度要求。但是要寻找到一个单一的十分强大的机器学习模型往往会十分困难，虽然可以很好的满足要求，但是寻找这样的模型并不容易。不过好在，我们可以通过整合之前发现的弱机器学习模型，来进行综合考虑，从而形成一个可以媲美单一的强大的机器学习模型。这些弱机器学习模型往往被称之为“弱学习方法”，强机器学习模型往往被称之为“强学习方法”。  </p>
-<p>&emsp;&emsp;</p>
-<h5 id="二、AdaBoost算法"><a href="#二、AdaBoost算法" class="headerlink" title="二、AdaBoost算法"></a>二、AdaBoost算法</h5><h6 id="1、AdaBoost算法的过程"><a href="#1、AdaBoost算法的过程" class="headerlink" title="1、AdaBoost算法的过程"></a>1、AdaBoost算法的过程</h6><p>&emsp;&emsp;</p>
-<h6 id="2、AdaBoost的使用"><a href="#2、AdaBoost的使用" class="headerlink" title="2、AdaBoost的使用"></a>2、AdaBoost的使用</h6>
         </div>
         
             <ul class="post-copyright">
@@ -423,21 +576,25 @@
         <span class="has-mr-6">1</span>
         <span>前言</span>
         </a></li><li>
-        <a class="is-flex" href="#一、提升方法简介">
+        <a class="is-flex" href="#一提升方法简介">
         <span class="has-mr-6">2</span>
         <span>一、提升方法简介</span>
         </a></li><li>
-        <a class="is-flex" href="#二、AdaBoost算法">
+        <a class="is-flex" href="#二adaboost算法">
         <span class="has-mr-6">3</span>
         <span>二、AdaBoost算法</span>
         </a><ul class="menu-list"><li>
-        <a class="is-flex" href="#1、AdaBoost算法的过程">
+        <a class="is-flex" href="#adaboost算法的过程">
         <span class="has-mr-6">3.1</span>
         <span>1、AdaBoost算法的过程</span>
         </a></li><li>
-        <a class="is-flex" href="#2、AdaBoost的使用">
+        <a class="is-flex" href="#adaboost的使用">
         <span class="has-mr-6">3.2</span>
         <span>2、AdaBoost的使用</span>
+        </a></li><li>
+        <a class="is-flex" href="#adaboost算法的推导">
+        <span class="has-mr-6">3.3</span>
+        <span>3、Adaboost算法的推导</span>
         </a></li></ul></li></ul>
         </div>
     </div>
